@@ -1,0 +1,106 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+ 
+	<bean id="mainDAO" class="qms.dao.MainDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="maintenanceDAO" class="qms.dao.MaintenanceDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="nonconformanceDAO" class="qms.dao.NonConformanceDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="customersDAO" class="qms.dao.CustomersDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="customerfeedbackDAO" class="qms.dao.CustomerFeedbackDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="processDAO" class="qms.dao.ProcessDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+ <bean id="employeeDAO" class="qms.dao.EmployeeDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="jobDAO" class="qms.dao.JobDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="formDAO" class="qms.dao.FormDAO">
+		<property name="datasource" ref="dataSource" />
+	</bean>
+	
+	<bean id="CorrectiveAndPreventiveActionsDAO" class="qms.dao.CorrectiveAndPreventiveActionsDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="documentcontrolDAO" class="qms.dao.DocumentControlDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="internalauditsDAO" class="qms.dao.InternalAuditsDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	
+	<bean id="supplierperformanceDAO" class="qms.dao.SupplierPerformanceDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="childSupplierDAO" class="qms.dao.ChildSupplierDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="managementreviewDAO" class="qms.dao.ManagementReviewDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="documentPrefixDAO" class="qms.dao.DocumentPrefixDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="formprefixDAO" class="qms.dao.FormprefixDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="formlocationDAO" class="qms.dao.FormLocationDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="documentLocationDAO" class="qms.dao.DocumentLocationDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+		<bean id="documentTypeDAO" class="qms.dao.DocumentTypeDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="revisionformDAO" class="qms.dao.RevisionFormDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+<bean id="revisiondocumentDAO" class="qms.dao.RevisionDocumentDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="referenceMaintenanceDAO" class="qms.dao.ReferenceMaintenanceDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="instructionMaintenanceDAO" class="qms.dao.InstructionMaintenanceDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="documentRevisionLevelDAO" class="qms.dao.DocumentRevisionLevelDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="sourceNCDAO" class="qms.dao.Source_NCDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="typeNCDAO" class="qms.dao.Type_of_NC_DAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="productId_NCDAO" class="qms.dao.ProductId_NCDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="hRandTrainingDAO" class="qms.dao.HRandTrainingDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="reportedByNCDAO" class="qms.dao.ReportedByNCDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+ <bean id="filehandlingDAO" class="qms.dao.FileHandlingDAO">
+	</bean>
+</beans>

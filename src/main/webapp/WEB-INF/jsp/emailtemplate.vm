@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<adocument>
+  <anelement>${someproperty}</anelement>
+  <anotherelement>${anotherproperty}</anotherelement>
+</adocument>
