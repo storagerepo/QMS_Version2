@@ -6,7 +6,7 @@
 <script src="resources/js/jquery.min.js"></script>
  <script src="resources/js/jquery-ui.js"></script>
  
- <form method="post" enctype="multipart/form-data" action="update_documents">
+ <form method="post" enctype="multipart/form-data" action="update_documents" id="newformid">
  <!-- 
  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script> 
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script> -->
@@ -43,7 +43,12 @@ $(window).load(function(){
 									
 								</a>
 							</li>
-						
+						    <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+                <a href="view_documentdetails" class="<c:choose>
+                <c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
+                  <span>View Revisions</span>
+                </a>
+              </li>
 				          <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="viewdocuments" class="<c:choose>
 								<c:when test="${menu=='document'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
@@ -86,17 +91,17 @@ $(window).load(function(){
 					name="document_id" />${documentMain.document_id}</a>
 					<table  class="simple_table" border="0">
                     <tr ><td align="left" width="10">
-					<select name="document_type_id" id="document_type_id" class="input_txtbx" style="display:none;width:110px; margin:0 0 0 -15px;margin-right:-1px;">
+					<select name="document_type_id" id="document_type_id" class="input_txtbx" style="display:none;width:110px; margin:0 0 0 -15px;margin-right:-1px;" disabled="disabled">
                
 			                <c:forEach items="${documentPrefixForm.documentPrefixs}" var="prefix" varStatus="status">
         				       <option value="${prefix.doc_prefix}">${prefix.doc_prefix}</option>
 			                  </c:forEach>
                </select></td><td align="left" width="10">
-               <input type="text" value="" id="document_id" class="input_txtbx" style="display:none;width:77px;margin:0 0 0 -10px;"  onblur="change_to_label()"onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" onkeypress="return onlynumeric(event,this);"/>
+               <input type="text" value="" id="document_id" class="input_txtbx" readonly="readonly" style="display:none;width:77px;margin:0 0 0 -10px;"  onblur="change_to_label()"onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" onkeypress="return onlynumeric(event,this);"/>
                
                 <input type="hidden" name=document_id id="generated_id"  value="" /> </td></tr></table>
                
-               <label id="change" ><a href="#" style="text-decoration: none;" onclick="show_edit()">&nbsp;&nbsp;Change</a>  </label>
+               <label id="change" ><a href="#" style="text-decoration: none;" onclick="show_edit()">&nbsp;&nbsp;<!-- Change --></a>  </label>
             <label id="changeafter" style="display:none;" ></label> 
              <br><span id="documentiderror" style="color:red"></span> <br>
                 <c:if test="${success=='exist'}"><span style="color:red">Document ID already Exist</span></c:if>
@@ -111,9 +116,9 @@ $(window).load(function(){
               
                <c:choose>
                <c:when test="${documentMain.media_type=='hardcopy'}">
-                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="hardcopy"   id="id_hardcopy"  checked/>Hard Copy&nbsp;&nbsp;&nbsp;
-                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="electronic"  id="id_electronic" onchange="toggle2(this.value);" />Electronic&nbsp;&nbsp;&nbsp;
-                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="both"  id="id_both" onchange="toggle2(this.value);"/> Both&nbsp;&nbsp;&nbsp;<br/><span class="err"></span>    
+                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="hardcopy"   id="id_hardcopy"  checked disabled/>Hard Copy&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="electronic"  id="id_electronic" onchange="toggle2(this.value);" disabled/>Electronic&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="both"  id="id_both" onchange="toggle2(this.value);" disabled/> Both&nbsp;&nbsp;&nbsp;<br/><span class="err"></span>    
                </c:when>
                <c:when test="${documentMain.media_type=='electronic'}">
                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="hardcopy"   id="id_hardcopy" />Hard Copy&nbsp;&nbsp;&nbsp;
@@ -134,14 +139,14 @@ $(window).load(function(){
               <tr class="row2">
               
                <td valign="middle" align="left" class="input_txt" >Document Title:</td>
-               <td valign="middle" align="left" class="input_txt" width="20%"><input type="text" name="document_title" class="input_txtbx" id="documenttitle"  value="${documentMain.document_title}"onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" onkeypress="return onlyAlphabetsnumeric(event,this);"/><br/><span class="err"style="color:red"><form:errors path="DocumentMain.document_title"></form:errors></span>
+               <td valign="middle" align="left" class="input_txt" width="20%"><input type="text" name="document_title" class="input_txtbx" id="documenttitle"  readonly="readonly" value="${documentMain.document_title}"onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" onkeypress="return onlyAlphabetsnumeric(event,this);"/><br/><span class="err"style="color:red"><form:errors path="DocumentMain.document_title"></form:errors></span>
                <span id="documenttitle1" style="color:red"></span>
                </td>
               <c:choose>
                 <c:when test="${documentMain.media_type=='hardcopy'}">
                <td valign="middle" id="id_location_lbl" align="left" class="input_txt" width="20%"><label id="location_label" >Location:</label><br><label id="file_upload_label" style="display:none;"><span class="err"></span> Upload File:</label></td>
                <td valign="middle" align="left" id="id_location_txt" class="input_txt" width="25%">
-              <select id="location_text" name="location" class="input_txtbx">
+              <select id="location_text" name="location" class="input_txtbx" disabled="disabled">
               <option value="">--Select--</option>
                 <c:forEach items="${formLocationForm.formLocations}" var="formlocation" varStatus="status">
                   
@@ -149,7 +154,7 @@ $(window).load(function(){
 			                  </c:forEach>
 			                   </select><br>
 			 <span id="hard"style="color:red"></span>
-              <input name="attachments" style="display:none;" id="id_file" type="file" /> <br/>
+              <input name="attachments" style="display:none;" id="id_file" type="file" disabled="disabled"/> <br/>
               <span id="attach"style="color:red"></span>
               
                </td>
@@ -207,7 +212,7 @@ $(window).load(function(){
                <td valign="middle" align="left" class="input_txt" width="18%">Document Type:</td>
                <td valign="top" align="left" class="input_txt" width="30%">
            
-                <select name="document_type" id="id_document_type"  class="input_txtbx">
+                <select name="document_type" id="id_document_type"  class="input_txtbx" disabled="disabled">
 							  <option value="">--Select--</option> 
 			                <c:forEach items="${documentTypeForm.documentTypes}" var="documenttype" varStatus="status">
         				       <option value="${documenttype.document_type}"<c:if test="${documenttype.document_type == documentMain.document_type}"><c:out value="selected"/></c:if>>${documenttype.document_type}</option>
@@ -222,7 +227,7 @@ $(window).load(function(){
                <td valign="middle" align="left" class="input_txt" width="20%">Process:</td>
                <td valign="top" align="left" class="input_txt" width="25%">
                
-               <select name="process" id="id_inpprocess" class="input_txtbx" style="width:200px;">
+               <select name="process" id="id_inpprocess" class="input_txtbx" style="width:200px;" disabled="disabled">
                <option value="">--Select--</option>
                <c:forEach items="${processForm.processes}" var="processes" varStatus="true">
                <option value="<c:out value="${processes.process_name}"/>" <c:if test="${documentMain.process==processes.process_name}"><c:out value="Selected"/></c:if>><c:out value="${processes.process_name}"/></option>
@@ -239,8 +244,8 @@ $(window).load(function(){
 <!--               <input type="radio" name="external" value="Yes"  id="id_yesforexternal">Yes&nbsp;&nbsp;&nbsp;
 					<input type="radio" name="external" value="No" id="id_noforexternal"  checked>No&nbsp;&nbsp;&nbsp;<br/><span class="err"></span>
  -->               
- 				<input type="radio" name="external" value="Yes" id="id_yesforexternal" <c:if test="${documentMain.external=='Yes'}"><c:out value="checked=checked"/></c:if>>Yes &nbsp;&nbsp;&nbsp;
-  				<input type="radio" name="external" value="No" <c:if test="${documentMain.external=='No'}"><c:out value="checked=checked"/></c:if>>No &nbsp;&nbsp;&nbsp;
+ 				<input type="radio" name="external" id="yesdoc" disabled value="Yes" id="id_yesforexternal" <c:if test="${documentMain.external=='Yes'}"><c:out value="checked=checked"/></c:if>>Yes &nbsp;&nbsp;&nbsp;
+  				<input type="radio" name="external" id="nodoc" disabled value="No" <c:if test="${documentMain.external=='No'}"><c:out value="checked=checked"/></c:if>>No &nbsp;&nbsp;&nbsp;
   				<br>
   				 <span class="err"style="color:red"><form:errors path="DocumentMain.external"></form:errors></span>
   				
@@ -404,6 +409,22 @@ $(window).load(function(){
         </div>
         </form>
         <script>
+        
+        $('#newformid').on('submit', function() {
+       	 
+     	    $('#document_type_id').attr('disabled', false);
+     	    $('#id_hardcopy').attr('disabled', false);
+     	    $('#id_electronic').attr('disabled', false);
+     	   $('#id_both').attr('disabled', false);
+    	    $('#location_text').attr('disabled', false);
+    	    $('#id_file').attr('disabled', false);
+    	    $('#id_document_type').attr('disabled', false);
+     	    $('#id_inpprocess').attr('disabled', false);
+     	    $('#yesdoc').attr('disabled', false);
+     	   $('#nodoc').attr('disabled', false);
+     	});
+        
+        
 $(function() {
 
 	$("#document_id").on("keypress", function(e) {

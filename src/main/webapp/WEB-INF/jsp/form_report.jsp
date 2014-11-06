@@ -28,6 +28,13 @@
 									
 								</a>
 							</li>
+							
+							   <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+                <a href="view_formdetails" class="<c:choose>
+                <c:when test="${menu=='document'}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
+                  <span>View Revisions</span>
+                </a>
+              </li>
 				            <li  style=" float:left;margin-right:10px;text-transform:uppercase;">
 								<a href="form_report" class="<c:choose>
 								<c:when test="${menu=='document'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>">

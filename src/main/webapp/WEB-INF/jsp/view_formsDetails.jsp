@@ -6,38 +6,9 @@
 <script src="resources/js/jquery.min.js"></script>
  <script src="resources/js/jquery-ui.js"></script>
 
-    <title>Expand table rows with jQuery - jExpand plugin - JankoAtWarpSpeed demos</title>
+    <title></title>
     
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript"></script>
-    <script type="text/javascript">  
-        $(document).ready(function(){
-            $("#report tr:odd").addClass("odd");
-            $("#report tr:not(.odd)").hide();
-            $("#report tr:first-child").show();
-            
-            $("#report tr.odd").click(function(){
-                $(this).next("tr").toggle();
-                $(this).find(".arrow").toggleClass("up");
-            });
-            //$("#report").jExpand();
-        });
-    </script>        
-
- 
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript"></script>
-    <script type="text/javascript">  
-        $(document).ready(function(){
-            $("#report tr:odd").addClass("odd");
-            $("#report tr:not(.odd)").hide();
-            $("#report tr:first-child").show();
-            
-            $("#report tr.odd").click(function(){
-                $(this).next("tr").toggle();
-                $(this).find(".arrow").toggleClass("up");
-            });
-            //$("#report").jExpand();
-        });
-    </script>   
+    
 <div id="right_content">
 
 	
@@ -61,13 +32,13 @@
 							
                 <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
                 <a href="view_formdetails" class="<c:choose>
-                <c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
+                <c:when test="${menu=='document'}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
                   <span>View Revisions</span>
                 </a>
               </li>
 				            <li  style=" float:left;margin-right:10px;text-transform:uppercase;">
 								<a href="view_form" class="<c:choose>
-								<c:when test="${menu=='document'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>">
+								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
 									View Form
 									
 								</a>
@@ -87,65 +58,17 @@
 </td>
 </tr>
 
-			<c:if test="${success=='true'}">
-			<tr>
-				<td valign="top" align="left" style="padding: 5px 0 10px 200px;">&nbsp;
-					<div id="success_statusbar" class="status success">
-						<p class="closestatus">
-						<img alt="Success" src="resources/images/icons/inserted.png">
-						<a title="Close" href="view_form">
-						<img alt="Success" src="resources/images/icons/icon_square_close.png"></a>		
-						</p>
-					</div></td>
-			</tr>
-		</c:if>
-		<c:if test="${success=='update'}">
-			<tr>
-				<td valign="top" align="left" style="padding: 5px 0 10px 200px;">&nbsp;
-					<div id="success_statusbar" class="status success">
-						<p class="closestatus">
-						<img alt="Success" src="resources/images/icons/success.png"/>
-						<a title="Close" href="view_form">
-						<img alt="Success" src="resources/images/icons/icon_square_close.png"></a>
-						</p>
-					</div></td>
-			</tr>
-		</c:if>
+			
+		
 			<tr>
 				<td valign="top" align="left"><div>
 						<div class="headings altheading">
-							<h2>Search Forms Details</h2>
+							<h2>View Forms Details</h2>
 						</div>
 						 <div class="contentbox">
-						<form action="search_form" name="dashboard" method="GET">
-						<div style="border:#993300 2px solid; padding:15px; margin-bottom:15px;">
+						
 
-
-							<table width="100%" border="0" cellspacing="0" cellpadding="0">
-							  <tr>
-							    <td align="left" valign="middle" width="20%">Process Area :</td>
-							   <!--  <td align="left" valign="middle" width="10%"><input type="text" name="process" class="input_txtbx2" id="recordtitle"><span class="err"><form:errors path="Form.responsibility"></form:errors></span></td>
-							    <td align="center" valign="middle" width="38%"> -->
-							    
-							     <td valign="top" align="left" class="input_txt" >
-               
-               <select name="process" id="id_inpprocess"  class="input_txtbx">
-               <option value="">--Select--</option>
-             <c:forEach items="${processForm.processes}" var="processes" varStatus="true">
-                <option value="${processes.process_name}"<c:if test="${processes.process_name==processarea}"><c:out value="selected"></c:out></c:if>>${processes.process_name}</option>
-               </c:forEach>
-               </select>
-              </td>
-               <td valign="top" align="left" class="input_txt" >
-							  <input type="submit" value="Search" class="submit_btn1" name="search" id="id_submit" onmouseover="showTooltip('tooltip_id','inp_id3');" /></td>
-							  <!-- <td align="center" valign="middle" width="38%"><input type="submit" value="Clear" class="submit_btn1" ></td>
-							   --></tr>
-							</table>
-							
-						</div> 
-</form>
-
-					<form action="?do=viewparticipants" name="dashboard" method="POST">
+					<form >
 					
 							<table cellpadding="0" cellspacing="0" border="0" width="100%" id="report">
 								<tr class="title">
@@ -155,7 +78,7 @@
 									<td valign="top" align="left" width="10%">Effective Date</td>
 									<td valign="top" align="left" width="10%">Approver1</td>
 									<td valign="top" align="left" width="10%">Issuer</td>
-									<td valign="top" align="left" width="15%">Actions</td>
+									
 									</tr>
 
 								
@@ -180,50 +103,11 @@
 											<td valign="top" align="left" width="10%">${form.approver1}</td>
 											<td valign="top" align="left" width="10%">${form.issuer}</td>
 											
-										<td valign="top" align="left" width="15%">
-											
-											<a href="#" title="" ><img src="resources/images/icons/icon_edit.png" alt="Edit" /></a><a href="<c:out value="edit_form?auto_no=${form.auto_no}"/>" style="padding-right:10px;">Edit</a>
-											<!-- <a href="#" title="" ><img src="resources/images/icons/icon_edit.png" alt="Edit" /></a><a id="show_more_views" href="#" data-bind-action="toggle-content">View Revision History</a>
-											 -->
-											<%-- <a href="#" title="" ><img src="resources/images/icons/icon_edit.png" alt="Edit" /></a><a href="<c:out value="review_history_form?auto_no=${form.auto_no}"/>#current">View Revision History</a> --%>
-											<a href="#" title="" ><img src="resources/images/icons/icon_edit.png" alt="Edit" /></a><a id="element_to_pop_up"  onclick="popupwindow()" href="<c:out value="review_history_form?auto_no=${form.auto_no}"/>" >View Revision History</a>
-											</td>
+										
 										</tr>
 									
 						    	
-										<c:forEach items="${revisionForms.revisionForms}" var="revision" varStatus="status">
-										<c:if test="${revision.auto_no == form.auto_number}">
-									<%-- 	<c:if test="${display == 'show'}">	
-									<script>
-									
-									document.getElementById('tabledisplay').style.display="block";
-									
-									
-									</script>
-									</c:if>
-									<tr class="header11" id="tabledisplay" style="display:none;">
-								
-									<td valign="top" align="center" width="10%">Form/Rec ID</td>
-									<td valign="top" align="center" width="10%">Effective Date</td>
-									<td valign="top" align="center" width="10%">Approver1</td>
-									<td valign="top" align="center" width="10%">Issuer</td>
-									<td valign="top" align="center" width="10%">Comments</td>
-									<td valign="top" align="center" width="10%">Revision No</td>
-									</tr>  --%>
-									
-										<tr class="row2" style="color:#0000A0; font-style: inherit;">
-										<a name="current">
-										 	 <td valign="top" align="left" width="10%"> ${revision.document_id}</td>
-											<td valign="top" align="left" width="10%">${revision.comments}</td>	
-											<td valign="top" align="left" width="10%">${revision.effective_date}</td>
-											<td valign="top" align="left" width="10%">${revision.approver1}</td>
-											<td valign="top" align="left" width="10%">${revision.issuer}</td>
-											<td valign="top" align="left" width="10%">${revision.revision_id}</td>
-												</a>
-										</tr>
-									
-									</c:if>
-										</c:forEach>
+										
 										
 										</table>
 										
@@ -231,35 +115,7 @@
 						    	
 						    								    	</c:forEach>
 							    	
-						    	<%-- <table width="60%" align="right">
-						    	<tr class="header11">
-								
-									<td valign="top" align="center" width="10%">Form/Rec ID</td>
-									<td valign="top" align="center" width="10%">Effective Date</td>
-									<td valign="top" align="center" width="10%">Approver1</td>
-									<td valign="top" align="center" width="10%">Issuer</td>
-									<td valign="top" align="center" width="10%">Comments</td>
-									<td valign="top" align="center" width="10%">Revision No</td>
-									</tr>
-											<c:forEach items="${revisionForms.revisionForms}" var="revision" varStatus="status">
-										<tr class="row<%=i%>" onmouseover="mouse_event(this,"row_hover");" onmouseout="mouse_event(this,"row1");">
-								           	
-									        <td valign="top" align="center" width="10%"> ${revision.document_id}</td>
-											<td valign="top" align="center" width="10%">${revision.effective_date}</td>
-											<td valign="top" align="center" width="10%">${revision.approver1}</td>
-											<td valign="top" align="center" width="10%">${revision.issuer}</td>
-											<td valign="top" align="center" width="10%">${revision.comments}</td>
-											<td valign="top" align="center" width="10%">${revision.revision_id}</td>
-									
-											
-											
-											
-										</tr>
-										</table>
-										</c:forEach>
-										</table>
-
-						 --%>
+						    	
 										</c:if>
 						    			 <c:if test="${fn:length(formForm.form) == 0}">	
 							    	<c:if test="${justcame ne false}">
@@ -279,7 +135,7 @@
              <ul class="pagination">
         
              <c:if test="${currentpage!=1&&currentpage!=null}">
-             <li class="page_unselect"><a href="viewformreport_page?page=${currentpage - 1}&process=${processarea}" >Prev</a></li> 
+             <li class="page_unselect"><a href="viewform_page?page=${currentpage - 1}" >Prev</a></li> 
                </c:if>
               
              <%-- <c:forEach var="count" begin="1" end="${noofrows}"> --%> 
@@ -289,19 +145,19 @@
                       <li class="page"><a class="paging_select"><c:out value="${i}"></c:out></a></li>
                      </c:when>
                     <c:otherwise>
-                        <li class="page_unselect"><a href="viewformreport_page?page=${i}&process=${processarea}"><c:out value="${i}"></c:out></a></li>
+                        <li class="page_unselect"><a href="viewform_page?page=${i}"><c:out value="${i}"></c:out></a></li>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>          
             <c:if test="${currentpage!=noofpages}">
-              <li class="page_unselect"><a href="viewformreport_page?page=${currentpage+1}&process=${processarea}">Nextgfg</a></li> 
+              <li class="page_unselect"><a href="viewform_page?page=${currentpage+1}">Next</a></li> 
                  </c:if>
               <c:choose>
               <c:when test="${button=='viewall'}">
-                  <li class="page"><a href="viewallformreport?&process=${processarea}" class="paging_select">ViewAll</a></li>
+                  <li class="page"><a href="viewallform" class="paging_select">ViewAll</a></li>
              </c:when>
                 <c:otherwise>
-                  <li class="page"><a href="view_form" class="paging_select">Back</a></li>
+                  <li class="page"><a href="view_formdetails" class="paging_select">Back</a></li>
               </c:otherwise>
               </c:choose>					
 		 

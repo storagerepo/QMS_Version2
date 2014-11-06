@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href="resources/css/jquery-ui.css" type="text/css" />
 <script src="resources/js/jquery.min.js"></script>
  <script src="resources/js/jquery-ui.js"></script>
- <form method="post" enctype="multipart/form-data" action="updateform">
+ <form method="post" enctype="multipart/form-data" action="updateform" id="newformid">
  
   <div id="right_content">
     <table cellpadding="0" cellspacing="0" border="0" width="98%" class="margin_table">
@@ -20,6 +20,12 @@
 									
 								</a>
 							</li>
+							 <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+                <a href="view_formdetails" class="<c:choose>
+                <c:when test="${menu=='document'}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
+                  <span>View Revisions</span>
+                </a>
+              </li>
 				            <li  style=" float:left;margin-right:10px;text-transform:uppercase;">
 								<a href="view_form" class="<c:choose>
 								<c:when test="${menu=='document'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactiveactive</c:otherwise></c:choose>">
@@ -42,7 +48,7 @@
       <tr>
         <td valign="top" align="left">
             <div class="headings altheading">
-              <h2>&nbsp;&nbsp;Update Form</h2>
+              <h2>&nbsp;&nbsp;Update Forms</h2>
             </div>
             <div class="contentbox">
          <!--    <h1 style="color:#7A3A3A;font-size:20px;">Edit Form Details</h1> -->
@@ -57,15 +63,15 @@
 			<input type="hidden" id="formid" onmouseover="showTooltip('tooltip_id','inp_id3');" 
 					onmouseout="hideTooltip('tooltip_id');" name="form_or_rec_id" />${form.form_or_rec_id}</a>
 		       <input type="hidden" name="form_or_rec_id" id="generated_id" value=""/> 
-               <select name="document_type_id" id="document_type_id" class="input_txtbx" style="width:115px;display:none;">
+               <select disabled name="document_type_id" id="document_type_id" class="input_txtbx"  style="width:115px;display:none;">
       
 			                <c:forEach items="${formFormPrefix.formPrefixs}" var="formprefix" varStatus="status">
         				       <option value="${formprefix.form_prefix}">${formprefix.form_prefix}</option>
 			                  </c:forEach>
                </select>              
-                  <input type="text" value="" class="input_txtbx" id="form_or_rec_id"  style="height:22px;width:79px;display:none;" onblur="change_to_label();" maxlength="32"onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" onkeypress="return onlynumeric(event,this);"/>
+                  <input type="text" readonly="readonly"  value="" class="input_txtbx" id="form_or_rec_id"  style="height:22px;width:79px;display:none;" onblur="change_to_label();" maxlength="32"onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" onkeypress="return onlynumeric(event,this);"/>
                <span id="changeafter"></span>  
-               <span id="change" style="display: none;" ></span><a href="#" style="text-decoration: none;" onclick="show_edit()">&nbsp;&nbsp;Change</a>
+               <span id="change" style="display: none;" ></span><a href="#" style="text-decoration: none;" onclick="show_edit()">&nbsp;&nbsp;<!-- Change --></a>
                <br><c:if test="${success=='exist'}"><span style="color:red">Form ID already Exist</span></c:if>   
              </td>
                
@@ -86,7 +92,7 @@
                 <c:when test="${form.media_type=='hardcopy'}">
                <td valign="top" id="id_location_lbl" align="left" class="input_txt" width="30%" width="20%"><label id="location_label" >Location :</label><br><label id="file_upload_label" style="display:none;">Upload File :</label></td>
                <td valign="top" align="left" id="id_location_txt" class="input_txt" width="30%" width="25%">
-               <select id="location_text" name="location" class="input_txtbx" style="width:200px;">
+               <select id="location_text" name="location" class="input_txtbx" style="width:200px;" disabled="disabled">
               <option value="">--Select--</option>
                 <c:forEach items="${formLocationForm.formLocations}" var="formlocation" varStatus="status">
                   
@@ -94,7 +100,7 @@
 			                  </c:forEach>
 			                   </select><br>
 			                   <span id="hard" style="color:red"></span>
-              <input name="attachments" style="display:none;" id="id_file" type="file" /> <br/> 
+              <input name="attachments" style="display:none;" id="id_file" type="file" disabled="disabled"/> <br/> 
               <span id="attach" style="color:red"></span>
               <span style="color:red;"><form:errors path="form.location"></form:errors></span>
                </td>
@@ -104,7 +110,7 @@
                 <c:when test="${form.media_type=='electronic'}">
                <td valign="top" id="id_location_lbl" align="left" class="input_txt" width="30%" width="20%"><label id="location_label" style="display:none"> Location:</label><br><label id="file_upload_label">Upload File:</label></td>
                <td valign="top" align="left" id="id_location_txt" class="input_txt" width="30%" width="25%">
-               <select id="location_text" name="location" class="input_txtbx" style="display:none;width:200px;">
+               <select id="location_text" name="location" class="input_txtbx" style="display:none;width:200px;" disabled="disabled">
               
               <option value="">--Select--</option>
                   <c:forEach items="${formLocationForm.formLocations}" var="formlocation" varStatus="status">
@@ -125,7 +131,7 @@
               <c:when test="${form.media_type=='both'}">
               <td valign="top" id="id_location_lbl" align="left" class="input_txt" width="30%" width="20%"><label id="location_label"> Location:</label><br><br><label id="file_upload_label"><span class="err">*</span> Upload File:</label></td>
                <td valign="top" align="left" id="id_location_txt" class="input_txt" width="30%" width="25%">
-               <select id="location_text" name="location" class="input_txtbx">
+               <select id="location_text" name="location" class="input_txtbx" disabled="disabled">
               <option value="">--Select--</option>
                 <c:forEach items="${formLocationForm.formLocations}" var="formlocation" varStatus="status">
                   
@@ -156,7 +162,7 @@
 																			onmouseover="showTooltip('tooltip_id','inp_id3');"
 																			onmouseout="hideTooltip('tooltip_id');"
 																			name="form_or_rec_title" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"onkeypress="return onlyAlphabetsnumeric(event,this);"
-																			value="${form.form_or_rec_title}" /><br/>
+																			value="${form.form_or_rec_title}"  readonly="readonly"/><br/>
 																			<span id="title1" style="color:red"></span>
 																			<span style="color:red;"><form:errors path="Form.form_or_rec_title"></form:errors></span>
 																		
@@ -168,19 +174,19 @@
                 
                  <c:choose>
                <c:when test="${form.media_type=='hardcopy'}">
-                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="hardcopy"   id="id_hardcopy"  checked/>Hard Copy&nbsp;
-                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="electronic"  id="id_electronic" onchange="toggle2(this.value);" />Electronic&nbsp;
-                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="both"  id="id_both" onchange="toggle2(this.value);"/> Both&nbsp;&nbsp;&nbsp;<br/><span class="err"></span>    
+                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="hardcopy"   id="id_hardcopy"  checked disabled/>Hard Copy&nbsp;
+                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="electronic"  id="id_electronic" onchange="toggle2(this.value);" disabled/>Electronic&nbsp;
+                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="both"  id="id_both" onchange="toggle2(this.value);" disabled/> Both&nbsp;&nbsp;&nbsp;<br/><span class="err"></span>    
                </c:when>
                <c:when test="${form.media_type=='electronic'}">
-               <input type="radio" name="media_type" onchange="toggle2(this.value);" value="hardcopy"   id="id_hardcopy" />Hard Copy&nbsp;
-                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="electronic"  id="id_electronic" onchange="toggle2(this.value);" checked />Electronic&nbsp;
-                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="both"  id="id_both" onchange="toggle2(this.value);"/> Both&nbsp;&nbsp;&nbsp;<br/><span class="err"></span>    
+               <input type="radio" name="media_type" onchange="toggle2(this.value);" value="hardcopy"   id="id_hardcopy" disabled/>Hard Copy&nbsp;
+                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="electronic"  id="id_electronic" onchange="toggle2(this.value);" checked  disabled/>Electronic&nbsp;
+                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="both"  id="id_both" onchange="toggle2(this.value);" disabled/> Both&nbsp;&nbsp;&nbsp;<br/><span class="err"></span>    
             	   </c:when>
                <c:when test="${form.media_type=='both'}">
                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="hardcopy"   id="id_hardcopy" />Hard Copy&nbsp;
-                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="electronic"  id="id_electronic" onchange="toggle2(this.value);" />Electronic&nbsp;
-                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="both"  id="id_both" onchange="toggle2(this.value);" checked/> Both&nbsp;&nbsp;&nbsp;<br/><span class="err"></span>    
+                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="electronic"  id="id_electronic" onchange="toggle2(this.value);"  disabled/>Electronic&nbsp;
+                <input type="radio" name="media_type" onchange="toggle2(this.value);" value="both"  id="id_both" onchange="toggle2(this.value);" checked disabled/> Both&nbsp;&nbsp;&nbsp;<br/><span class="err"></span>    
                </c:when>
                </c:choose>
                </td>
@@ -202,7 +208,7 @@
                <td valign="top" align="left" class="input_txt" width="30%" >
                
                
-                <select name="process" id="id_inpprocess" onchange="doAjaxPost_for_process();" class="input_txtbx">
+                <select name="process" id="id_inpprocess" onchange="doAjaxPost_for_process();" class="input_txtbx" disabled>
 							 <option value="">--Select--</option>
 			                <c:forEach items="${processForm.processes}" var="processes" varStatus="status">
         				       <option value="${processes.process_name}"<c:if test="${processes.process_name == form.process}"><c:out value="selected"/></c:if>>${processes.process_name}</option>
@@ -217,7 +223,7 @@
 																			onmouseover="showTooltip('tooltip_id','inp_id3');"
 																			onmouseout="hideTooltip('tooltip_id');"
 																			name="responsibility" 
-																			value="${form.responsibility}"  /><br/>
+																			value="${form.responsibility}"  readonly="readonly"/><br/>
 																			<span id="responsibility1" style="color:red"></span>
 																			<span style="color:red;"><form:errors path="Form.responsibility"></form:errors></span>
 																		
@@ -233,7 +239,7 @@
 																			onmouseout="hideTooltip('tooltip_id');"
 																			name="retention_time"
 																			value="${form.retention_time}" /> --%>
-																			 <select id="retention" name="retention_time" class="input_txtbx" style="width:200px;">
+																			 <select id="retention" name="retention_time" class="input_txtbx" style="width:200px;" disabled>
               <option value="">--Select--</option>
                <option value="1Week" <c:if test="${form.retention_time=='1Week'}"><c:out value="Selected"/></c:if>>1Week</option>
                <option value="1Month" <c:if test="${form.retention_time=='1Month'}"><c:out value="Selected"/></c:if>>1Month</option>
@@ -247,8 +253,8 @@
 														
 																		<td valign="top" align="left" class="input_txt" width="30%">
 
-															<input type="radio" name="form" value="Yes"  class="input_txt" width="30%"   <c:if test="${form.form=='Yes'}"><c:out value="Checked=checked"/></c:if>>Yes&nbsp;&nbsp;&nbsp;
-				  											<input type="radio" name="form" value="No"  class="input_txt" width="30%"  <c:if test="${form.form=='No'}"><c:out value="Checked=checked"/></c:if>>No&nbsp;&nbsp;&nbsp;
+															<input type="radio" name="form" value="Yes" id="yesform" disabled class="input_txt" width="30%"   <c:if test="${form.form=='Yes'}"><c:out value="Checked=checked"/></c:if>>Yes&nbsp;&nbsp;&nbsp;
+				  											<input type="radio" name="form" value="No" id="noform" disabled class="input_txt" width="30%"  <c:if test="${form.form=='No'}"><c:out value="Checked=checked"/></c:if>>No&nbsp;&nbsp;&nbsp;
 				  </td>
 			     </tr>
          </table>
@@ -382,6 +388,19 @@
      </div>
      </form>
      <script>
+     $('#newformid').on('submit', function() {
+    	 
+ 	    $('#location_text').attr('disabled', false);
+ 	    $('#id_location_lbl').attr('disabled', false);
+ 	    $('#id_file').attr('disabled', false);
+ 	   $('#id_hardcopy').attr('disabled', false);
+	    $('#id_electronic').attr('disabled', false);
+	    $('#id_both').attr('disabled', false);
+	    $('#id_inpprocess').attr('disabled', false);
+ 	    $('#retention').attr('disabled', false);
+ 	    $('#yesform').attr('disabled', false);
+ 	   $('#noform').attr('disabled', false);
+ 	});
      $(function() {
     	 
          $( "#datepicker" ).datepicker();

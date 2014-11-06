@@ -23,10 +23,19 @@
 									
 								</a>
 							</li>
+
+                <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+                <a href="view_formdetails" class="<c:choose>
+                <c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
+                  <span>View Revisions</span>
+                </a>
+              </li>
+
+
 				            <li  style=" float:left;margin-right:10px;text-transform:uppercase;">
 								<a href="view_form" class="<c:choose>
 								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
-									View Form</span>
+									View Forms </span>
 									
 								</a>
 							</li>
@@ -201,13 +210,14 @@
             <div class="contentbox">
              <h2><b>&nbsp;&nbsp;Revision Details</b></h2>
                      -->
+                    
               <table cellpadding="0" cellspacing="0" border="0" width="100%">
           <td colspan="3">
-           
+              <div id="childsection" style="display:none;">
             <!--  <div id="child_table" style="display:none;"> -->
 <br>
              
-             <h1 style="color:#7A3A3A;font-size:20px;">Add Revision Details</h1>
+           <!--   <h1 style="color:#7A3A3A;font-size:20px;">Add Revision Details</h1> -->
 <br>
              <div style="border:#993300  2px solid; padding:15px; margin-bottom:15px;">
              <table cellpadding="0" cellspacing="0" border="0" width="100%" >
@@ -290,6 +300,7 @@
                <span style="color:red;"><form:errors path="Form.issuer"></form:errors></span>
               </td>
 					</tr >
+					
 					<!-- <tr class="row2">
 					<td></td>
 					<td></td>
@@ -297,14 +308,36 @@
                    <input type="submit" id="export" onclick="return validation();"  name="export" value="Submit" class="submit_btn1"></td>
              
 					</tr> -->
-					
+					</div>
 					</table>
+					
 					</div>
 					</td>
-					  <tr class="row1">
+					
+					<table id="hidebutton"style="float:right;margin-top:20px;">
+    <tr class="row1" >
+                  <td valign="bottom" colspan="2"align="right">&nbsp;<input type="submit" onclick="return validationmain();" value="Submit"  class="submit_btn1"></td>
+                  <!-- onclick="return validation();" -->
+                  <td valign="top" align="left">
+                  <input type="button" value="Enter/Modify Revision Details" onclick="showchildsection();"class="submit_btn1" style="width:350px;"> 
+				</td>
+                  
+                </tr>
+     </table><br/><br/>
+     <table id="showbutton" style="display:none;float:right;margin-top:-33px">
+      <tr class="row1" >
+                  <td valign="bottom" colspan="3"align="right">&nbsp;
+                  <input type="submit" onclick="return validation();" value="Submit"  class="submit_btn1">
+				</td>
+                  <td valign="top" align="left">
+                   <input type="button" value="Hide Enter/Modify Revision Details" onclick="hidechildsection();"class="submit_btn1" style="width:350px;">
+                  </td>
+                </tr></table>
+                
+					 <!--  <tr class="row1">
                   <td valign="bottom" colspan="4"align="right" style="padding-right:165px">&nbsp;<input type="submit" value="Submit"name="export" onclick="return validation();"class="submit_btn1"></td>
                  
-                </tr>
+                </tr>  -->
 					</table>
 					
 				
@@ -322,6 +355,23 @@
 </div>
 </form>
 
+
+ <script type="text/javascript">
+ function showchildsection()
+ {
+	 document.getElementById('childsection').style.display="block";
+	 document.getElementById('hidebutton').style.display="none";
+	 document.getElementById('showbutton').style.display="block";
+ }
+ function hidechildsection()
+ {
+	 document.getElementById('childsection').style.display="none";
+	 document.getElementById('hidebutton').style.display="block";
+	 document.getElementById('showbutton').style.display="none";
+ }
+  </script>
+  
+  
 <script type="text/javascript">
 var ajax_issuer = "false";
 var issuerchange = "false";
@@ -468,6 +518,89 @@ function labelvalidate(id){
 }
 </script>
 
+ <script>
+    function validationmain()
+    {
+       //alert("calling");
+        var error="";
+     
+      document.getElementById("formiderror").innerHTML="";
+      document.getElementById("hard").innerHTML="";
+      document.getElementById("title1").innerHTML="";
+      document.getElementById("responsibility1").innerHTML="";
+      document.getElementById("inprocesserror").innerHTML="";
+      document.getElementById("retentionerr").innerHTML="";
+
+
+       if(document.getElementById("form_or_rec_id").value=="")
+      {
+        //alert("hai");
+         document.getElementById("formiderror").innerHTML="Required field should not be empty";
+         error=true; 
+      } 
+
+    if(document.getElementById("location_text").value=="")
+      {
+        //alert("hai");
+         document.getElementById("hard").innerHTML="Required field should not be empty";
+         error=true; 
+      } 
+
+      if(document.getElementById("form_or_rec_title").value=="")
+      {
+        //alert("hai");
+         document.getElementById("title1").innerHTML="Required field should not be empty";
+         error=true; 
+      } 
+       if(document.getElementById("responsibility").value=="")
+      {
+        //alert("hai");
+         document.getElementById("responsibility1").innerHTML="Required field should not be empty";
+         error=true; 
+      } 
+       if(document.getElementById("responsibility").value!="")
+      {
+         if(document.getElementById("responsibility").value.length < 4 || document.getElementById("responsibility").value.length > 32){
+         //alert("calling");
+                    document.getElementById("responsibility1").innerHTML="Required field should be length 4 to 32";
+                    error=true; 
+                }
+        }
+       if(document.getElementById("id_inpprocess").value=="")
+      {
+        //alert("hai");
+         document.getElementById("inprocesserror").innerHTML="Required field should not be empty";
+         error=true; 
+      } 
+
+      if(document.getElementById("retention").value=="")
+      {
+        //alert("hai");
+         document.getElementById("retentionerr").innerHTML="Required field should not be empty";
+         error=true; 
+      } 
+     /* if(document.getElementById("job_role").value!="")
+      {
+         if(document.getElementById("job_role").value.length < 6 || document.getElementById("job_role").value.length > 32){
+                    document.getElementById("job_titleerror").innerHTML="Job title count 6 to 32 characters";
+                    error=true; 
+                }
+        }*/
+       
+    
+       
+       if(error==true)
+       {
+         return false;
+        
+       }
+       else{
+        return true;
+       }
+
+    }
+
+    </script>
 <script>
 function validation()
 {
@@ -876,7 +1009,17 @@ window.onload = function(){
 
 };
 	</script>
+<script>
+  $('input[type=text]').on("focusout", function() {
+    var dest = $(this);
+    dest.val(jQuery.trim(dest.val()));        
+    dest.val(dest.val().replace(/[ ]{2,}/, ' ')); 
+     });
 
+   
+ 
+});
+</script>
 <script type="text/javascript">
 function doAjaxPost(value) {
 	document.getElementById('filter_value').style.display="none";

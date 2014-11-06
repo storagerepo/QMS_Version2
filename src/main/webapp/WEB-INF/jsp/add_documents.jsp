@@ -34,6 +34,15 @@
 								</a>
 							</li>
 						
+						   <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+                <a href="view_documentdetails" class="<c:choose>
+                <c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
+                  <span>View Revisions</span>
+                </a>
+              </li>
+
+
+				           
 				          <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="viewdocuments" class="<c:choose>
 								<c:when test="${menu=='document'}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
@@ -60,7 +69,7 @@
               <h2>&nbsp;&nbsp;Document Details</h2> 
             </div> -->
             <div class="contentbox" >
-           <h1 style="color:#7A3A3A;font-size:20px;">Add Document Details</h1>
+           <h1 style="color:#7A3A3A;font-size:20px;">Add Document Details New</h1>
                     
               <table cellpadding="0" cellspacing="0" border="0" width="100%">
               <td colspan="3">
@@ -222,14 +231,15 @@
  <div class="headings altheading">
               <h2>&nbsp;&nbsp;Revision Details</h2> -->
                 <div class="contentbox">
-           <h1 style="color:#7A3A3A;font-size:20px;">Add Revision Details</h1>
+                  <div id="childsection" style="display:none;">
+          <!--  <h1 style="color:#7A3A3A;font-size:20px;">Add Revision Details</h1> -->
              <div style="border:#993300  2px solid; padding:15px; margin-bottom:15px;">
               
               
              <table cellpadding="0" cellspacing="0" border="0" width="100%" >
     		
     <tr class="row2">
-                            <td valign="middle" align="left" class="input_txt">Document Id :</td>
+                            <td valign="middle" align="left" class="input_txt">Document ID :</td>
 																		<td valign="top" align="left" class="input_txt"><input
 																			type="text" class="input_txtbx" readonly="readonly" id="documentid"
 																			name="document_id"
@@ -330,7 +340,7 @@
               
                <%-- <input type="text" id="revision_level" name="revision_level" class="input_txtbx1"  value="${documentMain.revision_level }"/><br/>
               <span class="err"style="color:red"><form:errors path="DocumentMain.revision_level"></form:errors></span> --%>
-               <td valign="middle" align="left" class="input_txt" width="20%">Approved by Documents Control Admin :</td>
+               <td valign="middle" align="left" class="input_txt" width="20%">Approved by Documents Control Admins :</td>
                <td valign="top" align="left" class="input_txt" width="25%">
                 <select name="approver2" id="id_inpapprover2"  class="input_txtbx" >
                <option value="">--Select--</option>
@@ -387,20 +397,153 @@
                <span class="err"style="color:red"><form:errors path="DocumentMain.status"></form:errors></span> </td>
             <td valign="top" align="left" class="input_txt" width="20%"><span class="err"></span></td>
              </tr>
-             
-             </table></div>
-             </div>
+            
+             </table></div> </div>
+             </div><br>
            <!--   <tr class="row1" >
              <td colspan="2" align="center">
              <input align="left" class="submit_btn1" type="submit" id="submit" onclick="return validation();" name="submit" value="Submit" style="margin-left:17%;"></td>
           	
           
 </tr> -->
+
+
+<table id="hidebutton"style="float:right;margin-top:20px;">
+    <tr class="row1" >
+                  <td valign="bottom" colspan="2"align="right">&nbsp;<input type="submit" onclick="return validationmain();" value="Submit"  class="submit_btn1"></td>
+                  <!-- onclick="return validation();" -->
+                  <td valign="top" align="left">
+                  <input type="button" value="Enter/Modify Revision Details" onclick="showchildsection();"class="submit_btn1" style="width:350px;"> 
+        </td>
+                  
+                </tr>
+     </table>
+     <table id="showbutton" style="display:none;float:right;margin-top:-33px">
+      <tr class="row1" >
+                  <td valign="bottom" colspan="3"align="right">&nbsp;
+
+                    <input type="submit" value="Submit" onclick="return validation();"class="submit_btn1">
+                  
+        </td>
+                  <td valign="top" align="left"><input type="button" value="Hide Enter/Modify Revision Details" onclick="hidechildsection();"class="submit_btn1" style="width:350px;"> </td>
+                </tr></table>
+
+<!-- 
   <tr class="row1">
                   <td valign="bottom" colspan="4"align="right" style="padding-right: 135px">&nbsp;<input type="submit" value="Submit" onclick="return validation();"class="submit_btn1"></td>
                 
-                </tr>
+                </tr> -->
 </table></div></form>
+
+
+ <script type="text/javascript">
+ function showchildsection()
+ {
+   document.getElementById('childsection').style.display="block";
+   document.getElementById('hidebutton').style.display="none";
+   document.getElementById('showbutton').style.display="block";
+ }
+ function hidechildsection()
+ {
+   document.getElementById('childsection').style.display="none";
+   document.getElementById('hidebutton').style.display="block";
+   document.getElementById('showbutton').style.display="none";
+ }
+  </script>
+  
+<script>
+    function validationmain()
+    {
+       //alert("calling");
+        var error="";
+     
+      document.getElementById("documentiderror").innerHTML="";
+      document.getElementById("mediatypeerror").innerHTML="";
+      document.getElementById("documenttitle1").innerHTML="";
+      document.getElementById("hard").innerHTML="";
+      document.getElementById("documenttypeerror").innerHTML="";
+      document.getElementById("inprocesserror").innerHTML="";
+
+
+       if(document.getElementById("document_id").value=="")
+      {
+        //alert("hai");
+         document.getElementById("documentiderror").innerHTML="Required field should not be empty";
+         error=true; 
+      } 
+
+      if(document.getElementById("document_id").value!="")
+      {
+         if(document.getElementById("document_id").value.length < 4 || document.getElementById("document_id").value.length > 32){
+         // alert("calling");
+                    document.getElementById("documentiderror").innerHTML="Required field should be length 4 to 32";
+                    error=true; 
+                }
+        }
+
+
+      if(!(document.getElementById('id_hardcopy').checked) &&  !(document.getElementById('id_electronic').checked) && !(document.getElementById('id_both').checked) )
+  {
+    
+     document.getElementById("mediatypeerror").innerHTML="Required field should not be empty";
+      error ="true";
+  }
+
+    if(document.getElementById("documenttitle").value=="")
+      {
+        //alert("hai");
+         document.getElementById("documenttitle1").innerHTML="Required field should not be empty";
+         error=true; 
+      } 
+
+      if(document.getElementById("location_text").value=="")
+      {
+        //alert("hai");
+         document.getElementById("hard").innerHTML="Required field should not be empty";
+         error=true; 
+      } 
+       if(document.getElementById("documenttype").value=="")
+      {
+        //alert("hai");
+         document.getElementById("documenttypeerror").innerHTML="Required field should not be empty";
+         error=true; 
+      } 
+       if(document.getElementById("id_inpprocess").value=="")
+      {
+        //alert("hai");
+         document.getElementById("inprocesserror").innerHTML="Required field should not be empty";
+         error=true; 
+      } 
+
+      if(document.getElementById("retention").value=="")
+      {
+        //alert("hai");
+         document.getElementById("retentionerr").innerHTML="Required field should not be empty";
+         error=true; 
+      } 
+     /* if(document.getElementById("job_role").value!="")
+      {
+         if(document.getElementById("job_role").value.length < 6 || document.getElementById("job_role").value.length > 32){
+                    document.getElementById("job_titleerror").innerHTML="Job title count 6 to 32 characters";
+                    error=true; 
+                }
+        }*/
+       
+    
+       
+       if(error==true)
+       {
+         return false;
+        
+       }
+       else{
+        return true;
+       }
+
+    }
+
+    </script>
+
 <script>
 $(function() {
 
