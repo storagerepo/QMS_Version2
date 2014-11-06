@@ -14,6 +14,7 @@ import qms.controllers.AbstractITextPdfView;
 import qms.model.CustomerFeedback;
 import qms.model.DocumentMain;
 import qms.model.Employee;
+import qms.model.InternalAudit_Finding;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -397,7 +398,78 @@ public class EmployeeDAO extends AbstractITextPdfView{
 		
 	}
 	
+	//get employee job title using emaployee name
+	public List<Employee> getEmployeeJob_byname(String name){
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<Employee> employees = new ArrayList<Employee>();
+	    try{
+			resultSet = statement.executeQuery("select * from tbl_employee as t1 join tbl_employee_desc as t2 on t1.employee_id=t2.employee_id where t1.name='"+name+"'");
+			while(resultSet.next())
+			{
+				System.out.println("count");
+				employees.add(new Employee(resultSet.getString("employee_id"),resultSet.getString("name"), resultSet.getString("job_title"), resultSet.getString("date_hired"), resultSet.getString("attachment_name"),resultSet.getString("attachment_type"),resultSet.getString("attachment_referrence"), resultSet.getString("process"), resultSet.getString("process_name"), resultSet.getString("doc_control"), resultSet.getString("management_rep"), resultSet.getString("list_of_functions_needes"),resultSet.getString("documented_in"), resultSet.getString("qualified_by"),resultSet.getString("type_of_training"),resultSet.getString("trainer"), resultSet.getString("training_due_date"),resultSet.getString("training_completion_date"),resultSet.getString("training_effectiveness_review_due_date"),
+						resultSet.getString("training_effectiveness_notes"),resultSet.getString("management"),resultSet.getString("process_owner"),resultSet.getString("document_control")));
+				//				employees.add(new Employee(resultSet.getString("employee_id"),resultSet.getString("name"), resultSet.getString("job_title"), resultSet.getString("date_hired"), resultSet.getString("attachments"), resultSet.getString("list_of_functions_needes"),resultSet.getString("documented_in"), resultSet.getString("qualified_by"),resultSet.getString("type_of_training"),resultSet.getString("trainer"), resultSet.getString("training_due_date"),resultSet.getString("training_completion_date"),resultSet.getString("training_effectiveness_review_due_date"),resultSet.getString("training_effectiveness_notes")));
+		    }
+	    }catch(Exception e){
+	    	System.out.println(e.toString());
+	    	releaseResultSet(resultSet);
+	    	releaseStatement(statement);
+	    	releaseConnection(con);
+	    }finally{
+	    	releaseResultSet(resultSet);
+	    	releaseStatement(statement);
+	    	releaseConnection(con);	    	
+	    }
+	    return employees;
+		
+	}
+	
+	//check employee name already exist or not
+	public boolean getNameExit(String name,String id) {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		boolean status = false;
+		List<Employee> documentTypes = new ArrayList<Employee>();
 
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			String cmd_select = "select * from tbl_employee as t1 join tbl_employee_desc as t2 on t1.employee_id=t2.employee_id where t1.employee_id !='"+id+"' and t1.name='"+name+"'";
+			System.out.println(cmd_select);
+			resultSet = statement.executeQuery(cmd_select);
+			while (resultSet.next()) {
+				
+				documentTypes.add(new Employee(resultSet.getString("employee_id"),resultSet.getString("name"), resultSet.getString("job_title"), resultSet.getString("date_hired"), resultSet.getString("attachment_name"),resultSet.getString("attachment_type"),resultSet.getString("attachment_referrence"), resultSet.getString("process"), resultSet.getString("process_name"), resultSet.getString("doc_control"), resultSet.getString("management_rep"), resultSet.getString("list_of_functions_needes"),resultSet.getString("documented_in"), resultSet.getString("qualified_by"),resultSet.getString("type_of_training"),resultSet.getString("trainer"), resultSet.getString("training_due_date"),resultSet.getString("training_completion_date"),resultSet.getString("training_effectiveness_review_due_date"),
+						resultSet.getString("training_effectiveness_notes"),resultSet.getString("management"),resultSet.getString("process_owner"),resultSet.getString("document_control")));
+				
+				status = true;
+			}	
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return status;
+	}	
 	public List<Employee> edit_employee(String employee_id) {
 		Connection con = null;
 		Statement statement = null;
@@ -798,7 +870,76 @@ public class EmployeeDAO extends AbstractITextPdfView{
 		
 	}
 	
-	
+	public List<Employee> getEmployees_by_management(){
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<Employee> employees = new ArrayList<Employee>();
+	    try{
+			resultSet = statement.executeQuery("select * from tbl_employee as t1 join tbl_employee_desc as t2 on t1.employee_id=t2.employee_id where management='yes';");
+			//System.out.println("came");
+			while(resultSet.next()){
+				System.out.println("count");
+				employees.add(new Employee(resultSet.getString("employee_id"),resultSet.getString("name"), resultSet.getString("job_title"), resultSet.getString("date_hired"), resultSet.getString("attachment_name"),resultSet.getString("attachment_type"),resultSet.getString("attachment_referrence"), resultSet.getString("process"), resultSet.getString("process_name"), resultSet.getString("doc_control"), resultSet.getString("management_rep"), resultSet.getString("list_of_functions_needes"),resultSet.getString("documented_in"), resultSet.getString("qualified_by"),resultSet.getString("type_of_training"),resultSet.getString("trainer"), resultSet.getString("training_due_date"),resultSet.getString("training_completion_date"),resultSet.getString("training_effectiveness_review_due_date"),resultSet.getString("training_effectiveness_notes"),resultSet.getString("management"),resultSet.getString("process_owner"),resultSet.getString("document_control")));
+			}
+	    }catch(Exception e){
+	    	System.out.println(e.toString());
+	    	releaseResultSet(resultSet);
+	    	releaseStatement(statement);
+	    	releaseConnection(con);
+	    }finally{
+	    	releaseResultSet(resultSet);
+	    	releaseStatement(statement);
+	    	releaseConnection(con);	    	
+	    }
+	    return employees;
+		
+	}
+	//get the reported by values created on 22-june-2014(1.57pm).
+	public List<String> filtermanagement(){
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<String> nonConformances = new ArrayList<String>();
+	 try{
+	 
+	 	String cmd = "select name from tbl_employee as t1 join tbl_employee_desc as t2 on t1.employee_id=t2.employee_id where management='yes';";
+	 	resultSet = statement.executeQuery(cmd);
+	 
+			System.out.println(cmd);
+			while(resultSet.next()){
+				System.out.println("count");
+		
+				nonConformances.add(resultSet.getString("name"));
+
+			}
+	 }catch(Exception e){
+	 	System.out.println(e.toString());
+	 	releaseResultSet(resultSet);
+	 	releaseStatement(statement);
+	 	releaseConnection(con);
+	 }finally{
+	 	releaseResultSet(resultSet);
+	 	releaseStatement(statement);
+	 	releaseConnection(con);	    	
+	 }
+	 return nonConformances;
+		
+	}
+
+
 	public List<Employee> getEmployee_bytype(String type){
 		Connection con = null;
 		Statement statement = null;

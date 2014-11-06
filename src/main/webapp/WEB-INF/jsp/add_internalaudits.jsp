@@ -24,6 +24,12 @@
 									
 								</a>
 							</li>
+							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+								<a href="#" class="<c:choose>
+								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>" rel="auditfinding">
+									<span>Internal Audits Finding</span>
+								</a>
+							</li>
 							</c:if>
 							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="view_internalaudits" class="<c:choose>
@@ -143,6 +149,9 @@
 						                       <option <c:if test="${internalaudits.finding eq 'ok'}"><c:out value="Selected"/></c:if> value="ok" >Ok</option>
 											<option <c:if test="${internalaudits.finding eq 'area of improvement'}"><c:out value="Selected"/></c:if> value="area of improvement">Area Of Improvement </option>
 											<option  <c:if test="${internalaudits.finding eq 'nonconformance'}"><c:out value="Selected"/></c:if> value="nonconformance">NonConformance</option>
+											<c:forEach items="${auditFindingForm.internalAudit_Findings}" var="findings" varStatus="true">
+               								<option value="<c:out value="${findings.finding}"/>"><c:out value="${findings.finding}"/></option>
+               								</c:forEach>
 				                 </select>
 				                 <br/>
 				                 <span id="findingerror"style="color:red"></span>

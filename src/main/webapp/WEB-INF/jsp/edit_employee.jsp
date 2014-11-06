@@ -96,7 +96,10 @@ $(function() {
                 </tr>
                 <tr class="row1">
                   <td valign="top" align="left" class="input_txt" width="20%">Name :</td>
-                  <td valign="top" align="left" class="input_txt" width="20%"><input type="text" name="name" class="input_txtbx" maxlength="32" id="inp_name" onkeypress="return Alphabets(event,this);" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${employee.name }" /><br><span style="color: red;" id="nameerror"><form:errors path="Employee.name"></form:errors></span></td>
+                  <td valign="top" align="left" class="input_txt" width="20%"><input type="text" name="name" class="input_txtbx" maxlength="32" id="inp_name" onkeypress="return Alphabets(event,this);" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${employee.name }" /><br>
+                  <span style="color: red;" id="nameerror"><form:errors path="Employee.name"></form:errors>
+                   <c:if test="${success=='exist'}">Name already exist</c:if></span>
+                  </span></td>
                   <td valign="top" align="left" class="input_txt" width="20%">Type :</td>
                   <td valign="top" align="left" class="input_txt" width="20%">
                   <select	name="type_of_training" class="input_txtbx" id="type">

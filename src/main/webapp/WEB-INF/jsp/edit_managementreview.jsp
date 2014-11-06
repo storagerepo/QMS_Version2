@@ -79,10 +79,28 @@
                 </tr>
                 
                   <tr class="row1">
-                 <td valign="middle" align="left" class="input_txt" width="30%">Attendee List With Titles :</td>
+                 <td valign="middle" align="left" class="input_txt" width="30%">Attendee List: <br/>Job Title :</td>
                   <td valign="middle" align="left" class="input_txt" width="30%">
-                  <input type="text" class="input_txtbx" name="attendee_list_with_titles" id="attendeelistwithtitles"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onkeypress="return onlyAlphabets(event,this);" maxlength="32" value="<c:out value="${managementReviewdetails.attendee_list_with_titles}"></c:out>" maxlength="32"/>          
-                   <br/>
+                 <%--  <input type="text" class="input_txtbx" name="attendee_list_with_titles" id="attendeelistwithtitles"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onkeypress="return onlyAlphabets(event,this);" maxlength="32" value="<c:out value="${managementReviewdetails.attendee_list_with_titles}"></c:out>" maxlength="32"/> --%>
+                 <c:forEach items="${managementReview_Attendee_Form.managementReviewAttendees}" var="attendee" varStatus="true">  
+                 <input type="hidden" name="id" value="${attendee.id}"/>        
+                  <select name="attendee_list_with_titles" class="input_txtbx" id="attendeelistwithtitles" onchange="doAjaxPost_getjobtitle();">
+						                  <option value="">--Select--</option>
+						                      	<c:forEach items="${employeeForm.employees}" var="managements" varStatus="true">
+						                      		
+						                      	
+               						<option value="<c:out value="${managements.name}"/>" <c:if test="${attendee.attendee_name==managements.name}"><c:out value="Selected"/></c:if>><c:out value="${managements.name}"/></option>
+               						</c:forEach>
+               						
+				                 </select>
+				                  <br/>
+				                  <input type="hidden" value="${attendee.job_title}" name="job_title"/>
+				                  <span  id="initial_job" valign="middle" align="left" class="input_txt" width="20%">${attendee.job_title}</span> 
+                  <span id="change_job" valign="middle" align="left" class="input_txt" style="display:none" width="20%"> <span id="job_title_id"></span></span> 
+		 			<br/><br/>
+				                 </c:forEach>
+                  <br/>
+                    				
                     <span id="attendeelistwithtitleserror" style="color:red"></span>
                   <span class="err"><form:errors path="ManagementReview.attendee_list_with_titles"></form:errors></span></td>
                  
@@ -91,6 +109,8 @@
                   <br>   <span id="nextmanagementreviewbyerror" style="color:red"></span>
                    <span class="err"><form:errors path="ManagementReview.next_management_review_by"></form:errors></span></td>
                   </tr>
+                   <tr class="row1">
+					</tr>
                    <tr class="row2">
                  <td valign="middle" align="left" class="input_txt" width="30%">Category :</td>
                   <td valign="middle" align="left" class="input_txt" width="30%">
@@ -189,6 +209,29 @@
 </form>
 
 <script>
+function doAjaxPost_getjobtitle()
+{
+
+	var management_name = $('#attendeelistwithtitles').val();
+	document.getElementById('initial_job').style.display="none";
+	document.getElementById('change_job').style.display="block";
+	
+	$.ajax({
+		type : "POST",
+		url : "/QMS_App/ajax_getjobtitle",
+		data : "name=" + management_name,
+		success : function(response) {
+			
+			$('#job_title_id').html(response);
+		
+		},
+		error : function(e) {
+			alert('Error: ' + e);
+		}
+	});
+
+	
+}
 $(function() {
 	$("#attendeelistwithtitles").on("keypress", function(e) {
 	
@@ -284,7 +327,7 @@ function validate()
 		 document.getElementById("attendeelistwithtitleserror").innerHTML="Required field should not be empty";
 			error="true";
 		}
-	else if(attendeelistwithtitles.charAt(0) == " ")
+	/* else if(attendeelistwithtitles.charAt(0) == " ")
 	{
 		 document.getElementById("attendeelistwithtitleserror").innerHTML="Should not accept initial space";
 		 error="true";
@@ -294,7 +337,7 @@ function validate()
 		document.getElementById("attendeelistwithtitleserror").innerHTML="Required field should be length of 4 to 32";
 		error="true";
 		
-		}
+		} */
 	else {
 		document.getElementById("attendeelistwithtitleserror").innerHTML="";
 		

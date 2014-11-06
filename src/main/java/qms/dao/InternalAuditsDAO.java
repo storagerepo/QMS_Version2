@@ -26,7 +26,10 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import qms.controllers.AbstractITextPdfView;
+import qms.forms.InternalAuditFindingForm;
 import qms.model.DocumentMain;
+import qms.model.DocumentType;
+import qms.model.InternalAudit_Finding;
 import qms.model.InternalAudits;
 
 
@@ -752,7 +755,343 @@ import qms.model.InternalAudits;
 		return noofRecords;
 
 	}
+	//get findings
+	public List<InternalAudit_Finding> getauditfindings() {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		boolean status = false;
+		List<InternalAudit_Finding> finding = new ArrayList<InternalAudit_Finding>();
 
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			String cmd_select = "select * from tbl_auditfinding";
+			resultSet = statement.executeQuery(cmd_select);
+			while (resultSet.next()) {
+				
+				finding.add(new InternalAudit_Finding(resultSet
+						.getString("id"), resultSet
+						.getString("finding")
+						));
+			}	
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return finding;
+	}	
+
+	//check already exist or not
+	public boolean getfindingExit(String document,String id) {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		boolean status = false;
+		List<InternalAudit_Finding> documentTypes = new ArrayList<InternalAudit_Finding>();
+
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			String cmd_select = "select * from tbl_auditfinding where id !='"+id+"' and finding='"+document+"'";
+			System.out.println(cmd_select);
+			resultSet = statement.executeQuery(cmd_select);
+			while (resultSet.next()) {
+				
+				documentTypes.add(new InternalAudit_Finding(resultSet
+						.getString("id"), resultSet
+						.getString("finding")
+						));
+				status = true;
+			}	
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return status;
+	}	
+	
+	//insert finding
+	public boolean insert_Finding(InternalAudit_Finding finding) {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		boolean status = false;
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			System.out.println("before executing query");
+			String cmd_insert = "insert into tbl_auditfinding(finding)values('"+finding.getFinding()+"')";
+		
+			System.out.println("query executed successfully");
+			statement.execute(cmd_insert);
+			
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return status;
+
+	}
+	
+	//listing finding 
+	public  List<InternalAudit_Finding> getlimitedfindingreport(int page) {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		
+		
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<InternalAudit_Finding> documentTypes = new ArrayList<InternalAudit_Finding>();
+		  try {
+
+			String cmd;
+			int offset = 5 * (page - 1);
+			int limit = 5;
+					cmd="select * from tbl_auditfinding where id limit " + offset + ","+ limit+"" ;
+				
+
+			resultSet = statement.executeQuery(cmd);
+			while(resultSet.next()){
+			documentTypes.add(new InternalAudit_Finding(resultSet
+						.getString("id"), resultSet
+						.getString("finding")));
+			}
+			
+			} catch (Exception e) {
+			/*logger.info(e.toString());*/
+				System.out.println(e.toString());
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return documentTypes;
+
+	}
+	
+	//finding pagination
+	public int getnooffindingreport() {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		int noofRecords = 0;
+		
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<InternalAudit_Finding> documentTypes = new ArrayList<InternalAudit_Finding>();
+		try {
+
+			String cmd;
+				cmd = "select count(*) as noofrecords from tbl_auditfinding";
+			System.out.println("command"+cmd);			
+			resultSet = statement.executeQuery(cmd);
+			if (resultSet.next())
+				noofRecords = resultSet.getInt("noofrecords");
+
+		} catch (Exception e) {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return noofRecords;
+
+	}
+	
+	//get finding by name
+	public List<InternalAudit_Finding> getfinding(String doctype) {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		boolean status = false;
+		List<InternalAudit_Finding> documentTypes = new ArrayList<InternalAudit_Finding>();
+
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			String cmd_select = "";
+			if(doctype.equals(""))
+			{
+				cmd_select = "select * from tbl_auditfinding";
+			}
+			else
+			{
+				cmd_select = "select * from tbl_auditfinding where finding='"+doctype+"'";	
+			}
+			
+			resultSet = statement.executeQuery(cmd_select);
+			while (resultSet.next()) {
+				
+				documentTypes.add(new InternalAudit_Finding(resultSet
+						.getString("id"), resultSet
+						.getString("finding")
+						));
+			}	
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return documentTypes;
+	}	
+	
+	//Get request record by id
+	public List<InternalAudit_Finding> getFinding(String id){
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		List<InternalAudit_Finding> documentTypes = new ArrayList<InternalAudit_Finding>();
+	    try{
+	    	String cmd_select = "select * from tbl_auditfinding  where id='"+id+"'";
+
+			resultSet = statement.executeQuery(cmd_select);
+			while(resultSet.next()){
+				documentTypes.add(new InternalAudit_Finding(resultSet
+						.getString("id"), resultSet
+						.getString("finding")));
+			}
+			
+	    }catch(Exception e){
+	    	System.out.println(e.toString());
+	    	releaseResultSet(resultSet);
+	    	releaseStatement(statement);
+	    	releaseConnection(con);
+	    }finally{
+	    	releaseResultSet(resultSet);
+	    	releaseStatement(statement);
+	    	releaseConnection(con);	    	
+	    }
+	    return documentTypes;
+		
+	}
+	
+	//Update finding Operation
+	public boolean update_finding(InternalAudit_Finding documentType) {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		boolean status = false;
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			
+			String cmd_update = "update tbl_auditfinding set finding='"+documentType.getFinding()+"' where id='"+documentType.getId()+"'";
+			
+			System.out.println(cmd_update);
+			 statement.execute(cmd_update);
+			 status = true;
+			
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return status;
+
+	}
+	
+	//Delete finding Operation
+	public boolean delete_finding(String id) {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		boolean status = false;
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			String cmd_delete = "delete from tbl_auditfinding where id='"+ id + "'";
+			
+			
+			statement.execute(cmd_delete);
+			
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return status;
+
+	}
 	
 	public void releaseConnection(Connection con){
 		try{if(con != null)

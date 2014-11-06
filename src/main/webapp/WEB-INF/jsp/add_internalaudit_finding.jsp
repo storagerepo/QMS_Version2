@@ -19,13 +19,39 @@
 				<div class="menu_container">
 					<div class="menu_c">
 						  <ul class="horizmenu" >
-						  	<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+						  	<c:if test="${role==2}">
+						<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+								<a href="addinternalaudits" class="<c:choose>
+								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
+									<span>Add Internal Audits</span>
+									
+								</a>
+							</li>
+							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="#" class="<c:choose>
-								<c:when test="${menu=='internal'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>" rel="document">
-									<span>Add Finding</span>
+								<c:when test="${menu=='audits'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>" rel="auditfinding">
+									<span>Internal Audits Finding</span>
+									
+								</a>
+							</li>
+							</c:if>
+							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+								<a href="view_internalaudits" class="<c:choose>
+								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
+									<span>View Internal Audits </span>
+									
 								</a>
 							</li>
 						
+				         <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+								<a href="internalaudit_report" class="<c:choose>
+								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
+									<span>Reports</span>
+									
+								</a>
+				            </ul>
+							</li>
+		
 							
 				            
 						</ul>  
@@ -44,7 +70,7 @@
 					<div id="success_statusbar" class="status success">
 						<p class="closestatus">
 						<img alt="Success" src="resources/images/icons/inserted.png">
-						<a title="Close" href="add_documenttype">
+						<a title="Close" href="add_finding">
 						<img alt="Success" src="resources/images/icons/icon_square_close.png"></a>		
 						</p>
 					</div></td>
@@ -63,10 +89,10 @@
 			<table cellpadding="0" cellspacing="0" border="0">
                 <tr class="row2">
                   <td valign="middle" align="left" class="input_txt" width="50%" style="padding-left: 60px">Finding :</td>
-                  <td valign="top" align="left" class="input_txt"><input type="text" name="document_type" maxlength="32"  class="input_txtbx" id="documenttype" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"onblur="toggle(this.value)"onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${documenttypes}"  onkeypress="return onlyAlphabets(event,this);"/>
+                  <td valign="top" align="left" class="input_txt"><input type="text" name="finding" maxlength="32"  class="input_txtbx" id="documenttype" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"onblur="toggle(this.value)"onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${documenttypes}"  onkeypress="return onlyAlphabets(event,this);"/>
                 <br>  <span id="documenttype1" style="color:red">
                 <c:if test="${success=='exist'}">Finding already exist</c:if></span>
-                  <span class="err"><form:errors path="DocumentType.document_type"></form:errors></span></td>
+                  <span class="err"><form:errors path="InternalAudit_Finding.finding"></form:errors></span></td>
                 </tr>
                 <tr height="10"></tr>
                  <tr class="row1">

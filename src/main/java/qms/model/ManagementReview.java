@@ -5,7 +5,7 @@ public class ManagementReview
 {
 
 	public ManagementReview(String review_id, String management_review_date,
-			String attendee_list_with_titles, String next_management_review_by,
+			String attendee_list_with_titles,String job_title, String next_management_review_by,
 			String category, String assessment, String report_link,
 			String action_needed, String action_detail, String action_due_date,
 			String responsibility, String completion_date,
@@ -14,6 +14,7 @@ public class ManagementReview
 		this.review_id = review_id;
 		this.management_review_date = management_review_date;
 		this.attendee_list_with_titles = attendee_list_with_titles;
+		this.job_title = job_title;
 		this.next_management_review_by = next_management_review_by;
 		this.category = category;
 		this.assessment = assessment;
@@ -35,6 +36,9 @@ public class ManagementReview
 	private String management_review_date;
 	@NotEmpty
 	private String attendee_list_with_titles;
+	
+	private String job_title;
+	
 	@NotEmpty
 	private String next_management_review_by;
 	@NotEmpty
@@ -135,6 +139,12 @@ public class ManagementReview
 		public void setContinuous_improvement_project(
 				String continuous_improvement_project) {
 			this.continuous_improvement_project = continuous_improvement_project;
+		}
+		public String getJob_title() {
+			return job_title;
+		}
+		public void setJob_title(String job_title) {
+			this.job_title = job_title;
 		}
 
 }

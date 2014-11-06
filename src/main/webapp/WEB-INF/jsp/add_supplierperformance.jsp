@@ -2,10 +2,10 @@
 <%@page import="qms.model.SupplierPerformance"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="header.jsp"></jsp:include>
-<script src="resources/js/jquery-1.7.2.min.js"></script>
-<script src="resources/js/jquery-ui.js"></script>
-<script src="resources/js/modal.js"></script>
-
+<script src="resources/js/jquery.min.js"></script>
+ <script src="resources/js/jquery-ui.js"></script>
+ <link rel="stylesheet" href="resources/css/jquery-ui.css" type="text/css" />
+ 
 <html>
 <head>
 <STYLE type="text/css">
@@ -156,12 +156,186 @@
               </table>
 
 </div>
+  <div style="border:#993300  2px solid; padding:15px; margin-bottom:15px; margin-left:10px;">
+          <table cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+			<td align="left" valign="top" style="padding-right: 25px;">
+			<table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <input type="hidden" name="performance_id" class="input_txtbx" id="performanceid" readonly=readonly onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="<c:out value="${id}"/>"/>
+                   <tr class="row1">
+                  <td valign="middle" align="left" class="input_txt" width="10%">Receipt Date  :</td>
+                  <td valign="middle" align="left" class="input_txt" width="40%"><input type="text"  name="receipt_date" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" value="" class="input_txtbx" id="datepicker2" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');"  />
+                  <br><span id="datepicker22" style="color:red"></span>
+                  <span class="err"><form:errors path="Maintenance.due_date"></form:errors></span></td>
+                </tr>
+          
+                <tr class="row2" id="quality_lable" style="display:none;">
+                  <td valign="middle" align="left" class="input_txt" >Quality  :</td>
+                  <td valign="top" align="left" class="input_txt" >
+               
+		            <select name="quality" class="dropdown" id="quality" onChange="toggleAjax()">
+		                  <option  value="20">Critical</option>
+		                  <option value="10">Moderate</option>
+		                   <option value="5">Minor</option>
+		            </select>
+		            
+                  </td>
+                </tr>
+                 <tr class="row2" id="delivery_lable" style="display:none;">
+                  <td valign="middle" align="left" class="input_txt" width="15%">Delivery  :</td>
+                  <td valign="top" align="left" class="input_txt" width="40%">
+               
+		            <select name="delivery" class="dropdown" id="delivery" onChange="toggleAjax()">
+		                 
+		                   
+		                  <option  value="10">Late 1 day</option>
+		                  <option value="20">Late 2+ day</option>
+		                   <option value="5">Early 2+ days</option>
+		                  </select>
+                 </tr>
+                 <tr class="row2" id="customerservice_lable" style="display:none;">
+                  <td valign="middle" align="left" class="input_txt" width="15%">Customer Service  :</td>
+                  <td valign="top" align="left" class="input_txt" width="40%">
+               
+		            <select name="customerservice" class="dropdown" id="customerservice" onChange="toggleAjax()">
+		                  <option  value="15">Critical Issue</option>
+		                  <option value="10">Moderate Issue</option>
+		                   <option value="5">Minor Issue</option>
+		            </select>
+		            
+                  </td>
+                </tr>
+                 <tr class="row2">
+              
+               <td valign="top" align="left" class="input_txt"width="15%">Notes  :</td>
+               <td valign="top" align="left"  class="input_txt"width="40%"><textarea class="input_txtbx"  name="notes" id="notes" style="height: 89px;" ></textarea><br/>
+               <span id="notes1" style="color:red"></span>
+               <span class="err"><form:errors path="Maintenance.notes"></form:errors></span></td>
+            </tr>
+                
+                <tr class="row2">
+              
+               <td valign="top" align="left" class="input_txt"width="10%">Instructions(optional)  :</td>
+               <td valign="top" align="left" width="20%"><!-- <div id="instruction"></div> -->
+               <div id="reference1"><input type="hidden" name="reference1" value="null"></div>
+                   <div id="reference2"><input type="hidden" name="reference2" value="null"></div>
+                  <div id="reference3"><input type="hidden" name="reference3" value="null"></div>
+                  <div id="reference4"><input type="hidden" name="reference4" value="null"></div>
+                  <div id="reference5"><input type="hidden" name="reference5" value="null"></div>
+                  
+               <textarea class="input_txtbx"  name="instructions" id="instructions" style="height: 89px;" ></textarea><br/>
+               
+              <span id="instructions1" style="color:red"></span> 
+               <span class="err"><form:errors path="Maintenance.instructions"></form:errors></span>
+               
+               
+               </td>
+           
+            </tr>
+        </table>
+        </td> 
+           <td align="left" valign="top" width="43%" style="padding-right: 25px;">
+          	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+           
+            <tr class="row1">
+                 <td valign="middle" align="left" class="input_txt" width="40%"> Type of Problem  :</td>
+                  <td valign="top" align="left" class="input_txt" width="40%">
+                  <select name= "type_of_problem" id="type_of_problem" class="dropdown" onchange="gettypeofproblem();">
+                 
+                  <option  value="noproblem">No Problem</option>
+                  <option  value="quality">Quality</option>
+                   <option  value="delivery">Delivery</option>
+                   <option value="customerservice">Customer Service</option>
+               </select>
+                <br/><span class="err"></span></td>
+                  </tr>
+              
+                <tr class="row2">
+                  <td valign="middle" align="left" class="input_txt" width="40%">Completion Date  :</td>
+                  <td valign="top" align="left" class="input_txt" width="40%"><input type="text" name="completion_date"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" value="" class="input_txtbx" id="datepicker3" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" />
+                <br>  <span id="datepicker33" style="color:red"></span>
+                  <span class="err"><form:errors path="Maintenance.completion_date"></form:errors></span></td>
+                </tr>
+                <tr class="row1">
+                  <td valign="middle" align="left" class="input_txt" width="40%">Completed By  :</td>
+                  <td valign="top" align="left" class="input_txt" width="40%">
+                  
+                   <select id="completed_by" name="completed_by" class="dropdown"  >
+              <option value = "">--Select --</option>
+			                <c:forEach items="${hRandTrainingForm.hRandTrainings}" var="calibrationname" varStatus="status">
+        				       <option  value="${calibrationname.name}">${calibrationname.name}</option>
+			                  </c:forEach> </select>
+			                <br>  <span id="completed_by1" style="color:red"></span>
+                 <!--  <input type="text" name="completed_by" class="input_txtbx" id="completed_by" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="" /> --><span class="err"><form:errors path="Maintenance.completed_by"></form:errors></span></td>
+                </tr>
+              
+            
+               
+          <tr class="row1">
+                  <td valign="top" align="left">&nbsp;</td>
+                   <td valign="top" align="left">&nbsp;</td>
+                  </tr>
+                    <tr class="row1">
+                  <td valign="top" align="left">&nbsp;</td>
+                   <td valign="top" align="left">&nbsp;</td>
+                  </tr>
+           <tr class="row1" height="150px">
+                  <td valign="bottom" colspan="3"align="right">&nbsp;<input type="submit" value="Submit"  onclick="return validation();" class="submit_btn1"></td>
+                  <!-- onclick="return validation();" -->
+                  <td valign="top" align="left"></td>
+                </tr>
+       </table><br/><br/>
+       </td>
+       </tr>
+       </table>
+       </div><br/><br/>
+  </div>
+  	<table id="hidebutton"style="float:right;margin-top:20px;">
+    <tr class="row1" >
+                  <td valign="bottom" colspan="2"align="right">&nbsp;<input type="submit" onclick="return validationmain();" value="Submit"  class="submit_btn1"></td>
+                  <!-- onclick="return validation();" -->
+                  <td valign="top" align="left">
+                  <input type="button" value="Enter/Modify Maintenance & Calibration" onclick="showchildsection();"class="submit_btn1" style="width:350px;"> 
+				</td>
+                  
+                </tr>
+     </table>
+     <table id="showbutton" style="display:none;float:right;margin-top:-33px">
+      <tr class="row1" >
+                  <td valign="bottom" colspan="3"align="right">&nbsp;
+                  <input type="button" value="Hide Enter/Modify Maintenance & Calibration" onclick="hidechildsection();"class="submit_btn1" style="width:350px;"> 
+				</td>
+                  <td valign="top" align="left"></td>
+                </tr></table>
+
 </div>
 </td>
 </tr>
+
 </table>
 </form></div><br><br><br>
-
+<script>
+            function gettypeofproblem(){
+            	var value = document.getElementById('type_of_problem').value;
+            
+            if(value=="quality")
+            {	
+            	$("#quality_lable").toggle('slow');
+            
+            }
+            else if(value=="delivery")
+            {	
+            	$("#delivery_lable").toggle('slow');
+            
+            }
+			else if(value=="customerservice")
+            {	
+            	$("#customerservice_lable").toggle('slow');
+            
+            }
+           }
+            
+            </script>
 <script>
   $(function() {
 	$("#inp_supplier_name").on("keypress", function(e) {
@@ -786,6 +960,12 @@ function Alphabets(e, t) {
     }
     
     </script>
+     <script>
+ $(function() {
+	 $( "#datepicker2" ).datepicker({dateFormat: 'yy-mm-dd'});
+        });
+ 
+</script>
 </body>
 </html>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>

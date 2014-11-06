@@ -37,6 +37,7 @@ import qms.model.Employee;
 import qms.forms.CustomerFeedbackForm;
 import qms.forms.DocumentMainForm;
 import qms.forms.EmployeeForm;
+import qms.forms.InternalAuditFindingForm;
 import qms.forms.JobForm;
 import qms.forms.MaintenanceForm;
 import qms.forms.NonConformanceForm;
@@ -82,6 +83,13 @@ public class EmployeeController
 			OutputStream outputStream = null;
 			/*if(file != null)
 			{*/
+			if(employeeDAO.getNameExit(employee.getName(),employee.getEmployee_id()))
+			{
+				model.addAttribute("success","exist");
+				model.addAttribute("menu","employee");
+		        return "add_employee";
+				
+			}
 			    if (file.getSize() > 0) {
 				inputStream = file.getInputStream();
 				if (file.getSize() > 100000) 
@@ -89,13 +97,13 @@ public class EmployeeController
 					System.out.println("File Size:::" + file.getSize());
 					return "/add_employee";
 				}				
-			    orginal_fileName ="/qms_upload/"+file.getOriginalFilename();
+			    orginal_fileName ="C:/qms_upload/"+file.getOriginalFilename();
 			    duplicate_fileName=orginal_fileName;
 			    File create_file=new File(orginal_fileName);
 			    int i=1;			    
 			    while(create_file.exists())
 			    {
-			    	duplicate_fileName="/qms_upload/"+file.getOriginalFilename().substring(0,file.getOriginalFilename().lastIndexOf('.'))+i+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+			    	duplicate_fileName="C:/qms_upload/"+file.getOriginalFilename().substring(0,file.getOriginalFilename().lastIndexOf('.'))+i+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
 			    	create_file=new File(duplicate_fileName);
 			    	i++;
 			    }
@@ -339,6 +347,17 @@ public class EmployeeController
 
 						}
 					
+						if(employeeDAO.getNameExit(employee.getName(),employee.getEmployee_id()))
+						{
+							EmployeeForm employeeForm=new EmployeeForm();
+							
+							model.addAttribute("success","exist");
+							employeeForm.setEmployees(employeeDAO.getEmployeess_byid(employee.getEmployee_id()));
+							model.addAttribute("employeeForm",employeeForm);
+							model.addAttribute("menu","employee");
+							return "edit_employee";
+						}
+						
 					if (employeeDAO.update_employee(employee)) {
 						model.addAttribute("success", "update");
 						model.addAttribute("success_message", "Updated Successfully");

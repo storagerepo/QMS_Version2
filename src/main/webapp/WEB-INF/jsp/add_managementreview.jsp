@@ -83,16 +83,43 @@
   				    </tr>
     					
                       <tr class="row1"  >
-                  <td valign="middle" align="left" class="input_txt" width="20%">Attendee List With Titles :</td>
-                  <td valign="middle" align="left" class="input_txt" width="20%"><input type="text" name="attendee_list_with_titles" class="input_txtbx" id="attendeelistwithtitles" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" onkeypress="return onlyAlphabets(event,this);" maxlength="32" /><br/>
+                  <td valign="middle" align="left" class="input_txt" width="20%">Attendee List :</td>
+                  <td valign="middle" align="left" class="input_txt" width="20%">
+                  
+                  <!-- <input type="text" name="attendee_list_with_titles" class="input_txtbx" id="attendeelistwithtitles" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" onkeypress="return onlyAlphabets(event,this);" maxlength="32" /> -->
+                  <select name="attendee_list_with_titles" class="input_txtbx" id="attendeelistwithtitles" onchange="doAjaxPost_getjobtitle();">
+						                  <option value="">--Select--</option>
+						                     	<c:forEach items="${employeeForm.employees}" var="managements" varStatus="true">
+               						<option value="<c:out value="${managements.name}"/>"><c:out value="${managements.name}"/></option>
+               						</c:forEach>
+				                 </select>
+				                
+                  <br/>
                   <span id="attendeelistwithtitleserror" style="color:red"></span>
-                  <span class="err"><form:errors path="ManagementReview.attendee_list_with_titles"></form:errors></span></td>                
+                  <span class="err"><form:errors path="ManagementReview.attendee_list_with_titles"></form:errors></span></td>  
+                              
                	 <td valign="middle" align="left" class="input_txt" width="20%">Next Management Review By :</td>
                   <td valign="middle" align="left" class="input_txt" width="20%"><input type="text" name="next_management_review_by" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  class="input_txtbx" id="nextmanagementreviewby" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" onkeypress="return onlyAlphabets(event,this);" maxlength="32"/><br/>
                   <span id="nextmanagementreviewbyerror" style="color:red"></span>
                   <span class="err"><form:errors path="ManagementReview.next_management_review_by"></form:errors></span></td>                
 		
 		 </tr>
+		 <tr class="row2">
+				 <td valign="middle" align="left" class="input_txt" width="20%">Job Title :</td>
+                  <td valign="middle" id="job_title" align="left" class="input_txt" width="20%" style="display:none;"> <span id="job_title_id"></span>
+                  <br/><input type="button" value="Add" onclick="add_new_attendee();" id="add1"/>
+                  <input type="button" value="Remove" onclick="remove_attendee();" id="remove1" style="display:none;"/>
+               
+                  </td> 
+		 </tr>
+		 <tr class="row1">
+		 <td valign="middle" id="job_title" align="left" class="input_txt" width="20%" ></td>
+		<td valign="middle" id="job_title" align="left" class="input_txt" width="20%" > <span id="attendee_label_id"></span><br/>
+		   <span valign="middle" id="job_title2" align="left" class="input_txt" width="20%" style="display:none;"> <span id="job_title_id2"></span>
+                <br/><input type="button" value="Add" id="add2" onclick="add_new_attendee();"/>
+                  </span>
+                  </td>
+		</tr>
 		  <tr class="row2" >
 						         	<td valign="middle" align="left" class="input_txt"width="20%">Category :</td>
 						          <td valign="middle" align="left" class="input_txt"width="20%">
@@ -201,6 +228,83 @@
 <br/><br/><br/><br/><br/><br/><br/><br/>
 
 <script>
+function doAjaxPost_getjobtitle()
+{
+	var management_name = $('#attendeelistwithtitles').val();
+	if(management_name == "")
+		document.getElementById('job_title').style.display="none";
+	else
+		document.getElementById('job_title').style.display="block";
+	$.ajax({
+		type : "POST",
+		url : "/QMS_App/ajax_getjobtitle",
+		data : "name=" + management_name,
+		success : function(response) {
+			
+			$('#job_title_id').html(response);
+		
+		},
+		error : function(e) {
+			//alert('Error: ' + e);
+		}
+	});
+
+	
+}
+function doAjaxPost_getjobtitle2()
+{
+	var management_name = $('#attendeelistwithtitles2').val();
+	if(management_name == "")
+		document.getElementById('job_title2').style.display="none";
+	else
+		document.getElementById('job_title2').style.display="block";
+	$.ajax({
+		type : "POST",
+		url : "/QMS_App/ajax_getjobtitle",
+		data : "name=" + management_name,
+		success : function(response) {
+			
+			$('#job_title_id2').html(response);
+		
+		},
+		error : function(e) {
+			//alert('Error: ' + e);
+		}
+	});
+
+	
+}
+
+function add_new_attendee()
+{
+	document.getElementById('attendee_label_id').style.display="block";	
+	var management_name = $('#attendeelistwithtitles').val();
+	document.getElementById('add1').style.display="none";
+	document.getElementById('remove1').style.display="block";
+	document.getElementById('add2').style.display="block";
+	
+	$.ajax({
+		type : "POST",
+		url : "/QMS_App/ajax_getnew_attendee",
+		data : "name=" + management_name,
+		success : function(response) {
+			
+			$('#attendee_label_id').html(response);
+		
+		},
+		error : function(e) {
+			//alert('Error: ' + e);
+		}
+	});
+}
+function remove_attendee()
+{
+document.getElementById('attendee_label_id').style.display="none";	
+document.getElementById('add1').style.display="block";
+document.getElementById('remove1').style.display="none";
+document.getElementById('job_title2').style.display="none";
+document.getElementById('add2').style.display="none";
+}
 $(function() {
 	$("#attendeelistwithtitles").on("keypress", function(e) {
 	
@@ -290,7 +394,7 @@ function validate()
 		 document.getElementById("attendeelistwithtitleserror").innerHTML="Required field should not be empty";
 		 error="true";
 		}
-	else if(attendeelistwithtitles.charAt(0) == " ")
+	/* else if(attendeelistwithtitles.charAt(0) == " ")
 	{
 		 document.getElementById("attendeelistwithtitleserror").innerHTML="Initial spaces not allowed";
 		 error="true";
@@ -300,7 +404,7 @@ function validate()
 		document.getElementById("attendeelistwithtitleserror").innerHTML="Required field should be length of 4 to 32";
 		error="true";
 		
-		}
+		} */
 	else {
 		document.getElementById("attendeelistwithtitleserror").innerHTML="";
 		

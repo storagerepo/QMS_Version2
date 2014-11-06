@@ -226,6 +226,9 @@
 						                       <option <c:if test="${internalaudits.finding eq 'ok'}"><c:out value="Selected"/></c:if> value="ok" >Ok</option>
 											<option <c:if test="${internalaudits.finding eq 'area of improvement'}"><c:out value="Selected"/></c:if> value="area of improvement">Area Of Improvement </option>
 											<option  <c:if test="${internalaudits.finding eq 'nonconformance'}"><c:out value="Selected"/></c:if> value="nonconformance">NonConformance</option>
+											<c:forEach items="${auditFindingForm.internalAudit_Findings}" var="findings" varStatus="true">
+               						<option value="<c:out value="${findings.finding}"/>" <c:if test="${internalaudits.finding==findings.finding}"><c:out value="Selected"/></c:if>><c:out value="${findings.finding}"/></option>
+               						</c:forEach>
 				                 </select>
 				                 <br/>
 				                    <span id="findingerror" style="color:red"></span>

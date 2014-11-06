@@ -419,6 +419,13 @@
 									<span><img src="<c:url value="/resources/images/icon_07.png" />" alt="" style="padding:5px 5px 0 0;" />Management Review</span>
 								</a>
 							</li>
+							<br>
+							<li>
+								<a href="addhr" class="<c:choose>
+								<c:when test="${menu=='hr'}">buttonsub blueactive</c:when><c:otherwise>buttonsub blue</c:otherwise></c:choose>">
+									<span><img src="<c:url value="/resources/images/icon_07.png" />" alt="" style="padding:5px 5px 0 0;" />HR and Training</span>
+								</a>
+							</li>
 				            </c:if>
 					<c:if test="${role==2}">
 							
@@ -487,6 +494,13 @@
 									<span><img src="<c:url value="/resources/images/icon_07.png" />" alt="" style="padding:5px 5px 0 0;" />Management Review</span>
 								</a>
 							</li>
+							<br>
+							<li>
+								<a href="addhr" class="<c:choose>
+								<c:when test="${menu=='hr'}">buttonsub blueactive</c:when><c:otherwise>buttonsub blue</c:otherwise></c:choose>">
+									<span><img src="<c:url value="/resources/images/icon_07.png" />" alt="" style="padding:5px 5px 0 0;" />HR and Training</span>
+								</a>
+							</li>
 				            </c:if>
 					
 						</ul>  
@@ -525,6 +539,12 @@
 							<li ><a href="add_documenttype">Document Type</a></li>
 							<li ><a href="setrevision">Set Revision Format</a></li>
 						</ul>
+						 <ul id="auditfinding" class="ddsubmenustyle">
+							<li ><a href="add_finding">Add Finding</a></li>
+							<li ><a href="finding_list">View Finding</a></li>
+							
+						</ul>
+						
 						 <ul id="document1" class="ddsubmenustyle">
 							<li ><a href="documentprefix_list">Document Prefix</a></li>
 							<li ><a href="formprefix_list">Form Prefix</a></li>

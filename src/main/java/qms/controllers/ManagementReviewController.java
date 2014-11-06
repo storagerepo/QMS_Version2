@@ -1,6 +1,7 @@
 package qms.controllers;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -26,15 +27,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+
+import qms.dao.EmployeeDAO;
 import qms.dao.ManagementReviewDAO;
 
 //import qms.forms.InternalAuditsForm;
 import qms.forms.EmployeeForm;
 import qms.forms.MaintenanceForm;
 import qms.forms.ManagementReviewForm;
+import qms.forms.ManagementReview_Attendee_Form;
 import qms.forms.NonConformanceForm;
 //import qms.forms.ManagementReviewChildForm;
 //import qms.model.InternalAudits;
@@ -50,17 +55,62 @@ public class ManagementReviewController
 	@Autowired
 	ManagementReviewDAO managementreviewDAO;
 	
+	@Autowired
+	EmployeeDAO employeeDAO;
 
 @RequestMapping(value={"/addmanagementreview"}, method = RequestMethod.GET)
 	
 	public String add_managementreview(ModelMap model, Principal principal)  {
 	
 	model.addAttribute("id", managementreviewDAO.getMax_reviewid());
+	EmployeeForm employeeForm=new EmployeeForm();
+	employeeForm.setEmployees(employeeDAO.getEmployees_by_management());
+	model.addAttribute("employeeForm",employeeForm);
 	model.addAttribute("menu","managementreview");
 	return "add_managementreview";
 
 }
 
+//Post method for ajax get job title 
+@RequestMapping(value = { "/ajax_getjobtitle" }, method = RequestMethod.POST)
+public @ResponseBody 	String ajax_process_owner(HttpSession session,	HttpServletRequest request, ModelMap model, Principal principal) {
+	String resultHTML="";
+
+	String process_name=request.getParameter("name");
+	
+	String process_owner=employeeDAO.getEmployeeJob_byname(process_name).get(0).getJob_title();
+	System.out.println(process_owner);
+	
+	
+	resultHTML="<input type='hidden' name='job_title' id='hidden_process_owner' value='"+process_owner+"'/><label id='process_owner_lbl'>"+process_owner+"</label>";
+	
+	return resultHTML;
+}
+//Post method for ajax get new labels 
+@RequestMapping(value = { "/ajax_getnew_attendee" }, method = RequestMethod.POST)
+public @ResponseBody 	String ajax_getnew_attendee(HttpSession session,	HttpServletRequest request, ModelMap model, Principal principal) {
+	List<String> resultHTML=new ArrayList<String>();
+	resultHTML=(employeeDAO.filtermanagement());
+	System.out.println("result html:::::"+resultHTML);
+	 
+	String returnText="";
+	returnText=returnText+"<select name='attendee_list_with_titles' class='input_txtbx' id='attendeelistwithtitles2' onchange='doAjaxPost_getjobtitle2();'>";
+ 	
+	
+	returnText+="<option value=''>-Select-</option>";
+	for(String typenc:resultHTML)
+	{
+		returnText+="<option value='"+typenc+"'";
+		
+		
+		returnText+=">"+typenc+"</option>";
+	}			
+	  
+   returnText=returnText+"</select>";
+   returnText=returnText+"<br>"+"<span id='attendeelistwithtitleserror2' style='color:red;'></span>";
+	return returnText;
+
+}
 
 
 
@@ -70,7 +120,6 @@ public String insert_managementreview(HttpSession session,@ModelAttribute("Manag
 	session.removeAttribute("categoryvalue");
 	session.removeAttribute("reviewid");
 	session.removeAttribute("managementreviewdate");
-	
 	session.setAttribute("managementreview",managementReview);
 	if(result.hasErrors())
 	{
@@ -84,6 +133,21 @@ public String insert_managementreview(HttpSession session,@ModelAttribute("Manag
 	
 	if(!managementreviewDAO.insert_managementreview(managementReview))
 	{
+		String  attendee_name = managementReview.getAttendee_list_with_titles();
+		String review_id = managementReview.getReview_id();
+		String  job_title = managementReview.getJob_title();
+		String[] name = attendee_name.split(",");
+		String[] job = job_title.split(",");
+		if((name.length > 0) && (job.length > 0))
+		{
+			for (int i = 0; i < name.length; i++) {
+				for (int j =name.length ; j <= job.length; j++) {
+
+					managementreviewDAO.insert_managementreviewattendee(name[i],job[i],review_id);
+				}
+				
+			}
+		}
 		session.removeAttribute("managementreview");
 	}
 	}
@@ -111,6 +175,14 @@ public String viewmaintenance(HttpServletRequest request,@RequestParam("review_i
 @RequestMapping(value = "/edit_managementreview", method = RequestMethod.GET)
 public String edit_review(@RequestParam("review_id") String review_id,ModelMap model,Principal principal) {
 	
+	
+	EmployeeForm employeeForm=new EmployeeForm();
+	employeeForm.setEmployees(employeeDAO.getEmployees_by_management());
+	model.addAttribute("employeeForm",employeeForm);
+	
+	ManagementReview_Attendee_Form managementReview_Attendee_Form = new ManagementReview_Attendee_Form();
+	managementReview_Attendee_Form.setManagementReviewAttendees(managementreviewDAO.get_managementreviewattendee(review_id));
+	model.addAttribute("managementReview_Attendee_Form",managementReview_Attendee_Form);
 	
 	ManagementReviewForm managementreviewForm= new ManagementReviewForm();
 	managementreviewForm.setManagementreviewdetails(managementreviewDAO.edit_managementreview(review_id));
@@ -194,12 +266,13 @@ public String viewallmanagementreport(HttpSession session,HttpServletRequest req
 
 //for UPDATING REVIEW 
 @RequestMapping(value = "/updatemanagementreview", method = RequestMethod.POST)
-public String update_review(HttpSession session,@ModelAttribute("ManagementReview") @Valid ManagementReview managementreview,BindingResult result,ModelMap model,Principal principal) {
+public String update_review(HttpSession session,HttpServletRequest request,@ModelAttribute("ManagementReview") @Valid ManagementReview managementreview,BindingResult result,ModelMap model,Principal principal) {
 	
 	session.removeAttribute("categoryvalue");
 	session.removeAttribute("reviewid");
 	session.removeAttribute("managementreviewdate");
-	System.out.println(managementreview.review_id);
+	System.out.println(managementreview.getAttendee_list_with_titles());
+	System.out.println(managementreview.getJob_title());
 	session.setAttribute("managementreview",managementreview);
 	session.removeAttribute("categoryvalue");
 	session.removeAttribute("reviewid");
@@ -227,6 +300,44 @@ public String update_review(HttpSession session,@ModelAttribute("ManagementRevie
 	}
 	*/
 	managementreviewDAO.update_managementreview(managementreview);
+	
+	String  attendee_name = managementreview.getAttendee_list_with_titles();
+	/*String id = request.getParameter("id");*/
+	String []costArray = request.getParameterValues("id");
+	StringBuilder builder = new StringBuilder();
+	for (String string : costArray)
+	{
+	
+	    builder.append(string);
+	    builder.append(',');
+	}
+	String id= builder.toString();
+	System.out.println("ids = "+id);
+	String review_id = managementreview.getReview_id();
+	
+	String  job_title = managementreview.getJob_title();
+	String[] name = attendee_name.split(",");
+	String[] ids = id.split(",");
+	System.out.println(ids.length);
+	if(job_title != null)
+	{
+		String[] job = job_title.split(",");
+		if((name.length > 0) && (job.length > 0))
+		{
+			for (int k = 0; k < ids.length; k++) {
+				
+			
+			for (int i = ids.length; i <= name.length; i++) {
+				for (int j =ids.length ; j <= job.length; j++) {
+	
+					managementreviewDAO.update_managementreviewattendee(name[k],job[k],ids[k]);
+					System.out.println("attendee updated");
+				}
+				
+			}
+			}	
+		}
+	}
 	model.addAttribute("menu", "managementreview");
 	ManagementReviewForm managementreviewform= new ManagementReviewForm();
 	managementreviewform.setManagementreviewdetails(managementreviewDAO.get_managementreview());

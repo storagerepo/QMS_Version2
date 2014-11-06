@@ -1,5 +1,6 @@
 package qms.controllers;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 
@@ -25,11 +26,17 @@ import org.springframework.web.servlet.ModelAndView;
 import qms.dao.InternalAuditsDAO;
 import qms.dao.ProcessDAO;
 import qms.forms.DocumentMainForm;
+import qms.forms.DocumentTypeForm;
+import qms.forms.InternalAuditFindingForm;
 import qms.forms.InternalAuditsForm;
 import qms.forms.ProcessForm;
+import qms.forms.Type_of_NC_Form;
 
+import qms.model.DocumentType;
+import qms.model.InternalAudit_Finding;
 import qms.model.InternalAudits;
 import qms.model.NonConformance;
+import qms.model.Type_of_NC;
 
 @Controller
 @SessionAttributes({ "internalaudits" })
@@ -188,6 +195,10 @@ public class InternalAuditsController {
 		processForm.setProcesses(processDAO.getProcess());
 		model.addAttribute("processForm", processForm);
 		
+		InternalAuditFindingForm auditFindingForm = new InternalAuditFindingForm();
+		auditFindingForm.setInternalAudit_Findings(internalAuditsDAO.getauditfindings());
+		model.addAttribute("auditFindingForm",auditFindingForm);
+		
 		model.addAttribute("id", internalAuditsDAO.get_maxid());
 		model.addAttribute("menu","audits");
 		return "add_internalaudits";
@@ -264,6 +275,9 @@ System.out.println("id"+internalAudits.getId());
 		processForm.setProcesses(processDAO.getProcess());
 		model.addAttribute("processForm", processForm);
 		
+		InternalAuditFindingForm auditFindingForm = new InternalAuditFindingForm();
+		auditFindingForm.setInternalAudit_Findings(internalAuditsDAO.getauditfindings());
+		model.addAttribute("auditFindingForm",auditFindingForm);
 		
 		InternalAuditsForm internalAuditsForm = new InternalAuditsForm();
 		internalAuditsForm.setInternalAudits(internalAuditsDAO.edit_internalaudit(id));
@@ -592,8 +606,190 @@ model.remove("id");
 		@RequestMapping(value = {"/add_finding"}, method = RequestMethod.GET)
 		public String addFinding(HttpSession session,ModelMap model, Principal principal) {
 			
-			model.addAttribute("menu","internal");
+			model.addAttribute("menu","audits");
 			return "add_internalaudit_finding";
 		}
+		//Add findings
+		@RequestMapping(value = "/add_finding", method = RequestMethod.POST)
+		public String postType(HttpSession session,@ModelAttribute("InternalAudit_Finding") @Valid InternalAudit_Finding internalAudit_Finding,BindingResult result, ModelMap model) {
+			session.setAttribute("documentType",internalAudit_Finding);
+			session.setAttribute("documenttypes",internalAudit_Finding.getFinding());
+				if (result.hasErrors())
+				{
+					InternalAuditFindingForm auditFindingForm = new InternalAuditFindingForm();
+					auditFindingForm.setInternalAudit_Findings(internalAuditsDAO.getauditfindings());
+					
+					model.addAttribute("auditFindingForm",auditFindingForm);
+					System.out.println("error");
+					model.addAttribute("Success","true");
+			        return "add_internalaudit_finding";
+				}
+				if(internalAuditsDAO.getfindingExit(internalAudit_Finding.getFinding(),internalAudit_Finding.getId()))
+				{
+					model.addAttribute("success","exist");
+					model.addAttribute("menu","audits");
+					return "add_internalaudit_finding";
+					
+				}
+				//formprefixDAO.insert_PrefixForm(formPrefix);
+				internalAuditsDAO.insert_Finding(internalAudit_Finding);
+				session.removeAttribute("documenttypes");
+				InternalAuditFindingForm auditFindingForm = new InternalAuditFindingForm();
+				auditFindingForm.setInternalAudit_Findings(internalAuditsDAO.getlimitedfindingreport(1));
+				model.addAttribute("noofpages",(int) Math.ceil(internalAuditsDAO.getnooffindingreport() * 1.0 / 5));	 
+				model.addAttribute("button","viewall");
+			    model.addAttribute("success","false");
+			    model.addAttribute("currentpage",1);
+				model.addAttribute("auditFindingForm",auditFindingForm);
+				model.addAttribute("menu","audits");
+				model.addAttribute("success","insert");
+			return "add_internalaudit_finding";
+		}
+		
+		//list finding
+		@RequestMapping(value="/finding_list", method=RequestMethod.GET)
+		public String AuditFindinglist(HttpServletRequest request,ModelMap model, Principal principal,HttpSession session) {
+			session.removeAttribute("dtype");
+			InternalAuditFindingForm documentTypeForm = new InternalAuditFindingForm();
+			model.addAttribute("menu","audits");
+		  	model.addAttribute("noofrows",5);
+			
+			documentTypeForm.setInternalAudit_Findings(internalAuditsDAO.getlimitedfindingreport(1));
+			model.addAttribute("noofpages",(int) Math.ceil(internalAuditsDAO.getnooffindingreport() * 1.0 / 5));	 
+			   
+			model.addAttribute("button","viewall");
+		    model.addAttribute("success","false");
+		    model.addAttribute("currentpage",1);
+			model.addAttribute("documentTypeForm",documentTypeForm);
+			model.addAttribute("justcame","false");
+			return "auditfinding_list";
+		}
+		
+		//finding list pagination
+		@RequestMapping(value="/viewfindingreport_page", method=RequestMethod.GET)
+		public String viewfindingreport_page(HttpServletRequest request,@RequestParam("page") int page,ModelMap model) {	
+			InternalAuditFindingForm documentTypeForm = new InternalAuditFindingForm();
+			documentTypeForm.setInternalAudit_Findings(internalAuditsDAO.getlimitedfindingreport(page));
+			model.addAttribute("noofpages",(int) Math.ceil(internalAuditsDAO.getnooffindingreport() * 1.0 / 5));	 
+			model.addAttribute("documentTypeForm",documentTypeForm);	
+		  	model.addAttribute("noofrows",5);   
+		    model.addAttribute("currentpage",page);
+		    model.addAttribute("menu","audits");
+		    model.addAttribute("button","viewall");
+		    
+		    return "auditfinding_list";
+			
+		}
+
+		//finding list view all
+		@RequestMapping(value={"/viewallfindingreport"}, method = RequestMethod.GET)
+		public String viewallfindingreport(HttpServletRequest request,ModelMap model, Principal principal ) {
+			InternalAuditFindingForm documentTypeForm = new InternalAuditFindingForm();
+			//formFormPrefix.setFormPrefixs(formprefixDAO.getprefix());
+			documentTypeForm.setInternalAudit_Findings(internalAuditsDAO.getauditfindings());
+			model.addAttribute("documentTypeForm",documentTypeForm);
+
+		  	model.addAttribute("noofrows",5);    
+		   //narrativereportForm.getNarrativereport().size()
+		    model.addAttribute("menu","audits");
+		    model.addAttribute("button","close");
+		      
+		    	
+		        model.addAttribute("success","false");
+		        model.addAttribute("button","close");
+		        return "auditfinding_list";
+
+		}
+		
+		//search finding
+		
+		@RequestMapping(value="/finding_list_search", method=RequestMethod.GET)
+		public String findinglistsearch(@RequestParam("dtype")String doctype, HttpServletRequest request,ModelMap model, Principal principal,HttpSession session) {
+			session.setAttribute("dtype", doctype);
+			InternalAuditFindingForm documentTypeForm = new InternalAuditFindingForm();
+			model.addAttribute("menu","audits");
+		  	model.addAttribute("noofrows",5);
+			model.addAttribute("justcame","false");
+			documentTypeForm.setInternalAudit_Findings(internalAuditsDAO.getfinding(doctype));
+			/*model.addAttribute("noofpages",(int) Math.ceil(documentTypeDAO.getnoofdocumenttypereport() * 1.0 / 5));	 
+			   
+			model.addAttribute("button","viewall");
+		    model.addAttribute("success","false");
+		    model.addAttribute("currentpage",1);*/
+			model.addAttribute("documentTypeForm",documentTypeForm);
+			
+			return "auditfinding_list";
+		}
+		
+		//Edit a record
+		@RequestMapping(value = "/edit_finding", method = RequestMethod.GET)
+		public String editfinding_get(@RequestParam("id") String id,InternalAudit_Finding documentType,ModelMap model) {
+
+			InternalAuditFindingForm documentTypeForm = new InternalAuditFindingForm();
+			documentTypeForm.setInternalAudit_Findings(internalAuditsDAO.getFinding(id));
+			model.addAttribute("documentTypeForm",documentTypeForm);
+			model.addAttribute("menu","audits");
+		    return "edit_finding";
+		}
+
+		//Update a finding 	record
+		@RequestMapping(value = "/update_finding", method = RequestMethod.POST)
+		public String update_finding(ModelMap model,@ModelAttribute("InternalAudit_Finding") @Valid InternalAudit_Finding internalAudit_Finding,BindingResult result) throws IOException {
+
+			if (result.hasErrors())
+			{
+				
+				InternalAuditFindingForm documentTypeForm = new InternalAuditFindingForm();
+				documentTypeForm.setInternalAudit_Findings(internalAuditsDAO.getFinding(internalAudit_Finding.getId()));
+				System.out.println("error");
+				model.addAttribute("documentTypeForm",documentTypeForm);
+		        return "edit_finding";
+			}
+			
+			if(internalAuditsDAO.getfindingExit(internalAudit_Finding.getFinding(),internalAudit_Finding.getId()))
+			{
+				InternalAuditFindingForm documentTypeForm = new InternalAuditFindingForm();
+				model.addAttribute("success","exist");
+				documentTypeForm.setInternalAudit_Findings(internalAuditsDAO.getFinding(internalAudit_Finding.getId()));
+				model.addAttribute("documentTypeForm",documentTypeForm);
+				model.addAttribute("menu","audits");
+				return "edit_finding";
+			}
+			internalAuditsDAO.update_finding(internalAudit_Finding);
+			InternalAuditFindingForm documentTypeForm = new InternalAuditFindingForm();
+			documentTypeForm.setInternalAudit_Findings(internalAuditsDAO.getlimitedfindingreport(1));
+			model.addAttribute("noofpages",(int) Math.ceil(internalAuditsDAO.getnooffindingreport() * 1.0 / 5));	 
+			   
+			model.addAttribute("button","viewall");
+		    model.addAttribute("success","false");
+		    model.addAttribute("currentpage",1);
+			model.addAttribute("documentTypeForm",documentTypeForm);
+			model.addAttribute("menu","audits");
+			model.addAttribute("success","update");
+			System.out.println("updated successfully");
+		    return "auditfinding_list";
+		}
+
+
+		//delete finding record
+		@RequestMapping(value = "/delete_finding", method = RequestMethod.GET)
+		public String deletefinding(@RequestParam("id") String id,InternalAudit_Finding documentType,ModelMap model) {
+
+			
+			//formprefixDAO.delete_formprefix(id);
+			internalAuditsDAO.delete_finding(id);
+			InternalAuditFindingForm documentTypeForm = new InternalAuditFindingForm();
+			documentTypeForm.setInternalAudit_Findings(internalAuditsDAO.getlimitedfindingreport(1));
+			model.addAttribute("noofpages",(int) Math.ceil(internalAuditsDAO.getnooffindingreport() * 1.0 / 5));	 
+			model.addAttribute("button","viewall");
+		    model.addAttribute("success","delete");
+		    model.addAttribute("currentpage",1);
+			model.addAttribute("documentTypeForm",documentTypeForm);
+			model.addAttribute("menu","audits");
+		    return "auditfinding_list";
+			
+		}
+
+
  	}
 
