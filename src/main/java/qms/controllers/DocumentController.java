@@ -632,7 +632,7 @@ public class DocumentController {
 	        return "add_documents";
 		}
 		
-		if(result.hasErrors() || doc_id.equals(""))
+		/*if(result.hasErrors() || doc_id.equals(""))
 		{
 			System.out.println("errors");
 			load_document_page_dropdowns(model);
@@ -657,9 +657,9 @@ public class DocumentController {
 			if(documentMain.getLocation().equals(""))
 				model.addAttribute("location","fail");
 			return "add_documents";
-		}
-		else
-		{
+		}*/
+		/*else
+		{*/
 			if(documentMain.getMedia_type().equals("1"))
 			{
 				documentMain.setLocation("Nil");
@@ -761,7 +761,7 @@ public class DocumentController {
 		}
 		else
 			return "view_documents";
-		}
+		
 	}
 
 
@@ -865,7 +865,68 @@ public class DocumentController {
 	
 	
 
+	//view page generation
+	@RequestMapping(value = "/view_documentdetails", method = RequestMethod.GET)
+	public String view_documentdetails(HttpSession session,String document_id,
+ModelMap model) {
+		
 
+		load_document_page_dropdowns(model);
+		DocumentMainForm documentMainForm = new DocumentMainForm();
+		
+		documentMainForm.setDocumentMains(documentControlDAO.getlimiteddocument(1));
+		 System.out.println("no of pages = "+(int) Math.ceil(documentControlDAO.getnoofdocumentreport() * 1.0 / 10));
+		    model.addAttribute("noofpages",(int) Math.ceil(documentControlDAO.getnoofdocumentreport() * 1.0 / 10));	 
+	
+	        model.addAttribute("button","viewall");
+	        model.addAttribute("success","false");
+	        model.addAttribute("currentpage",1);
+		
+		
+		model.addAttribute("documentMainForm", documentMainForm);
+		model.addAttribute("menu","document");
+		return "view_documentdetails";
+		}
+	
+	@RequestMapping(value="/view_documentdetails_page", method=RequestMethod.GET)
+	public String view_documentdetails_page(HttpServletRequest request,HttpSession session,@RequestParam("page") int page,
+			ModelMap model) {
+		
+		/*DocumentMainForm documentMainForm = new DocumentMainForm();
+		load_document_page_dropdowns(model);
+		documentMainForm.setDocumentMains(documentControlDAO.viewdocuments(page));
+		model.addAttribute("noofpages",(int) Math.ceil(documentControlDAO.viewDocuments() * 1.0 / 10));	 */
+		
+		DocumentMainForm documentMainForm = new DocumentMainForm();
+		load_document_page_dropdowns(model);
+		documentMainForm.setDocumentMains(documentControlDAO.findDocumentsdetails(page));
+		model.addAttribute("noofpages",(int) Math.ceil(documentControlDAO.viewDocuments() * 1.0 / 10));	
+		model.addAttribute("documentMainForm", documentMainForm);	
+	  	model.addAttribute("noofrows",10);
+	    model.addAttribute("currentpage",page);
+	    model.addAttribute("menu","document");
+	    model.addAttribute("button","viewall");
+	    
+	    return "view_documentdetails";
+		
+	}
+	
+	//view allforms
+		@RequestMapping(value={"/viewalldocuments"}, method = RequestMethod.GET)
+		public String viewallform(HttpServletRequest request,HttpSession session,ModelMap model,Principal principal ) {
+			
+			DocumentMainForm documentMainForm = new DocumentMainForm();
+			documentMainForm.setDocumentMains(documentControlDAO.getallforms());
+		    model.addAttribute("menu","maintenance");
+		    model.addAttribute("button","close");
+		    model.addAttribute("menu","document");
+		    model.addAttribute("success","false");
+		    model.addAttribute("button","close");
+			model.addAttribute("documentMainForm",documentMainForm);
+		  
+		        return "view_documentdetails";
+
+		}
 
 	@RequestMapping(value="/viewdocumentreport_page", method=RequestMethod.GET)
 	public String viewdocumentreport_page(HttpServletRequest request,HttpSession session,@RequestParam("page") int page,

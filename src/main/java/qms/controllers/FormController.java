@@ -106,7 +106,8 @@ public class FormController
         return "add_form";
  	}
 	
-
+//search for record in view 
+	
 	//Insert a record
 	@RequestMapping(value={"/addform"}, method = RequestMethod.POST)
 	public String insert_form(HttpSession session,HttpServletRequest request,ModelMap model, @ModelAttribute("Form") @Valid Form form,BindingResult result,@ModelAttribute("RevisionForm") @Valid RevisionForm revisionForm,BindingResult result2, Principal principal)
@@ -153,7 +154,7 @@ public class FormController
 		System.out.println("Started Inserting documents");
 		session.setAttribute("docform",form);
 		// Started to handle upload document
-		if(result.hasErrors())
+		/*if(result.hasErrors())
 		{
 			System.out.println("Error");
 			load_document_page_dropdowns(model);
@@ -161,7 +162,7 @@ public class FormController
 			return "add_form";
 		}
 		else
-		{
+		{*/
 			if(form.getMedia_type().equals("1"))
 			{
 				form.setLocation("Nil");
@@ -253,7 +254,7 @@ public class FormController
 		}
 		else
 			return "view_form";
-		}
+		
 		/*System.out.println("came");
 		formDAO.insert_form(form);
 		model.put("form", form);
@@ -316,7 +317,7 @@ public class FormController
 			model.addAttribute("success","exist");
 			return "edit_form";
 		}
-		if(result.hasErrors())
+		/*if(result.hasErrors())
 		{
 			String auto_no = form1.getAuto_no();
 			System.out.println("edit auto no = "+auto_no);
@@ -338,7 +339,7 @@ public class FormController
 		    model.addAttribute("menu","document");
 			return "edit_form";
 		}
-		
+		*/
 		if(form1.getMedia_type().equals("1"))
 		{
 			form1.setLocation("Nil");
@@ -684,7 +685,38 @@ public class FormController
 		return "view_form";
 	}
 	
-	
+	//view page generation
+		@RequestMapping(value={"/view_formdetails"},method=RequestMethod.GET)
+		public String viewFormdetails(HttpSession session, ModelMap model,Principal principal,Employee employee)
+		{
+			
+			
+			FormForm formForm=new FormForm();
+			model.addAttribute("menu","document");
+		  /*	model.addAttribute("noofrows",10);*/
+		  	model.addAttribute("justcame",false);
+		  	
+		  	ProcessForm processForm = new ProcessForm();
+			processForm.setProcesses(processDAO.getProcess());
+			model.addAttribute("process-Form", processForm);
+		  	
+		    formForm.setForm(formDAO.getlimitedformreportview(1));
+		    System.out.println("no of pages = "+(int) Math.ceil(formDAO.getnoofformreport() * 1.0 / 10));
+		    model.addAttribute("noofpages",(int) Math.ceil(formDAO.getnoofformreport() * 1.0 / 10));	 
+			model.addAttribute("button","viewall");
+	        model.addAttribute("success","false");
+	        model.addAttribute("currentpage",1);
+		    
+		   model.addAttribute("formForm",formForm);
+		    
+		    
+		   
+		    
+		    
+			return "view_formsDetails";
+		}
+		
+		
 
 	@RequestMapping(value="/viewformreport_page", method=RequestMethod.GET)
 	public String viewformreport_page(HttpSession session,HttpServletRequest request,@RequestParam("page") int page,@RequestParam("process") String process,ModelMap model) {	
@@ -705,7 +737,46 @@ public class FormController
 	    return "view_form";
 		
 	}
-
+	//view forms
+	@RequestMapping(value="/viewform_page", method=RequestMethod.GET)
+	public String viewform_page(HttpSession session,HttpServletRequest request,@RequestParam("page") int page,ModelMap model) {	
+		
+		
+		FormForm formForm=new FormForm();
+		formForm.setForm(formDAO.view_form(page));
+		model.addAttribute("noofpages",(int) Math.ceil(formDAO.view_form() * 1.0 / 10));	 
+	  	model.addAttribute("noofrows",10);   
+	    model.addAttribute("currentpage",page);
+	    model.addAttribute("menu","document");
+	    model.addAttribute("button","viewall");
+		model.addAttribute("formForm",formForm);
+	    ProcessForm processForm = new ProcessForm();
+		processForm.setProcesses(processDAO.getProcess());
+		model.addAttribute("processForm", processForm);
+	    
+	    return "view_formsDetails";
+		
+	}
+	
+	@RequestMapping(value="/viewformreport_page1", method=RequestMethod.GET)
+	public String viewformreport_page1(HttpSession session,HttpServletRequest request,@RequestParam("page") int page,@RequestParam("process") String process,ModelMap model) {	
+		
+		session.setAttribute("processarea",process);
+		FormForm formForm=new FormForm();
+		formForm.setForm(formDAO.search_form1(process,page));
+		model.addAttribute("noofpages",(int) Math.ceil(formDAO.Search_form(process) * 1.0 / 10));	 
+	  	model.addAttribute("noofrows",10);   
+	    model.addAttribute("currentpage",page);
+	    model.addAttribute("menu","document");
+	    model.addAttribute("button","viewall");
+		model.addAttribute("formForm",formForm);
+	    ProcessForm processForm = new ProcessForm();
+		processForm.setProcesses(processDAO.getProcess());
+		model.addAttribute("processForm", processForm);
+	    
+	    return "view_form";
+		
+	}
 
 	@RequestMapping(value={"/viewallformreport"}, method = RequestMethod.GET)
 	public String viewallformreport(HttpServletRequest request,HttpSession session,ModelMap model, @RequestParam("process") String process,Principal principal ) {
@@ -725,8 +796,24 @@ public class FormController
 
 	}
 
-	
-	
+	//view allforms
+	@RequestMapping(value={"/viewallform"}, method = RequestMethod.GET)
+	public String viewallform(HttpServletRequest request,HttpSession session,ModelMap model,Principal principal ) {
+		
+		FormForm formForm=new FormForm();
+		formForm.setForm(formDAO.getallforms());
+	    model.addAttribute("menu","maintenance");
+	    model.addAttribute("button","close");
+	    model.addAttribute("menu","document");
+	    model.addAttribute("success","false");
+	    model.addAttribute("button","close");
+		model.addAttribute("formForm",formForm);
+	    ProcessForm processForm = new ProcessForm();
+		processForm.setProcesses(processDAO.getProcess());
+		model.addAttribute("processForm", processForm);
+	        return "view_formsDetails";
+
+	}
 	//edit a record
 	
 	/*@RequestMapping(value="/searchform",method=RequestMethod.GET)		
