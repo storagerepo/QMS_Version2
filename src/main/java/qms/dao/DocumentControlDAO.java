@@ -1242,6 +1242,162 @@ public class DocumentControlDAO extends AbstractITextPdfView
 	    return documentMains;
 		
 	}
+	
+	
+	public List<DocumentMain> findDocumentsdetails(int page){
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<DocumentMain> documentMains = new ArrayList<DocumentMain>();
+	    try{
+	    	if(page >= 1)
+	    	{
+	    	int offset = 10 * (page - 1);
+			int limit = 10;
+	    		resultSet = statement.executeQuery("select * from tbl_doccontrol_main  limit " + offset + ","+ limit+"");
+	    	
+	    	}
+	    	
+	    	
+	    		System.out.println("came");
+			while(resultSet.next()){
+				System.out.println("count");
+				documentMains.add(new DocumentMain(resultSet.getString("auto_number"),resultSet.getString("document_id"),resultSet.getString("document_title"),resultSet.getString("document_type"),resultSet.getString("media_type"),resultSet.getString("location"),resultSet.getString("process"),resultSet.getString("external"), resultSet.getString("attachment_name"),resultSet.getString("attachment_type"),resultSet.getString("attachment_referrence")));
+			}
+	    }catch(Exception e){
+	    	System.out.println(e.toString());
+	    	releaseResultSet(resultSet);
+	    	releaseStatement(statement);
+	    	releaseConnection(con);
+	    }finally{
+	    	releaseResultSet(resultSet);
+	    	releaseStatement(statement);
+	    	releaseConnection(con);	    	
+	    }
+	    return documentMains;
+		
+	}
+	
+	public List<DocumentMain> view_documents(){
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<DocumentMain> documentMains = new ArrayList<DocumentMain>();
+	    try{
+	    	
+	    	
+	    		resultSet = statement.executeQuery("select * from tbl_doccontrol_main ");
+	    	
+	    	
+	    		System.out.println("came");
+			while(resultSet.next()){
+				System.out.println("count");
+				documentMains.add(new DocumentMain(resultSet.getString("auto_number"),resultSet.getString("document_id"),resultSet.getString("document_title"),resultSet.getString("document_type"),resultSet.getString("media_type"),resultSet.getString("location"),resultSet.getString("process"),resultSet.getString("external"), resultSet.getString("attachment_name"),resultSet.getString("attachment_type"),resultSet.getString("attachment_referrence")));
+			}
+	    	
+	    }catch(Exception e){
+	    	System.out.println(e.toString());
+	    	releaseResultSet(resultSet);
+	    	releaseStatement(statement);
+	    	releaseConnection(con);
+	    }finally{
+	    	releaseResultSet(resultSet);
+	    	releaseStatement(statement);
+	    	releaseConnection(con);	    	
+	    }
+	    return documentMains;
+		
+	}
+	
+	public List<DocumentMain> viewdocuments(int page){
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<DocumentMain> documentMains = new ArrayList<DocumentMain>();
+	    try{
+	    	if(page >= 1)
+	    	{
+	    	int offset = 10 * (page - 1);
+			int limit = 10;
+	    	
+	    		resultSet = statement.executeQuery("select * from tbl_doccontrol_main ");
+	    	
+	    	
+	    		System.out.println("came");
+			while(resultSet.next()){
+				System.out.println("count");
+				documentMains.add(new DocumentMain(resultSet.getString("auto_number"),resultSet.getString("document_id"),resultSet.getString("document_title"),resultSet.getString("document_type"),resultSet.getString("media_type"),resultSet.getString("location"),resultSet.getString("process"),resultSet.getString("external"), resultSet.getString("attachment_name"),resultSet.getString("attachment_type"),resultSet.getString("attachment_referrence")));
+			}
+	    	}
+	    }catch(Exception e){
+	    	System.out.println(e.toString());
+	    	releaseResultSet(resultSet);
+	    	releaseStatement(statement);
+	    	releaseConnection(con);
+	    }finally{
+	    	releaseResultSet(resultSet);
+	    	releaseStatement(statement);
+	    	releaseConnection(con);	    	
+	    }
+	    return documentMains;
+		
+	}
+	
+	public List<DocumentMain> getallforms(){
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<DocumentMain> documentMains = new ArrayList<DocumentMain>();
+	    try{
+	    	
+	    		resultSet = statement.executeQuery("select * from tbl_doccontrol_main ");
+	    	
+	    	
+	    		System.out.println("came");
+			while(resultSet.next()){
+				System.out.println("count");
+				documentMains.add(new DocumentMain(resultSet.getString("auto_number"),resultSet.getString("document_id"),resultSet.getString("document_title"),resultSet.getString("document_type"),resultSet.getString("media_type"),resultSet.getString("location"),resultSet.getString("process"),resultSet.getString("external"), resultSet.getString("attachment_name"),resultSet.getString("attachment_type"),resultSet.getString("attachment_referrence")));
+			
+	    	}
+	    }catch(Exception e){
+	    	System.out.println(e.toString());
+	    	releaseResultSet(resultSet);
+	    	releaseStatement(statement);
+	    	releaseConnection(con);
+	    }finally{
+	    	releaseResultSet(resultSet);
+	    	releaseStatement(statement);
+	    	releaseConnection(con);	    	
+	    }
+	    return documentMains;
+		
+	}
+	
+	
 	public int FindDocuments(String search_document_type,String search_process){
 		Connection con = null;
 		Statement statement = null;
@@ -1281,7 +1437,41 @@ public class DocumentControlDAO extends AbstractITextPdfView
 
 	
 	}
+	public int viewDocuments(){
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		int noofRecords =0;
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<DocumentMain> documentMains = new ArrayList<DocumentMain>();
+	    try{
+	    	
+	    		resultSet = statement.executeQuery("select  count(*) as noofrecords from tbl_doccontrol_main ");
+	    	
+	    	
+	    	if (resultSet.next())
+				noofRecords = resultSet.getInt("noofrecords");
+
+		} catch (Exception e) {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return noofRecords;
+
 	
+	}
+	
+
 
 	public List<DocumentMain> list_documents(String document_id){
 		Connection con = null;
@@ -1331,6 +1521,60 @@ public class DocumentControlDAO extends AbstractITextPdfView
 			String cmd;
 			int offset = 5 * (page - 1);
 			int limit = 5;
+					cmd="select * from tbl_doccontrol_main limit " + offset + ","+ limit+"" ;
+				
+				//	cmd = "select * from tbl_narrativereport order by pname asc limit " + offset + ","+ limit+"" ;
+
+			resultSet = statement.executeQuery(cmd);
+			while(resultSet.next()){
+				System.out.println("count");
+				documentMains.add(new DocumentMain(
+						resultSet.getString("auto_number"),
+						resultSet.getString("document_id"),
+						resultSet.getString("document_title"),
+						resultSet.getString("document_type"),
+						resultSet.getString("media_type"),
+						resultSet.getString("location"),
+						resultSet.getString("process"),
+						resultSet.getString("external"), 
+						resultSet.getString("attachment_name"),
+						resultSet.getString("attachment_type"),
+						resultSet.getString("attachment_referrence")));
+			}
+			
+			} catch (Exception e) {
+			/*logger.info(e.toString());*/
+				System.out.println(e.toString());
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return documentMains;
+
+	}
+	
+	public  List<DocumentMain> getlimiteddocument(int page) {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		
+		
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<DocumentMain> documentMains = new ArrayList<DocumentMain>();
+		try {
+
+			String cmd;
+			int offset = 10 * (page - 1);
+			int limit = 10;
 					cmd="select * from tbl_doccontrol_main limit " + offset + ","+ limit+"" ;
 				
 				//	cmd = "select * from tbl_narrativereport order by pname asc limit " + offset + ","+ limit+"" ;

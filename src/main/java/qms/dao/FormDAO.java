@@ -820,7 +820,131 @@ public class FormDAO extends AbstractITextPdfView{
 	}*/
 	
 	//Search operation for find a particular record
-	public List<Form> search_form(String process,int page) {
+	public List<Form> view_form(int page) {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		//boolean status = false;
+		System.out.println("auto_number");
+		List<Form> form = new ArrayList<Form>();
+
+		try {
+			con = datasource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			if(page >= 1){
+			int offset = 10 * (page - 1);
+			int limit = 10;
+		
+			resultSet = statement.executeQuery("select t1.*,t2.* from tbl_form as t1 join tbl_form_child as t2 on t1.auto_number=t2.auto_no limit " + offset + ","+ limit+"");
+			}
+			
+		//	String cmd_select = "select * from tb1_internalaudits";
+			//resultSet = statement.executeQuery(cmd_select);
+			while (resultSet.next()) {
+							
+								
+				form.add(new Form(resultSet
+						.getString("auto_number"), resultSet
+						.getString("location"), resultSet
+						.getString("form_or_rec_id"), resultSet
+						.getString("responsibility"), resultSet
+						.getString("form_or_rec_title"), resultSet
+						.getString("process"), resultSet
+						.getString("media_type"), resultSet
+						.getString("retention_time"), resultSet
+						.getString("form"), resultSet
+						.getString("attachment_name"),resultSet
+						.getString("attachment_type"), resultSet
+						.getString("attachment_referrence"), resultSet
+						.getString("auto_no"), resultSet
+						.getString("effective_date"), resultSet
+						.getString("document_id"), resultSet
+						.getString("approver1"), resultSet
+						.getString("issuer"), resultSet
+						.getString("comments"),resultSet.getString("revision_id")));
+			}
+
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return form;
+	}
+	
+	//Search operation for find a particular record
+		public List<Form> search_form(String process,int page) {
+			Connection con = null;
+			Statement statement = null;
+			ResultSet resultSet = null;
+			//boolean status = false;
+			System.out.println("auto_number");
+			List<Form> form = new ArrayList<Form>();
+
+			try {
+				con = datasource.getConnection();
+				statement = con.createStatement();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				if(page >= 1){
+				int offset = 5 * (page - 1);
+				int limit = 5;
+			
+				resultSet = statement.executeQuery("select t1.*,t2.* from tbl_form as t1 join tbl_form_child as t2 on t1.auto_number=t2.auto_no where t1.process like'"+process+"' limit " + offset + ","+ limit+"");
+				}
+				else
+					resultSet = statement.executeQuery("select t1.*,t2.* from tbl_form as t1 join tbl_form_child as t2 on t1.auto_number=t2.auto_no where t1.process like'"+process+"'");
+
+			//	String cmd_select = "select * from tb1_internalaudits";
+				//resultSet = statement.executeQuery(cmd_select);
+				while (resultSet.next()) {
+								
+									
+					form.add(new Form(resultSet
+							.getString("auto_number"), resultSet
+							.getString("location"), resultSet
+							.getString("form_or_rec_id"), resultSet
+							.getString("responsibility"), resultSet
+							.getString("form_or_rec_title"), resultSet
+							.getString("process"), resultSet
+							.getString("media_type"), resultSet
+							.getString("retention_time"), resultSet
+							.getString("form"), resultSet
+							.getString("attachment_name"),resultSet
+							.getString("attachment_type"), resultSet
+							.getString("attachment_referrence"), resultSet
+							.getString("auto_no"), resultSet
+							.getString("effective_date"), resultSet
+							.getString("document_id"), resultSet
+							.getString("approver1"), resultSet
+							.getString("issuer"), resultSet
+							.getString("comments"),resultSet.getString("revision_id")));
+				}
+
+			} catch (Exception e) {
+				System.out.println(e.toString());
+				releaseResultSet(resultSet);
+				releaseStatement(statement);
+				releaseConnection(con);
+			} finally {
+				releaseResultSet(resultSet);
+				releaseStatement(statement);
+				releaseConnection(con);
+			}
+			return form;
+		}
+	public List<Form> search_form1(String process,int page) {
 		Connection con = null;
 		Statement statement = null;
 		ResultSet resultSet = null;
@@ -844,6 +968,65 @@ public class FormDAO extends AbstractITextPdfView{
 			else
 				resultSet = statement.executeQuery("select t1.*,t2.* from tbl_form as t1 join tbl_form_child as t2 on t1.auto_number=t2.auto_no where t1.process like'"+process+"'");
 
+		//	String cmd_select = "select * from tb1_internalaudits";
+			//resultSet = statement.executeQuery(cmd_select);
+			while (resultSet.next()) {
+							
+								
+				form.add(new Form(resultSet
+						.getString("auto_number"), resultSet
+						.getString("location"), resultSet
+						.getString("form_or_rec_id"), resultSet
+						.getString("responsibility"), resultSet
+						.getString("form_or_rec_title"), resultSet
+						.getString("process"), resultSet
+						.getString("media_type"), resultSet
+						.getString("retention_time"), resultSet
+						.getString("form"), resultSet
+						.getString("attachment_name"),resultSet
+						.getString("attachment_type"), resultSet
+						.getString("attachment_referrence"), resultSet
+						.getString("auto_no"), resultSet
+						.getString("effective_date"), resultSet
+						.getString("document_id"), resultSet
+						.getString("approver1"), resultSet
+						.getString("issuer"), resultSet
+						.getString("comments"),resultSet.getString("revision_id")));
+			}
+
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return form;
+	}
+	
+	//get allrecords
+	public List<Form> getallforms() {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		//boolean status = false;
+		System.out.println("auto_number");
+		List<Form> form = new ArrayList<Form>();
+
+		try {
+			con = datasource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			
+		
+			resultSet = statement.executeQuery("select t1.*,t2.* from tbl_form as t1 join tbl_form_child as t2 on t1.auto_number=t2.auto_no");
+			
 		//	String cmd_select = "select * from tb1_internalaudits";
 			//resultSet = statement.executeQuery(cmd_select);
 			while (resultSet.next()) {
@@ -946,6 +1129,39 @@ public class FormDAO extends AbstractITextPdfView{
 		
 	}
 	
+	//viewforms
+	public int view_form() {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		int noofRecords =0;
+		System.out.println("auto_number");
+		List<Form> form = new ArrayList<Form>();
+
+		try {
+			con = datasource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			resultSet = statement.executeQuery("select count(*) as noofrecords from tbl_form as t1 join tbl_form_child as t2 on t1.auto_number=t2.auto_no ");
+			
+			if (resultSet.next())
+				noofRecords = resultSet.getInt("noofrecords");
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return noofRecords;
+	}
+
 	//
 	
 	public List<Form> getengineering(){
@@ -1055,6 +1271,65 @@ public class FormDAO extends AbstractITextPdfView{
 	
 	
 	
+	public  List<Form> getlimitedformreportview(int page) {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		
+		
+		try {
+			con = datasource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<Form> form = new ArrayList<Form>();
+		  try {
+
+			String cmd;
+			int offset = 10 * (page - 1);
+			int limit = 10;
+					cmd="select t1.*,t2.* from tbl_form as t1 join tbl_form_child as t2 on t1.auto_number=t2.auto_no limit " + offset + ","+ limit+"" ;
+				
+				//	cmd = "select * from tbl_narrativereport order by pname asc limit " + offset + ","+ limit+"" ;
+
+			resultSet = statement.executeQuery(cmd);
+			while(resultSet.next()){
+				form.add(new Form(resultSet.getString("auto_number"), 
+						resultSet.getString("location"), 
+						resultSet.getString("form_or_rec_id"),
+						resultSet.getString("responsibility"),
+						resultSet.getString("form_or_rec_title"),
+						resultSet.getString("process"), 
+						resultSet.getString("media_type"),
+						resultSet.getString("retention_time"),
+						resultSet.getString("form"),
+						resultSet.getString("attachment_name"),
+						resultSet.getString("attachment_type"),
+						resultSet.getString("attachment_referrence"),
+						resultSet.getString("auto_no"),
+						resultSet.getString("effective_date"),
+						resultSet.getString("document_id"),
+						resultSet.getString("approver1"),
+						resultSet.getString("issuer"),
+						resultSet.getString("comments"),resultSet.getString("revision_id")));
+			}
+			
+			} catch (Exception e) {
+			/*logger.info(e.toString());*/
+				System.out.println(e.toString());
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return form;
+
+	}
+	
 	public  List<Form> getlimitedformreport(int page) {
 		Connection con = null;
 		Statement statement = null;
@@ -1130,7 +1405,7 @@ public class FormDAO extends AbstractITextPdfView{
 		try {
 
 			String cmd;
-				cmd = "select count(*) as noofrecords from tbl_form as t1 join tbl_form_child as t2 on t1.auto_number=t2.auto_no limit ";
+				cmd = "select count(*) as noofrecords from tbl_form as t1 join tbl_form_child as t2 on t1.auto_number=t2.auto_no ";
 			System.out.println("command"+cmd);			
 			resultSet = statement.executeQuery(cmd);
 			if (resultSet.next())
