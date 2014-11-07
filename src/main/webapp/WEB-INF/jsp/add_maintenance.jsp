@@ -208,11 +208,7 @@
                <td valign="top" align="left" class="input_txt"width="10%">Instructions(optional)  :</td>
                <td valign="top" align="left" width="20%"><!-- <div id="instruction"></div> -->
                <div id="reference1"><input type="hidden" name="reference1" value="null"></div>
-                   <div id="reference2"><input type="hidden" name="reference2" value="null"></div>
-                  <div id="reference3"><input type="hidden" name="reference3" value="null"></div>
-                  <div id="reference4"><input type="hidden" name="reference4" value="null"></div>
-                  <div id="reference5"><input type="hidden" name="reference5" value="null"></div>
-                  
+                   
                <textarea class="input_txtbx"  name="instructions" id="instructions" style="height: 89px;" ></textarea><br/>
                
               <span id="instructions1" style="color:red"></span> 
@@ -367,7 +363,7 @@ $("#suggestion_box").html(html);
 </script>
   
   <script>
-   function toggleAjax1() {
+   function toggleAjax5() {
 	 
 	   var weekly_main = document.getElementById('weekly').checked;
 	   //alert("value");

@@ -419,7 +419,7 @@ return "maintenance_list";
 	public ModelAndView generatemaintenance_Report(HttpServletRequest request,ModelMap model, HttpServletResponse response)
 	{
 		int no_of_days=0;
-		String[] fields={"equipment_id","equipment_name","equipment_model","serial_number","date_acquired","equipment_status","frequency_maintenance","calibration","type_of_maintenance","maintenance_frequency","reference","instructions","due_date","completion_date","completed_by","notes"};
+		String[] fields={"equipment_id","equipment_name","equipment_model","serial_number","date_acquired","equipment_status","frequency_maintenance","calibration","type_of_maintenance","maintenance_frequency","reference","due_date","completion_date","completed_by","notes"};
 		System.out.println(request.getParameter("type_of_report"));
 		System.out.println("switch = "+Integer.parseInt(request.getParameter("doc_type"))+"doc_type= "+request.getParameter("doc_type"));
 		java.util.List<Maintenance> maintenances=new ArrayList<Maintenance>();
@@ -560,7 +560,7 @@ List <String> referencemain=new ArrayList<String>();
 referencemain=referenceMaintenanceDAO.filterReference(monthly);
 for(String weeklyinstr:referencemain)
 {
-	returnText=returnText+"<a  href='downloadFrequencyFile?id=monthly''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference2' value='"+weeklyinstr+"'>";
+	returnText=returnText+"<a  href='downloadFrequencyFile?id=monthly''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference1' value='"+weeklyinstr+"'>";
 
 }			
 System.out.println(" source of nc:::: "+returnText);
@@ -572,7 +572,7 @@ List <String> referencemain=new ArrayList<String>();
 referencemain=referenceMaintenanceDAO.filterReference(quarterly);
 for(String weeklyinstr:referencemain)
 {
-	returnText=returnText+"<a  href='downloadFrequencyFile?id=quarterly''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference3' value='"+weeklyinstr+"'>";
+	returnText=returnText+"<a  href='downloadFrequencyFile?id=quarterly''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference1' value='"+weeklyinstr+"'>";
 
 }			
 System.out.println(" source of nc:::: "+returnText);
@@ -584,7 +584,7 @@ List <String> referencemain=new ArrayList<String>();
 referencemain=referenceMaintenanceDAO.filterReference(semiannually);
 for(String weeklyinstr:referencemain)
 {
-	returnText=returnText+"<a  href='downloadFrequencyFile?id=semi-annually''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference4' value='"+weeklyinstr+"'>";
+	returnText=returnText+"<a  href='downloadFrequencyFile?id=semi-annually''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference1' value='"+weeklyinstr+"'>";
 
 }			
 System.out.println(" source of nc:::: "+returnText);
@@ -596,7 +596,7 @@ List <String> referencemain=new ArrayList<String>();
 referencemain=referenceMaintenanceDAO.filterReference(annually);
 for(String weeklyinstr:referencemain)
 {
-	returnText=returnText+"<a  href='downloadFrequencyFile?id=annually''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference5' value='"+weeklyinstr+"'>";
+	returnText=returnText+"<a  href='downloadFrequencyFile?id=annually''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference1' value='"+weeklyinstr+"'>";
 
 }			
 System.out.println(" source of nc:::: "+returnText);
@@ -647,7 +647,7 @@ return returnText;
 		referencemain=referenceMaintenanceDAO.filterReference(monthly);
 		for(String weeklyinstr:referencemain)
 		{
-			returnText=returnText+"<a  href='downloadFrequencyFile?id=monthly''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference2' value='"+weeklyinstr+"'>";
+			returnText=returnText+"<a  href='downloadFrequencyFile?id=monthly''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference1' value='"+weeklyinstr+"'>";
 
 		}			
 		
@@ -670,7 +670,7 @@ return returnText;
 		referencemain=referenceMaintenanceDAO.filterReference(quarterly);
 		for(String weeklyinstr:referencemain)
 		{
-			returnText=returnText+"<a  href='downloadFrequencyFile?id=quarterly''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference3' value='"+weeklyinstr+"'>";
+			returnText=returnText+"<a  href='downloadFrequencyFile?id=quarterly''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference1' value='"+weeklyinstr+"'>";
 
 		}			
 		
@@ -693,7 +693,7 @@ return returnText;
 		referencemain=referenceMaintenanceDAO.filterReference(semiannually);
 		for(String weeklyinstr:referencemain)
 		{
-			returnText=returnText+"<a  href='downloadFrequencyFile?id=semi-annually''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference4' value='"+weeklyinstr+"'>";
+			returnText=returnText+"<a  href='downloadFrequencyFile?id=semi-annually''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference1' value='"+weeklyinstr+"'>";
 
 		}	
 		}
@@ -713,7 +713,7 @@ return returnText;
 		referencemain=referenceMaintenanceDAO.filterReference(annually);
 		for(String weeklyinstr:referencemain)
 		{
-			returnText=returnText+"<a  href='downloadFrequencyFile?id=annually''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference5' value='"+weeklyinstr+"'>";
+			returnText=returnText+"<a  href='downloadFrequencyFile?id=annually''>"+weeklyinstr+"</a><input type='hidden' class='input_txtbx' id='reference' name='reference1' value='"+weeklyinstr+"'>";
 
 		}		
 		}

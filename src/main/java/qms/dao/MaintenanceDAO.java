@@ -141,13 +141,13 @@ public class MaintenanceDAO extends AbstractITextPdfView
 				 table.addCell(createLabelCell("References"));
 				
 			}
-			else if(field.equals("instructions"))	
+			/*else if(field.equals("instructions"))	
 			{
 				width[i] = 1.0f;
 				 i++;
 				 table.addCell(createLabelCell("Instructions"));
 			
-			}else if(field.equals("due_date"))	
+			}*/else if(field.equals("due_date"))	
 			{
 				width[i] = 1.0f;
 				 i++;
@@ -276,12 +276,12 @@ public class MaintenanceDAO extends AbstractITextPdfView
 						table.addCell(createValueCell(refrence));
 						
 					
-					}else if(field.equals("instructions"))	
+					}/*else if(field.equals("instructions"))	
 					{
 						table.addCell(createValueCell(maintenance.getInstructions()));
 						
 						
-					}else if(field.equals("due_date"))	
+					}*/else if(field.equals("due_date"))	
 					{
 						table.addCell(createValueCell(maintenance.getDue_date()));
 						
