@@ -2,8 +2,10 @@
 <%@page import="qms.model.SupplierPerformance"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="header.jsp"></jsp:include>
-<script src="resources/js/jquery-1.7.2.min.js"></script>
-<script src="resources/js/jquery-ui.js"></script>
+<script src="resources/js/jquery.min.js"></script>
+ <script src="resources/js/jquery-ui.js"></script>
+ <link rel="stylesheet" href="resources/css/jquery-ui.css" type="text/css" />
+ 
 <html>
 <head>
  <STYLE type="text/css">
@@ -15,7 +17,7 @@
 </head>
 <body>
   <div id="right_content" style="height:100%">
-<form method="post" action="updatesupplierperformance">
+<form method="post" action="updatesupplierperformance" name="calc">
 
     <table cellpadding="0" cellspacing="0" border="0" width="98%" class="margin_table">
       <tr>
@@ -27,6 +29,13 @@
 								<a href="add_supplierperformance" class="<c:choose>
 								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
 									<span>Add SupplierPerformance</span>
+									
+								</a>
+							</li>
+								<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+								<a href="view_supplier" class="<c:choose>
+								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
+									<span>View Supplier</span>
 									
 								</a>
 							</li>
@@ -145,18 +154,271 @@
                   <td valign="top" align="center" colspan="2"><input type="submit" value="Update" onclick="return checkSubmit();" class="submit_btn1"></td>
                 </tr>
                   -->
-                <tr class="row1">
-                  <td valign="bottom" colspan="4"align="right" style="padding-right:125px;">&nbsp;<input type="submit" value="Update" onclick="return checkSubmit();"class="submit_btn1"></td>
-                
-                </tr>
+               
               </table>
               
             </div>
+            <div style="border:#993300  2px solid; padding:15px; margin-bottom:15px; margin-left:10px;">
+          <table cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+			<td align="left" valign="top" style="padding-right: 25px;">
+			<table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <input type="hidden" name="performance_id" class="input_txtbx" id="performanceid" readonly=readonly onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="<c:out value="${id}"/>"/>
+                   <tr class="row1">
+                  <td valign="middle" align="left" class="input_txt" width="10%">Receipt Date  :</td>
+                  <td valign="middle" align="left" class="input_txt" width="40%"><input type="text"  name="receipt_date" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" value="${supplierperformance.receipt_date}" class="input_txtbx" id="datepicker2" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');"  />
+                  <br><span id="datepicker22" style="color:red"></span>
+                  <span class="err"><form:errors path="Maintenance.due_date"></form:errors></span></td>
+                </tr>
+          	 <tr class="row1">
+                 <td valign="middle" align="left" class="input_txt" width="10%"> Type of Problem  :</td>
+                  <td valign="top" align="left" class="input_txt" width="40%">
+                  <select name= "type_of_problem" id="type_of_problem" class="dropdown" onchange="gettypeofproblem();">
+                 
+                  <option <c:if test="${supplierperformance.type_of_problem eq 'noproblem'}"><c:out value="Selected"/></c:if> value="noproblem">No Problem</option>
+                  <option <c:if test="${supplierperformance.type_of_problem eq 'quality'}"><c:out value="Selected"/></c:if> value="quality">Quality</option>
+                   <option <c:if test="${supplierperformance.type_of_problem eq 'delivery'}"><c:out value="Selected"/></c:if> value="delivery">Delivery</option>
+                   <option <c:if test="${supplierperformance.type_of_problem eq 'customerservice'}"><c:out value="Selected"/></c:if> value="customerservice">Customer Service</option>
+               </select>
+                <br/><span class="err"></span></td>
+                  </tr>
+                <tr class="row2" id="quality_lable" style="display:none;">
+                  <td valign="middle" align="left" class="input_txt" >Quality  :</td>
+                  <td valign="top" align="left" class="input_txt" >
+               
+		            <select name="quality" class="dropdown" id="quality" onChange="toggleAjax()">
+		                  <option <c:if test="${supplierperformance.quality eq '20'}"><c:out value="Selected"/></c:if> value="20">Critical</option>
+		                  <option <c:if test="${supplierperformance.quality eq '10'}"><c:out value="Selected"/></c:if> value="10">Moderate</option>
+		                   <option <c:if test="${supplierperformance.quality eq '5'}"><c:out value="Selected"/></c:if> value="5">Minor</option>
+		            </select>
+		            
+                  </td>
+                </tr>
+                 <tr class="row2" id="delivery_lable" style="display:none;">
+                  <td valign="middle" align="left" class="input_txt" width="15%">Delivery  :</td>
+                  <td valign="top" align="left" class="input_txt" width="40%">
+               
+		            <select name="delivery" class="dropdown" id="delivery" onChange="toggleAjax()">
+		                 
+		                   
+		                  <option <c:if test="${supplierperformance.delivery eq '10'}"><c:out value="Selected"/></c:if>  value="10">Late 1 day</option>
+		                  <option <c:if test="${supplierperformance.delivery eq '20'}"><c:out value="Selected"/></c:if> value="20">Late 2+ day</option>
+		                   <option <c:if test="${supplierperformance.delivery eq '5'}"><c:out value="Selected"/></c:if> value="5">Early 2+ days</option>
+		                  </select>
+                 </tr>
+                 <tr class="row2" id="customerservice_lable" style="display:none;">
+                  <td valign="middle" align="left" class="input_txt" width="15%">Customer Service  :</td>
+                  <td valign="top" align="left" class="input_txt" width="40%">
+               
+		            <select name="customerservice" class="dropdown" id="customerservice" onChange="toggleAjax()">
+		                  <option <c:if test="${supplierperformance.customerservice eq '15'}"><c:out value="Selected"/></c:if> value="15">Critical Issue</option>
+		                  <option <c:if test="${supplierperformance.customerservice eq '10'}"><c:out value="Selected"/></c:if> value="10">Moderate Issue</option>
+		                   <option <c:if test="${supplierperformance.customerservice eq '5'}"><c:out value="Selected"/></c:if> value="5">Minor Issue</option>
+		            </select>
+		            
+                  </td>
+                </tr>
+                 <tr class="row2">
+              
+               <td valign="top" align="left" class="input_txt"width="15%">Problem Details  :</td>
+               <td valign="top" align="left"  class="input_txt"width="40%"><textarea class="input_txtbx"  name="problemdetails" id="notes" style="height: 89px;" >${supplierperformance.problemdetails }</textarea><br/>
+               <span id="notes1" style="color:red"></span>
+               <span class="err"><form:errors path="Maintenance.notes"></form:errors></span></td>
+            </tr>
+             <tr class="row1">
+                 <td valign="middle" align="left" class="input_txt" width="15%">Problem Found at  :</td>
+                  <td valign="top" align="left" class="input_txt" width="40%">
+                  <select name= "problem_found_at" id="problem_found_at" class="dropdown" onChange="toggleAjax();" >
+                 
+                  <option <c:if test="${supplierperformance.problem_found_at eq '1'}"><c:out value="Selected"/></c:if> value="1">Receiving</option>
+                  <option <c:if test="${supplierperformance.problem_found_at eq '1.5'}"><c:out value="Selected"/></c:if> value="1.5">In-process</option>
+                   <option <c:if test="${supplierperformance.problem_found_at eq '2'}"><c:out value="Selected"/></c:if> value="2">Customer</option>
+               </select>
+                <br/><span class="err"></span></td>
+                  </tr>
+                  
+                 
+        </table>
+        </td> 
+           <td align="left" valign="top" width="43%" style="padding-right: 25px;">
+          	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr class="row2">
+               <td valign="top" align="left" class="input_txt" width="40%">Request Corrective Action (Y/N)  :</td>
+               <td valign="top" align="left" class="input_txt" width="40%">
+               <input type="radio" name="correctiveaction" value="Yes"  onclick="Correctiveaction();" id="correctiveaction_yes"  <c:if test="${supplierperformance.correctiveaction=='Yes'}"><c:out value="Checked=checked"/></c:if>>Yes&nbsp;&nbsp;&nbsp;
+               <input type="radio" name="correctiveaction" value="No" onclick="Correctiveaction();" id="correctiveaction_no"  <c:if test="${supplierperformance.correctiveaction=='No'}"><c:out value="Checked=checked"/></c:if>>No&nbsp;&nbsp;&nbsp;<br/><span class="err"></span>
+               </td>
+               </tr>
+              
+             <tr class="row2" id="duedate_label">
+                  <td valign="middle" align="left" class="input_txt" width="40%">Due Date for Corrective Action  :</td>
+                  <td valign="top" align="left" class="input_txt" width="40%"><input type="text" name="dueaction_date"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" value="${supplierperformance.dueaction_date}" class="input_txtbx" id="datepicker3" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" />
+                <br>  <span id="datepicker33" style="color:red"></span>
+                  <span class="err"><form:errors path="Maintenance.completion_date"></form:errors></span></td>
+                </tr>
+               
+           <tr class="row2" id="deduction_label" >
+                  <td valign="middle" align="left" class="input_txt" width="40%">Deduction for Issue  :</td>
+                  <td valign="top" align="left" class="input_txt" width="40%">
+                  
+                  <input type="text" name="deduction" readonly="readonly"  value="${supplierperformance.deduction }" class="input_txtbx" id="deduction_for_issue" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" />
+                  <!--  <input type="button" value="check"  id="check_for_issue" onclick="Find_deduction();" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" /> -->
+                <br>  <span id="deduction_for_issueerror" style="color:red"></span>
+                  <span class="err"><form:errors path="Maintenance.completion_date"></form:errors></span></td>
+                </tr>
+           
+                <tr class="row1">
+                  <td valign="middle" align="left" class="input_txt" width="40%">Recorded By  :</td>
+                  <td valign="top" align="left" class="input_txt" width="40%">
+                    <input type="text" name="recordedby" value="${supplierperformance.recordedby}" class="input_txtbx" id="recordedby" maxlength="32" onkeypress="return onlyAlphabets(event,this);" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" />
+                   <br>  <span id="recordedby_error" style="color:red"></span>
+                   </td>
+                </tr>
+              
+            <tr class="row1">
+                  <td valign="middle" align="left" class="input_txt" width="40%">Recording Date  :</td>
+                  <td valign="middle" align="left" class="input_txt" width="40%"><input type="text"  name="recording_date" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" value="${supplierperformance.recording_date }" class="input_txtbx" id="datepicker1" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');"  />
+                  <br><span id="datepicker11" style="color:red"></span>
+                  <span class="err"><form:errors path="Maintenance.due_date"></form:errors></span></td>
+                </tr>
+            
+               
+          <tr class="row1">
+                  <td valign="top" align="left">&nbsp;</td>
+                   <td valign="top" align="left">&nbsp;</td>
+                  </tr>
+                    <tr class="row1">
+                  <td valign="top" align="left">&nbsp;</td>
+                   <td valign="top" align="left">&nbsp;</td>
+                  </tr>
+         
+       </table>
+       </td>
+       </tr>
+       
+       </table>
+       </div>
+    
           </div></td>
       </tr>
+       <tr class="row1">
+                  <td valign="bottom" colspan="4"align="right" style="padding-right:125px;">&nbsp;<input type="submit" value="Update" onclick="return validation();"class="submit_btn1"></td>
+                
+                </tr>
       </table>
       </form>
       </div>
+  
+<script type="text/javascript">
+function Find_deduction()
+{
+	
+	var problem_found_at1 = document.getElementById('problem_found_at').value;
+	var deduction_for_issue = document.getElementById('deduction_for_issue');
+	if(document.getElementById('type_of_problem').value == "noproblem")
+		{
+		deduction_for_issue.value = "N/A";
+		}
+	else if(document.getElementById('type_of_problem').value == "quality")
+		{
+		calc.deduction_for_issue.value = (calc.problem_found_at.value)*(calc.quality.value);
+		}
+	else if(document.getElementById('type_of_problem').value == "delivery")
+	{
+		
+		calc.deduction_for_issue.value = (calc.problem_found_at.value)*(calc.delivery.value);
+	}
+	else if(document.getElementById('type_of_problem').value == "customerservice")
+	{
+		
+		calc.deduction_for_issue.value = (calc.problem_found_at.value)*(calc.customerservice.value);
+	}
+	}
+</script>
+<script>	
+function Correctiveaction()
+{
+	
+	var yes = document.getElementById('correctiveaction_yes').checked;
+	
+	if(yes)
+		{
+				$("#duedate_label").toggle('slow');	
+				
+		}
+	else
+		{
+		$("#duedate_label").hide('slow');
+		document.getElementById('datepicker3').value="";
+		
+		}
+	
+}
+function Correctiveaction1()
+{
+	
+	var yes = document.getElementById('correctiveaction_yes').checked;
+	
+	if(yes)
+		{
+			
+				
+		}
+	else
+		{
+		$("#duedate_label").hide('slow');
+		document.getElementById('datepicker3').value="";
+		
+		}
+	
+}
+
+            function gettypeofproblem(){
+            	var value = document.getElementById('type_of_problem').value;
+            
+            if(value=="quality")
+            {	
+            	$("#delivery_lable").hide('slow');
+            	$("#customerservice_lable").hide('slow');
+            	$("#quality_lable").toggle('slow');
+            	Find_deduction();
+            }
+            else if(value=="delivery")
+            {	
+            	$("#customerservice_lable").hide('slow');
+            	$("#quality_lable").hide('slow');
+            	$("#delivery_lable").toggle('slow');
+            	Find_deduction();
+            
+            }
+			else if(value=="customerservice")
+            {	
+				$("#quality_lable").hide('slow');
+            	$("#delivery_lable").hide('slow');
+            	$("#customerservice_lable").toggle('slow');
+            	Find_deduction();
+            }
+			else if(value=="noproblem")
+            {	
+				$("#quality_lable").hide('slow');
+            	$("#delivery_lable").hide('slow');
+            	$("#customerservice_lable").hide('slow');
+            	Find_deduction();
+            }
+           }
+            
+            </script>
+<script>
+function toggleAjax()
+{
+	
+		Find_deduction();
+		
+}
+
+
+</script>            
+      
   <script>
   $(function() {
 	$("#inp_supplier_name").on("keypress", function(e) {
@@ -230,7 +492,19 @@
 		        e.preventDefault();
 		});
 		});	
-
+  $(function() {
+	  	$("#notes").on("keypress", function(e) {
+	  	
+	  	if (e.which === 32 && !this.value.length)
+	          e.preventDefault();
+	  });
+	  });
+	  $(function() {
+			$("#recordedby").on("keypress", function(e) {
+				if (e.which === 32 && !this.value.length)
+			        e.preventDefault();
+			});
+			});	
 </script>
 
 <script>
@@ -344,6 +618,431 @@ $("#inp_phone").focus(function(){
 	 }); 
 });
 </script>
+<script>
+	function validation()
+	{
+		var contact = document.getElementById('inp_contact_name').value;
+		var address = document.getElementById('inp_address').value;
+		var title = document.getElementById('inp_contact_title').value;
+		var city = document.getElementById('inp_city').value;
+		var phone = document.getElementById('inp_phone').value;
+		var state = document.getElementById('inp_state').value;
+		var fax = document.getElementById('inp_fax').value;
+		var postal = document.getElementById('inp_postalcode').value;
+		var email = document.getElementById('inp_email_address').value;
+		var country = document.getElementById('inp_country').value;
+		var certified = document.getElementById('certified').value;
+		var category = document.getElementById('category').value; 
+		var error="";
+		var mobile = /(\W|^)[(]{0,1}\d{3}[)]{0,1}[\s-]{0,1}\d{3}[\s-]{0,1}\d{4}(\W|$)/;
+		var date = /^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/;
+		var datepicker2 = document.getElementById('datepicker2').value;
+		var notes = document.getElementById('notes').value;
+		var datepicker3 = document.getElementById('datepicker3').value;
+		
+		 var yes = document.getElementById('correctiveaction_yes').checked;
+		 var datepicker1 = document.getElementById('datepicker1').value;
+		 var recorded_by = document.getElementById('recordedby').value;
+		if(certified=="")
+		{
+		
+		document.getElementById("certifiederror").innerHTML="Required field should not be empty";
+		error="true";
+		}
+		else{
+		document.getElementById("certifiederror").innerHTML="";
+		}
+		if(category=="")
+		{
+		
+		document.getElementById("categoryerror").innerHTML="Required field should not be empty";
+		error="true";
+		}
+		else{
+		document.getElementById("categoryerror").innerHTML="";
+		}
+		if(document.getElementById("inp_supplier_name").value=="")
+			{
+			
+			document.getElementById("nameerror").innerHTML="Required field should not be empty";
+			error="true";
+			}
+		else if(document.getElementById("inp_supplier_name").value.substring(0,1)==" ")
+		{
+		document.getElementById("nameerror").innerHTML="Should not accept initial space";
+		 error="true";
+		}
+		
+		else if(document.getElementById("inp_supplier_name").value.length<4 || document.getElementById("inp_supplier_name").value.length>=32)
+	    {
+	    	
+	    	document.getElementById("nameerror").innerHTML="Required field should be length of 4 to 32";
+			error="true";
+	    }
+
+	    
+	    else
+	    	{
+	    	document.getElementById("nameerror").innerHTML="";
+	    	}		
+		if(contact =="")
+		 {
+		
+			 document.getElementById("contacterror").innerHTML="Required field should not be empty";
+			 error="true";
+		 }
+		else if(document.getElementById("inp_contact_name").value.substring(0,1)==" ")
+		{
+		document.getElementById("contacterror").innerHTML="Should not accept initial space";
+		 error="true";
+		}
+			
+		else if(document.getElementById("inp_contact_name").value.length<4 || document.getElementById("inp_contact_name").value.length>=32)
+		    {
+		    	
+		    	document.getElementById("contacterror").innerHTML="Required field should be length of 4 to 32";
+		    	 error="true";
+		    } 
+		
+		
+		    else
+		    	{
+		    	document.getElementById("contacterror").innerHTML="";
+		    	}
+		if(address =="")
+		 {
+		
+			 document.getElementById("addresserror").innerHTML="Required field should not be empty";
+			 error="true";
+		 }
+		else if(document.getElementById("inp_address").value.substring(0,1)==" ")
+		{
+		document.getElementById("addresserror").innerHTML="Should not accept initial space";
+		 error="true";
+		}
+			
+		else if(document.getElementById("inp_address").value.length<4 || document.getElementById("inp_address").value.length>=500)
+		    {
+		    	
+		    	document.getElementById("addresserror").innerHTML="Required field should be length of 4 to 500";
+		    	 error="true";
+		    } 
+		
+		
+		    else
+		    	{
+		    	document.getElementById("addresserror").innerHTML="";
+		    	}
+		if(title =="")
+		 {
+		
+			 document.getElementById("titleerror").innerHTML="Required field should not be empty";
+			 error="true";
+		 }
+		else if(document.getElementById("inp_contact_title").value.substring(0,1)==" ")
+		{
+		document.getElementById("titleerror").innerHTML="Should not accept initial space";
+		 error="true";
+		}
+			
+		else if(document.getElementById("inp_contact_title").value.length<4 || document.getElementById("inp_contact_title").value.length>=32)
+		    {
+		    	
+		    	document.getElementById("titleerror").innerHTML="Required field should be length of 4 to 32";
+		    	 error="true";
+		    } 
+		
+		    else
+		    	{
+		    	document.getElementById("titleerror").innerHTML="";
+		    	}
+		if(city =="")
+		 {
+		
+			 document.getElementById("cityerror").innerHTML="Required field should not be empty";
+			 error="true";
+		 }
+		else if(document.getElementById("inp_city").value.substring(0,1)==" ")
+		{
+		document.getElementById("cityerror").innerHTML="Should not accept initial space";
+		 error="true";
+		}
+		
+			
+		else if(document.getElementById("inp_city").value.length<4 || document.getElementById("inp_city").value.length>=32)
+		    {
+		    	
+		    	document.getElementById("cityerror").innerHTML="Required field should be length of 4 to 32";
+		    	 error="true";
+		    } 
+		    else
+		    	{
+		    	document.getElementById("cityerror").innerHTML="";
+		    	}
+		if(state =="")
+		 {
+		
+			 document.getElementById("stateerror").innerHTML="Required field should not be empty";
+			 error="true";
+		 }
+		else if(document.getElementById("inp_state").value.substring(0,1)==" ")
+		{
+		document.getElementById("stateerror").innerHTML="Should not accept initial space";
+		 error="true";
+		}
+		
+			
+		else if(document.getElementById("inp_state").value.length<4 || document.getElementById("inp_state").value.length>=32)
+		    {
+		    	
+		    	document.getElementById("stateerror").innerHTML="Required field should be length of 4 to 32";
+		    	 error="true";
+		    } 
+		    else
+		    	{
+		    	document.getElementById("stateerror").innerHTML="";
+		    	}
+		if(country =="")
+		 {
+		
+			 document.getElementById("countryerror").innerHTML="Required field should not be empty";
+			 error="true";
+		 } 
+		
+		else if(document.getElementById("inp_country").value.substring(0,1)==" ")
+		{
+		document.getElementById("countryerror").innerHTML="Should not accept initial space";
+		 error="true";
+		}
+		else if(document.getElementById("inp_country").value.length<4 || document.getElementById("inp_country").value.length>=32)
+		    {
+		    	
+		    	document.getElementById("countryerror").innerHTML="Required field should be length of 4 to 32";
+		    	 error="true";
+		    } 
+		
+		    else
+		    	{
+		    	document.getElementById("countryerror").innerHTML="";
+		    	}
+	
+
+		
+		var mail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
+	    
+		if(email=="")
+		{
+		document.getElementById("emailerror").innerHTML="Required field should not be empty";
+		error="true";
+		}
+		
+		else if(email.match(mail)==null)
+	    {
+	    	document.getElementById("emailerror").innerHTML="Invalid E-mail format";
+	    	error="true";
+	    }
+		else if(email.substring(0,1)==" ")
+		{
+		document.getElementById("emailerror").innerHTML="Should not accept initial space";
+		 error="true";
+		}
+		else
+			{
+			document.getElementById("emailerror").innerHTML="";
+			}
+
+		var zipcode =/^\d{5}$/;
+		var zero = 00000;
+	
+	    if(postal=="")	
+		{
+		document.getElementById("postalerror").innerHTML="Required field should not be empty";
+		error="true";
+		}
+	    
+	    else if(document.getElementById("inp_postalcode").value.length<4 ||document.getElementById("inp_postalcode").value.length>8)
+	    {
+	    
+	    	document.getElementById("postalerror").innerHTML="Field should be of length 5";
+	    	 error="true";
+	    } 
+
+		/* else if(document.getElementById("inp_postalcode").value.match(zipcode)==null)
+	    {
+	    	document.getElementById("postalerror").innerHTML="Invalid postalcode format";
+	    	error="true";
+	    } */
+	    else if(document.getElementById("inp_postalcode").value.match(zero))
+	    	{
+	    	document.getElementById("postalerror").innerHTML="invalid postalCode format";
+	    	}
+	    else
+	    	{
+	    	document.getElementById('postalerror').innerHTML="";
+	    	}
+	    
+	     
+ document.getElementById("faxerror").innerHTML=" ";
+	
+	if(document.getElementById("inp_fax").value=="")
+	{
+	document.getElementById("faxerror").innerHTML="Required field should not be empty";
+	error="true";
+	}
+	 var faxreg = /^\(?([0-9]{3})\)?[-]?([0-9]{3})[-]?([0-9]{4})$/;  
+	 //var faxreg = /\+1(|\.|\-)[2-9][0-9]{2}(|\.|\-)[0-9]{3}(|\.|\-)[0-9]{4}/;
+	 if(document.getElementById("inp_fax").value!="") 
+		 {
+	 if(document.getElementById("inp_fax").value.match(faxreg)==null)
+	    {
+	    	document.getElementById("faxerror").innerHTML="Invalid fax number format";
+	    	error="true";
+	    }}
+
+	   // var website = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+		  
+	     var website= /^[a-zA-Z0-9]+[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
+	    if(document.getElementById("inp_website").value=="")	
+		{
+		document.getElementById("websiteerror").innerHTML="Required field should not be empty";
+		error="true";
+		}
+
+	    else if(document.getElementById("inp_website").value.match(website)==null)
+	    {
+	    	document.getElementById("websiteerror").innerHTML="Invalid website Format";
+	    	error="true";
+	    }
+	    else
+	    	{
+	    	document.getElementById("websiteerror").innerHTML="";
+	    	}
+	
+	    if(phone =="")
+		  {
+		  document.getElementById("phoneerror").innerHTML="Required field should not be empty";
+	    	error="true";
+		  }
+	  
+	  else if(phone.match(mobile)){  
+		  if((phone == "0000000000") || (phone == "1111111111"))
+		   {
+		   document.getElementById("phoneerror").innerHTML="Invalid Number";
+	    	error="true";
+			}
+		  else
+		   {
+		   document.getElementById("phoneerror").innerHTML="";
+		   }
+	  }
+	  else{
+		  document.getElementById("phoneerror").innerHTML="Field should contain 10 digits";
+	    	error="true";
+	  }
+	    if(datepicker2 == "")
+		 {
+		 document.getElementById("datepicker22").innerHTML="Required field should not be empty";
+		 error="true";
+		 
+		 }
+		 else if(datepicker2.match(date))
+		 {
+		 document.getElementById("datepicker22").innerHTML="";
+		 }
+		 else
+		 {
+		 document.getElementById("datepicker22").innerHTML="Invalid date";
+		 error="true";
+		 }
+
+	    if(notes == "")
+		{
+		 
+		document.getElementById("notes1").innerHTML="Required field should not be empty";
+		error="true";
+		}
+	 else if(notes.charAt(0) == " ")
+		{
+		document.getElementById("notes1").innerHTML="Should not accept initial space";
+		error="true";
+		}
+		else if(notes.length < 4 || notes.length > 400 )
+			 {
+			 document.getElementById("notes1").innerHTML="Required field should be length of 4 to 400";
+			 error="true";
+			 }
+		 else{
+		     document.getElementById("notes1").innerHTML="";
+		     }
+	   
+		if(yes)
+			{
+			    if(datepicker3 == "")
+				 {
+				 document.getElementById("datepicker33").innerHTML="Required field should not be empty";
+				 error="true";
+				 
+				 }
+				 else if(datepicker3.match(date))
+				 {
+				 document.getElementById("datepicker33").innerHTML="";
+				 }
+				 else
+				 {
+				 document.getElementById("datepicker33").innerHTML="Invalid date";
+				 error="true";
+				 } 
+			}  
+	    
+	    
+	    if(datepicker1 == "")
+		 {
+		 document.getElementById("datepicker11").innerHTML="Required field should not be empty";
+		 error="true";
+		 
+		 }
+		 else if(datepicker1.match(date))
+		 {
+		 document.getElementById("datepicker11").innerHTML="";
+		 }
+		 else
+		 {
+		 document.getElementById("datepicker11").innerHTML="Invalid date";
+		 error="true";
+		 }
+	    if(recorded_by =="")
+		 {
+		
+			 document.getElementById("recordedby_error").innerHTML="Required field should not be empty";
+			 error="true";
+		 }
+		else if(document.getElementById("recordedby").value.substring(0,1)==" ")
+		{
+		document.getElementById("recordedby_error").innerHTML="Should not accept initial space";
+		 error="true";
+		}
+		
+			
+		else if(document.getElementById("recordedby").value.length<4 || document.getElementById("recordedby").value.length>=32)
+		    {
+		    	
+		    	document.getElementById("recordedby_error").innerHTML="Required field should be length of 4 to 32";
+		    	 error="true";
+		    } 
+		    else
+		    	{
+		    	document.getElementById("recordedby_error").innerHTML="";
+		    	}
+	    
+	    if(error == "true")
+	    	{
+		return false;
+		}
+		
+		
+	}
+	</script>
+
 <script>
 
 	function checkSubmit()
@@ -720,7 +1419,30 @@ $("#inp_phone").focus(function(){
     }
     
     </script>  
-  
+       <script>
+ $(function() {
+	 $( "#datepicker2" ).datepicker({dateFormat: 'yy-mm-dd'});
+        });
+ 
+</script>
+ <script>
+ $(function() {
+	 $( "#datepicker3" ).datepicker({dateFormat: 'yy-mm-dd'});
+        });
+ 
+</script>
+             <script>
+ $(function() {
+	 $( "#datepicker1" ).datepicker({dateFormat: 'yy-mm-dd'});
+        });
+ 
+</script>
+  <script>
+	
+	window.onload = function(){
+		gettypeofproblem();Correctiveaction1();
+	}
+		</script>  
 </body>
 </html>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>

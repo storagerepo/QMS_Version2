@@ -21,16 +21,16 @@
 									
 								</a>
 							</li>
-								<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="view_supplier" class="<c:choose>
-								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
+								<c:when test="${menu=='supplier'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>">
 									<span>View Supplier</span>
 									
 								</a>
 							</li>
 							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="view_supplierperformance" class="<c:choose>
-								<c:when test="${menu=='supplier'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>">
+								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
 									<span>View SupplierPerformance</span>
 									
 								</a>
@@ -47,60 +47,14 @@
   </div>
 				</td>
 				</tr>
-				<tr>
-			
-		<c:if test="${success=='true'}">
-			<tr>
-				<td valign="top" align="left" style="padding: 5px 0 10px 200px;">&nbsp;
-					<div id="success_statusbar" class="status success">
-						<p class="closestatus">
-						<img alt="Success" src="resources/images/icons/inserted.png">
-						<a title="Close" href="view_supplierperformance">
-						<img alt="Success" src="resources/images/icons/icon_square_close.png"></a>		
-						</p>
-					</div></td>
-			</tr>
-		</c:if>
-		<c:if test="${success=='update'}">
-			<tr>
-				<td valign="top" align="left" style="padding: 5px 0 10px 200px;">&nbsp;
-					<div id="success_statusbar" class="status success">
-						<p class="closestatus">
-						<img alt="Success" src="resources/images/icons/success.png"/>
-						<a title="Close" href="view_supplierperformance">
-						<img alt="Success" src="resources/images/icons/icon_square_close.png"></a>
-						</p>
-					</div></td>
-			</tr>
-		</c:if>
-	</tr> 
+				
 			<tr>
         		<td valign="top" align="left">
-			        <div class="headings altheading">
-			          <h2>Search Supplier Performance</h2>
-			        </div>
+			       
 			        <div class="contentbox">
- 			        <div style="border:#ccc 2px solid; padding:15px; margin-bottom:15px;">
-							<form action="findsupplierperformance" method="GET">
-							
-							<table width="100%" border="0" cellspacing="0" cellpadding="0">
-							  <tr>
-							    <td align="left" valign="middle">Supplier Name :</td>
-							    <td align="left" valign="middle"><input type="text" name="supplier_name" onkeypress="return onlyAlphabets(event,this);" class="input_txtbx" id="name"  value="${suppliername}"></td>
-							    <td align="left" valign="middle">&nbsp;&nbsp;Phone :</td>
-								<td align="left" valign="middle">&nbsp;&nbsp;<input type="text" name="phone" id="phone" onkeypress="return validate(event);" maxlength="10" class="input_txtbx" value="${phone}"></td>							    
-							    <td align="left" valign="middle">&nbsp;&nbsp;Email :</td>
-							    <td align="left" valign="middle">&nbsp;&nbsp;<input type="text" name="email_address" id="mail" class="input_txtbx" value="${email}"></td>
-							    <td align="center" valign="middle"><input type="submit" class="submit_btn1" value="Search" name="findsupplierperformance" ></td>
-							  	
-							  
-							  </tr>
-							  
-							</table>
-							</form>
-						</div> 
+ 			      
 
-	<form action="?do=viewparticipants" name="dashboard" method="POST">
+	<form>
    				
 				        <table cellpadding="0" cellspacing="0" border="0" width="100%">
 				        
@@ -114,7 +68,7 @@
           						<td valign="top" align="left" width="10%">Country</td>
           						<td valign="top" align="left" width="10%">Phone</td>
           						<td valign="top" align="left" width="10%" >Email address</td>
-          						<td valign="top" align="left" width="10%">Actions</td>
+          					
         					</tr>
 						
 						 <c:if test="${fn:length(supplierPerformanceForm.supplierperformance) gt 0}">
@@ -133,10 +87,6 @@
 									       <td valign="top" align="left" width="10%">${supplierperformance.country}</td>
 										<td valign="top" align="left" width="10%">${supplierperformance.phone}</td>
 											<td valign="top" align="left" width="10%">${supplierperformance.email_address}</td>	
-										<td valign="top" align="left" width="10%">
-								 			<a href="#" title="" ><img src="resources/images/icons/icon_edit.png" alt="Edit" /></a><a href="<c:out value="editsupplierperformance?sid=${supplierperformance.supplier_id}"/>" style="padding-right:10px;">Edit</a>
-										<%-- 	<a href="#" title=""><img src="resources/images/icons/icon_delete.png" alt="Delete" /></a><a href="<c:out value="deletesupplierperformance?sid=${supplierperformance.supplier_id}"/>" onclick="return confirmation()">Remove</a> --%>
-								 		</td>
 											</tr>
 							    	</c:forEach>
 						    	</c:if>
@@ -159,7 +109,7 @@
              <ul class="pagination">
         
              <c:if test="${currentpage!=1&&currentpage!=null}">
-             <li class="page_unselect"><a href="viewsupplierreport_page?page=${currentpage - 1}&supplier_name=${suppliername}&phone=${phone}&email_address=${email}" >Prev</a></li> 
+             <li class="page_unselect"><a href="viewsupplier_page?page=${currentpage - 1}" >Prev</a></li> 
                </c:if>
               
              <%-- <c:forEach var="count" begin="1" end="${noofrows}"> --%> 
@@ -169,19 +119,19 @@
                       <li class="page"><a class="paging_select"><c:out value="${i}"></c:out></a></li>
                      </c:when>
                     <c:otherwise>
-                        <li class="page_unselect"><a href="viewsupplierreport_page?page=${i}&supplier_name=${suppliername}&phone=${phone}&email_address=${email}"><c:out value="${i}"></c:out></a></li>
+                        <li class="page_unselect"><a href="viewsupplier_page?page=${i}"><c:out value="${i}"></c:out></a></li>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>          
             <c:if test="${currentpage!=noofpages}">
-              <li class="page_unselect"><a href="viewsupplierreport_page?page=${currentpage+1}&supplier_name=${suppliername}&phone=${phone}&email_address=${email}">Next</a></li> 
+              <li class="page_unselect"><a href="viewsupplier_page?page=${currentpage+1}">Next</a></li> 
                  </c:if>
               <c:choose>
               <c:when test="${button=='viewall'}">
-                  <li class="page"><a href="viewallsupplierreport?&supplier_name=${suppliername}&phone=${phone}&email_address=${email}" class="paging_select">ViewAll</a></li>
+                  <li class="page"><a href="viewallsupplier" class="paging_select">ViewAll</a></li>
              </c:when>
                 <c:otherwise>
-                  <li class="page"><a href="view_supplierperformance" class="paging_select">Back</a></li>
+                  <li class="page"><a href="view_supplier" class="paging_select">Back</a></li>
               </c:otherwise>
               </c:choose>					
 		 

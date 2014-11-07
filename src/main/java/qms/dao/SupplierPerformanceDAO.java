@@ -311,7 +311,9 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 		}
 		  try{
 			  String cmd_delete="delete from tbl_supplierperformance where supplier_id ='"+supplier_id+"'";
+			  String cmd_delete_table_child = "delete from tbl_supplierperformance_child where performance_id ='"+supplier_id+"'";
 			  status=statement.execute(cmd_delete);
+			  status=statement.execute(cmd_delete_table_child);
 			
 	    }catch(Exception e){
 	    	System.out.println(e.toString());
@@ -340,9 +342,9 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 		}
 		List<SupplierPerformance> supplierPerformances = new ArrayList<SupplierPerformance>();
 	    try{
-			resultSet = statement.executeQuery("select * from tbl_supplierperformance where supplier_id ='"+supplier_id+"'");
+			resultSet = statement.executeQuery("select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id=t2.performance_id where t1.supplier_id ='"+supplier_id+"'");
 			while(resultSet.next()){
-				supplierPerformances.add(new SupplierPerformance(resultSet.getString("supplier_id"), resultSet.getString("supplier_name"), resultSet.getString("category"), resultSet.getString("address"), resultSet.getString("city"), resultSet.getString("state"), resultSet.getString("postalcode"), resultSet.getString("country"), resultSet.getString("website"), resultSet.getString("certified_to"), resultSet.getString("contact_name"), resultSet.getString("contact_title"), resultSet.getString("phone"), resultSet.getString("fax"), resultSet.getString("email_address")));
+				supplierPerformances.add(new SupplierPerformance(resultSet.getString("supplier_id"),resultSet.getString("supplier_name"), resultSet.getString("category"), resultSet.getString("address"), resultSet.getString("city"), resultSet.getString("state"), resultSet.getString("postalcode"), resultSet.getString("country"), resultSet.getString("website"), resultSet.getString("certified_to"), resultSet.getString("contact_name"), resultSet.getString("contact_title"), resultSet.getString("phone"), resultSet.getString("fax"), resultSet.getString("email_address"),resultSet.getString("performance_id"),resultSet.getString("receipt_date"),resultSet.getString("type_of_problem"),resultSet.getString("quality"),resultSet.getString("delivery"),resultSet.getString("customerservice"),resultSet.getString("problemdetails"),resultSet.getString("problem_found_at"),resultSet.getString("correctiveaction"),resultSet.getString("dueaction_date"),resultSet.getString("deduction"),resultSet.getString("recordedby"),resultSet.getString("recording_date")));
 			}
 	    }catch(Exception e){
 	    	System.out.println(e.toString());
@@ -375,6 +377,8 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 		  try{
 			  String cmd_insert="update tbl_supplierperformance set supplier_name ='"+supplierPerformance.getSupplier_name()+"',category='"+supplierPerformance.getCategory()+"',address='"+supplierPerformance.getAddress()+"',city ='"+supplierPerformance.getCity()+"',state='"+supplierPerformance.getState()+"',postalcode='"+supplierPerformance.getPostalcode()+"',country='"+supplierPerformance.getCountry()+"',website='"+supplierPerformance.getWebsite()+"',certified_to='"+supplierPerformance.getCertified_to()+"',contact_name='"+supplierPerformance.getContact_name()+"',contact_title='"+supplierPerformance.getContact_title()+"',phone='"+supplierPerformance.getPhone()+"',fax='"+supplierPerformance.getFax()+"',email_address='"+supplierPerformance.getEmail_address()+"' where supplier_id ='"+supplierPerformance.getSupplier_id()+"'";
 			  statement.execute(cmd_insert);
+			  String cmd_update_child="update tbl_supplierperformance_child set receipt_date ='"+supplierPerformance.getReceipt_date()+"',type_of_problem='"+supplierPerformance.getType_of_problem()+"',quality='"+supplierPerformance.getQuality()+"',delivery ='"+supplierPerformance.getDelivery()+"',customerservice='"+supplierPerformance.getCustomerservice()+"',problemdetails='"+supplierPerformance.getProblemdetails()+"',problem_found_at='"+supplierPerformance.getProblem_found_at()+"',correctiveaction='"+supplierPerformance.getCorrectiveaction()+"',dueaction_date='"+supplierPerformance.getDueaction_date()+"',deduction='"+supplierPerformance.getDeduction()+"',recordedby='"+supplierPerformance.getRecordedby()+"',recording_date='"+supplierPerformance.getRecording_date()+"' where performance_id ='"+supplierPerformance.getSupplier_id()+"'";
+			  statement.execute(cmd_update_child);
 		  }catch(Exception e){
 	    	System.out.println(e.toString());
 	    	releaseResultSet(resultSet);
@@ -408,6 +412,9 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 			  
 			  String cmd_insert="insert into tbl_supplierperformance(supplier_id,supplier_name,category,address,city,state,postalcode,country,website,certified_to,contact_name,contact_title,phone,fax,email_address) values('"+supplierPerformance.getSupplier_id()+"','"+supplierPerformance.getSupplier_name()+"','"+supplierPerformance.getCategory()+"','"+supplierPerformance.getAddress()+"','"+supplierPerformance.getCity()+"','"+supplierPerformance.getState()+"','"+supplierPerformance.getPostalcode()+"','"+supplierPerformance.getCountry()+"','"+supplierPerformance.getWebsite()+"','"+supplierPerformance.getCertified_to()+"','"+supplierPerformance.getContact_name()+"','"+supplierPerformance.getContact_title()+"','"+supplierPerformance.getPhone()+"','"+supplierPerformance.getFax()+"','"+supplierPerformance.getEmail_address()+"')"; 
 			  statement.execute(cmd_insert);
+			  String cmd_insert_child="insert into tbl_supplierperformance_child(performance_id,receipt_date,type_of_problem,quality,delivery,customerservice,problemdetails,problem_found_at,correctiveaction,dueaction_date,deduction,recordedby,recording_date) values('"+supplierPerformance.getPerformance_id()+"','"+supplierPerformance.getReceipt_date()+"','"+supplierPerformance.getType_of_problem()+"','"+supplierPerformance.getQuality()+"','"+supplierPerformance.getDelivery()+"','"+supplierPerformance.getCustomerservice()+"','"+supplierPerformance.getProblemdetails()+"','"+supplierPerformance.getProblem_found_at()+"','"+supplierPerformance.getCorrectiveaction()+"','"+supplierPerformance.getDueaction_date()+"','"+supplierPerformance.getDeduction()+"','"+supplierPerformance.getRecordedby()+"','"+supplierPerformance.getRecording_date()+"')"; 
+			  statement.execute(cmd_insert_child);
+		 
 		  }catch(Exception e){
 	    	System.out.println(e.toString());
 	    	releaseResultSet(resultSet);
@@ -435,11 +442,11 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 		}
 		List<SupplierPerformance> supplierPerformances = new ArrayList<SupplierPerformance>();
 	    try{
-			resultSet = statement.executeQuery("select * from tbl_supplierperformance");
+			resultSet = statement.executeQuery("select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id");
 			System.out.println("came");
 			while(resultSet.next()){
 				System.out.println("count");
-				supplierPerformances.add(new SupplierPerformance(resultSet.getString("supplier_id"), resultSet.getString("supplier_name"), resultSet.getString("category"), resultSet.getString("address"), resultSet.getString("city"), resultSet.getString("state"), resultSet.getString("postalcode"), resultSet.getString("country"), resultSet.getString("website"), resultSet.getString("certified_to"), resultSet.getString("contact_name"), resultSet.getString("contact_title"), resultSet.getString("phone"), resultSet.getString("fax"), resultSet.getString("email_address")));
+				supplierPerformances.add(new SupplierPerformance(resultSet.getString("supplier_id"),resultSet.getString("supplier_name"), resultSet.getString("category"), resultSet.getString("address"), resultSet.getString("city"), resultSet.getString("state"), resultSet.getString("postalcode"), resultSet.getString("country"), resultSet.getString("website"), resultSet.getString("certified_to"), resultSet.getString("contact_name"), resultSet.getString("contact_title"), resultSet.getString("phone"), resultSet.getString("fax"), resultSet.getString("email_address"),resultSet.getString("performance_id"),resultSet.getString("receipt_date"),resultSet.getString("type_of_problem"),resultSet.getString("quality"),resultSet.getString("delivery"),resultSet.getString("customerservice"),resultSet.getString("problemdetails"),resultSet.getString("problem_found_at"),resultSet.getString("correctiveaction"),resultSet.getString("dueaction_date"),resultSet.getString("deduction"),resultSet.getString("recordedby"),resultSet.getString("recording_date")));
 			}
 	    }catch(Exception e){
 	    	System.out.println(e.toString());
@@ -469,10 +476,10 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 			e1.printStackTrace();
 		}
 		try {
-			resultSet = statement.executeQuery("select * from tbl_supplierperformance where supplier_id='"+supplier_id+"'");
+			resultSet = statement.executeQuery("select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where t1.supplier_id='"+supplier_id+"'");
 			while (resultSet.next()) {
 							
-				supplierPerformances.add(new SupplierPerformance(resultSet.getString("supplier_id"), resultSet.getString("supplier_name"), resultSet.getString("category"), resultSet.getString("address"), resultSet.getString("city"), resultSet.getString("state"), resultSet.getString("postalcode"), resultSet.getString("country"), resultSet.getString("website"), resultSet.getString("certified_to"), resultSet.getString("contact_name"), resultSet.getString("contact_title"), resultSet.getString("phone"), resultSet.getString("fax"), resultSet.getString("email_address")));
+				supplierPerformances.add(new SupplierPerformance(resultSet.getString("supplier_id"),resultSet.getString("supplier_name"), resultSet.getString("category"), resultSet.getString("address"), resultSet.getString("city"), resultSet.getString("state"), resultSet.getString("postalcode"), resultSet.getString("country"), resultSet.getString("website"), resultSet.getString("certified_to"), resultSet.getString("contact_name"), resultSet.getString("contact_title"), resultSet.getString("phone"), resultSet.getString("fax"), resultSet.getString("email_address"),resultSet.getString("performance_id"),resultSet.getString("receipt_date"),resultSet.getString("type_of_problem"),resultSet.getString("quality"),resultSet.getString("delivery"),resultSet.getString("customerservice"),resultSet.getString("problemdetails"),resultSet.getString("problem_found_at"),resultSet.getString("correctiveaction"),resultSet.getString("dueaction_date"),resultSet.getString("deduction"),resultSet.getString("recordedby"),resultSet.getString("recording_date")));
 			System.out.println("Dao list result....");
 			}
 		} catch (Exception e) {
@@ -565,66 +572,51 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 		
 			if(!suppliername.equals("") && !phone.equals("") && !email.equals(""))
 			{
-				resultSet = statement.executeQuery("select * from tbl_supplierperformance where supplier_name='"+ suppliername +"' and phone='"+ phone +"' and email_address='"+ email +"' limit " + offset + ","+ limit+"");
+				resultSet = statement.executeQuery("select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where t1.supplier_name='"+ suppliername +"' and t1.phone='"+ phone +"' and t1.email_address='"+ email +"' limit " + offset + ","+ limit+"");
 			}
 			else if(suppliername.equals("") && !phone.equals("") && !email.equals(""))
 			{
-				resultSet = statement.executeQuery("select * from tbl_supplierperformance where phone='"+ phone +"' and email_address='"+ email +"' limit " + offset + ","+ limit+"");
+				resultSet = statement.executeQuery("select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where phone='"+ phone +"' and email_address='"+ email +"' limit " + offset + ","+ limit+"");
 			}
 			else if(!suppliername.equals("") && phone.equals("") && !email.equals(""))
 			{
-				resultSet = statement.executeQuery("select * from tbl_supplierperformance where supplier_name='"+ suppliername +"' and email_address='"+ email +"' limit " + offset + ","+ limit+"");
+				resultSet = statement.executeQuery("select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where supplier_name='"+ suppliername +"' and email_address='"+ email +"' limit " + offset + ","+ limit+"");
 			}
 			else if(!suppliername.equals("") && !phone.equals("") && email.equals(""))
 			{
-				resultSet = statement.executeQuery("select * from tbl_supplierperformance where supplier_name='"+ suppliername +"' and phone='"+ phone +"' limit " + offset + ","+ limit+"");
+				resultSet = statement.executeQuery("select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where supplier_name='"+ suppliername +"' and phone='"+ phone +"' limit " + offset + ","+ limit+"");
 			}
 			else
 			{
-				resultSet = statement.executeQuery("select * from tbl_supplierperformance where supplier_name='"+ suppliername +"' or phone='"+ phone +"' or email_address='"+ email +"' limit " + offset + ","+ limit+"");
+				resultSet = statement.executeQuery("select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where supplier_name='"+ suppliername +"' or phone='"+ phone +"' or email_address='"+ email +"' limit " + offset + ","+ limit+"");
 			}
 	    	}
 			else
 			{
 				if(!suppliername.equals("") && !phone.equals("") && !email.equals(""))
 				{
-					resultSet = statement.executeQuery("select * from tbl_supplierperformance where supplier_name='"+ suppliername +"' and phone='"+ phone +"' and email_address='"+ email +"'");
+					resultSet = statement.executeQuery("select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where supplier_name='"+ suppliername +"' and phone='"+ phone +"' and email_address='"+ email +"'");
 				}
 				else if(suppliername.equals("") && !phone.equals("") && !email.equals(""))
 				{
-					resultSet = statement.executeQuery("select * from tbl_supplierperformance where phone='"+ phone +"' and email_address='"+ email +"'");
+					resultSet = statement.executeQuery("select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where phone='"+ phone +"' and email_address='"+ email +"'");
 				}
 				else if(!suppliername.equals("") && phone.equals("") && !email.equals(""))
 				{
-					resultSet = statement.executeQuery("select * from tbl_supplierperformance where supplier_name='"+ suppliername +"' and email_address='"+ email +"'");
+					resultSet = statement.executeQuery("select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where supplier_name='"+ suppliername +"' and email_address='"+ email +"'");
 				}
 				else if(!suppliername.equals("") && !phone.equals("") && email.equals(""))
 				{
-					resultSet = statement.executeQuery("select * from tbl_supplierperformance where supplier_name='"+ suppliername +"' and phone='"+ phone +"'");
+					resultSet = statement.executeQuery("select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where supplier_name='"+ suppliername +"' and phone='"+ phone +"'");
 				}
 				else
 				{
-					resultSet = statement.executeQuery("select * from tbl_supplierperformance where supplier_name='"+ suppliername +"' or phone='"+ phone +"' or email_address='"+ email +"'");
+					resultSet = statement.executeQuery("select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where supplier_name='"+ suppliername +"' or phone='"+ phone +"' or email_address='"+ email +"'");
 				}
 				
 			}
 			while (resultSet.next()) {
-			supplierPerformances.add(new SupplierPerformance(
-					resultSet.getString("supplier_id"), 
-					resultSet.getString("supplier_name"), 
-					resultSet.getString("category"), 
-					resultSet.getString("address"), 
-					resultSet.getString("city"), 
-					resultSet.getString("state"), 
-					resultSet.getString("postalcode"), 
-					resultSet.getString("country"), 
-					resultSet.getString("website"), 
-					resultSet.getString("certified_to"), 
-					resultSet.getString("contact_name"), 
-					resultSet.getString("contact_title"), 
-					resultSet.getString("phone"), 
-					resultSet.getString("fax"), 
-					resultSet.getString("email_address")));
+				supplierPerformances.add(new SupplierPerformance(resultSet.getString("supplier_id"),resultSet.getString("supplier_name"), resultSet.getString("category"), resultSet.getString("address"), resultSet.getString("city"), resultSet.getString("state"), resultSet.getString("postalcode"), resultSet.getString("country"), resultSet.getString("website"), resultSet.getString("certified_to"), resultSet.getString("contact_name"), resultSet.getString("contact_title"), resultSet.getString("phone"), resultSet.getString("fax"), resultSet.getString("email_address"),resultSet.getString("performance_id"),resultSet.getString("receipt_date"),resultSet.getString("type_of_problem"),resultSet.getString("quality"),resultSet.getString("delivery"),resultSet.getString("customerservice"),resultSet.getString("problemdetails"),resultSet.getString("problem_found_at"),resultSet.getString("correctiveaction"),resultSet.getString("dueaction_date"),resultSet.getString("deduction"),resultSet.getString("recordedby"),resultSet.getString("recording_date")));
 			
 
 }
@@ -663,23 +655,23 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 			
 			if(!suppliername.equals("") && !phone.equals("") && !email.equals(""))
 			{
-				resultSet = statement.executeQuery("select count(*) as noofrecords from tbl_supplierperformance where supplier_name='"+ suppliername +"' and phone='"+ phone +"' and email_address='"+ email +"'");
+				resultSet = statement.executeQuery("select count(*) as noofrecords from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where supplier_name='"+ suppliername +"' and phone='"+ phone +"' and email_address='"+ email +"'");
 			}
 			else if(suppliername.equals("") && !phone.equals("") && !email.equals(""))
 			{
-				resultSet = statement.executeQuery("select count(*) as noofrecords from tbl_supplierperformance where phone='"+ phone +"' and email_address='"+ email +"'");
+				resultSet = statement.executeQuery("select count(*) as noofrecords from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where phone='"+ phone +"' and email_address='"+ email +"'");
 			}
 			else if(!suppliername.equals("") && phone.equals("") && !email.equals(""))
 			{
-				resultSet = statement.executeQuery("select count(*) as noofrecords from tbl_supplierperformance where supplier_name='"+ suppliername +"' and email_address='"+ email +"'");
+				resultSet = statement.executeQuery("select count(*) as noofrecords from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where supplier_name='"+ suppliername +"' and email_address='"+ email +"'");
 			}
 			else if(!suppliername.equals("") && !phone.equals("") && email.equals(""))
 			{
-				resultSet = statement.executeQuery("select count(*) as noofrecords from tbl_supplierperformance where supplier_name='"+ suppliername +"' and phone='"+ phone +"'");
+				resultSet = statement.executeQuery("select count(*) as noofrecords from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where supplier_name='"+ suppliername +"' and phone='"+ phone +"'");
 			}
 			else
 			{
-				resultSet = statement.executeQuery("select count(*) as noofrecords from tbl_supplierperformance where supplier_name='"+ suppliername +"' or phone='"+ phone +"' or email_address='"+ email +"'");
+				resultSet = statement.executeQuery("select count(*) as noofrecords from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where supplier_name='"+ suppliername +"' or phone='"+ phone +"' or email_address='"+ email +"'");
 			}
 			
 	    	
@@ -720,7 +712,7 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 			String cmd_select = null;
 			
 			if(type=="opensupplierperformance")
-				cmd_select= "select * from tbl_supplierperformance" ;
+				cmd_select= "select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id" ;
 			//cmd_select= "select * from tbl_supplierperformance where disposition==0 AND disposition_complete_date==NULL" ;
 			
 		/*		else if(type=="nodispositionover30days")
@@ -731,22 +723,7 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 		*/	resultSet = statement.executeQuery(cmd_select);
 			while (resultSet.next()) {
 				System.out.println(" type result");
-				supplierPerformances.add(new SupplierPerformance(
-						resultSet.getString("supplier_id"), 
-						resultSet.getString("supplier_name"), 
-						resultSet.getString("category"), 
-						resultSet.getString("address"), 
-						resultSet.getString("city"), 
-						resultSet.getString("state"), 
-						resultSet.getString("postalcode"), 
-						resultSet.getString("country"), 
-						resultSet.getString("website"), 
-						resultSet.getString("certified_to"), 
-						resultSet.getString("contact_name"), 
-						resultSet.getString("contact_title"), 
-						resultSet.getString("phone"), 
-						resultSet.getString("fax"), 
-						resultSet.getString("email_address")));
+				supplierPerformances.add(new SupplierPerformance(resultSet.getString("supplier_id"),resultSet.getString("supplier_name"), resultSet.getString("category"), resultSet.getString("address"), resultSet.getString("city"), resultSet.getString("state"), resultSet.getString("postalcode"), resultSet.getString("country"), resultSet.getString("website"), resultSet.getString("certified_to"), resultSet.getString("contact_name"), resultSet.getString("contact_title"), resultSet.getString("phone"), resultSet.getString("fax"), resultSet.getString("email_address"),resultSet.getString("performance_id"),resultSet.getString("receipt_date"),resultSet.getString("type_of_problem"),resultSet.getString("quality"),resultSet.getString("delivery"),resultSet.getString("customerservice"),resultSet.getString("problemdetails"),resultSet.getString("problem_found_at"),resultSet.getString("correctiveaction"),resultSet.getString("dueaction_date"),resultSet.getString("deduction"),resultSet.getString("recordedby"),resultSet.getString("recording_date")));
 				
 
 			}
@@ -786,29 +763,14 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 			String cmd;
 			int offset = 5 * (page - 1);
 			int limit = 5;
-					cmd="select * from tbl_supplierperformance limit " + offset + ","+ limit+"" ;
+					cmd="select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id limit " + offset + ","+ limit+"" ;
 				
 				//	cmd = "select * from tbl_narrativereport order by pname asc limit " + offset + ","+ limit+"" ;
 
 			resultSet = statement.executeQuery(cmd);
 			while (resultSet.next()) {
 				System.out.println(" type result");
-				supplierPerformances.add(new SupplierPerformance(
-						resultSet.getString("supplier_id"), 
-						resultSet.getString("supplier_name"), 
-						resultSet.getString("category"), 
-						resultSet.getString("address"), 
-						resultSet.getString("city"), 
-						resultSet.getString("state"), 
-						resultSet.getString("postalcode"), 
-						resultSet.getString("country"), 
-						resultSet.getString("website"), 
-						resultSet.getString("certified_to"), 
-						resultSet.getString("contact_name"), 
-						resultSet.getString("contact_title"), 
-						resultSet.getString("phone"), 
-						resultSet.getString("fax"), 
-						resultSet.getString("email_address")));
+				supplierPerformances.add(new SupplierPerformance(resultSet.getString("supplier_id"),resultSet.getString("supplier_name"), resultSet.getString("category"), resultSet.getString("address"), resultSet.getString("city"), resultSet.getString("state"), resultSet.getString("postalcode"), resultSet.getString("country"), resultSet.getString("website"), resultSet.getString("certified_to"), resultSet.getString("contact_name"), resultSet.getString("contact_title"), resultSet.getString("phone"), resultSet.getString("fax"), resultSet.getString("email_address"),resultSet.getString("performance_id"),resultSet.getString("receipt_date"),resultSet.getString("type_of_problem"),resultSet.getString("quality"),resultSet.getString("delivery"),resultSet.getString("customerservice"),resultSet.getString("problemdetails"),resultSet.getString("problem_found_at"),resultSet.getString("correctiveaction"),resultSet.getString("dueaction_date"),resultSet.getString("deduction"),resultSet.getString("recordedby"),resultSet.getString("recording_date")));
 				
 
 			}
@@ -826,6 +788,53 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 		return supplierPerformances;
 
 	}
+
+	//view suppliers only
+	public  List<SupplierPerformance> getlimitedsuppliers(int page) {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		
+		
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<SupplierPerformance> supplierPerformances = new ArrayList<SupplierPerformance>();
+
+		try {
+
+			String cmd;
+			int offset = 10 * (page - 1);
+			int limit = 10;
+					cmd="select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id limit " + offset + ","+ limit+"" ;
+				
+				//	cmd = "select * from tbl_narrativereport order by pname asc limit " + offset + ","+ limit+"" ;
+
+			resultSet = statement.executeQuery(cmd);
+			while (resultSet.next()) {
+				System.out.println(" type result");
+				supplierPerformances.add(new SupplierPerformance(resultSet.getString("supplier_id"),resultSet.getString("supplier_name"), resultSet.getString("category"), resultSet.getString("address"), resultSet.getString("city"), resultSet.getString("state"), resultSet.getString("postalcode"), resultSet.getString("country"), resultSet.getString("website"), resultSet.getString("certified_to"), resultSet.getString("contact_name"), resultSet.getString("contact_title"), resultSet.getString("phone"), resultSet.getString("fax"), resultSet.getString("email_address"),resultSet.getString("performance_id"),resultSet.getString("receipt_date"),resultSet.getString("type_of_problem"),resultSet.getString("quality"),resultSet.getString("delivery"),resultSet.getString("customerservice"),resultSet.getString("problemdetails"),resultSet.getString("problem_found_at"),resultSet.getString("correctiveaction"),resultSet.getString("dueaction_date"),resultSet.getString("deduction"),resultSet.getString("recordedby"),resultSet.getString("recording_date")));
+				
+
+			}
+			} catch (Exception e) {
+			/*logger.info(e.toString());*/
+				System.out.println(e.toString());
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return supplierPerformances;
+
+	}
+
 	public int getnoofsupplierreport() {
 		Connection con = null;
 		Statement statement = null;
@@ -843,7 +852,7 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 
 			String cmd;
 			
-					cmd = "select count(*) as noofrecords from tbl_supplierperformance ";
+					cmd = "select count(*) as noofrecords from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id";
 					System.out.println("command"+cmd);			
 			resultSet = statement.executeQuery(cmd);
 			if (resultSet.next())

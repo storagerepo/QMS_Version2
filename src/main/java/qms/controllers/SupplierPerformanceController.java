@@ -58,7 +58,28 @@ import qms.forms.SupplierPerformanceForm;;
 		return "view_supplierperformance";
 	 	}
 		
+		//View method for supplier Details
+		@RequestMapping(value={"/view_supplier"}, method = RequestMethod.GET)
+		public String show_suppliers(HttpSession session,HttpServletRequest request, ModelMap model, Principal principal )
+		{
+			
+	    SupplierPerformanceForm supplierPerformanceForm=new SupplierPerformanceForm();
+	    model.addAttribute("menu","supplier");
+	    model.addAttribute("noofrows",10); 
+	    
+	    supplierPerformanceForm.setSupplierperformance(supplierPerformanceDAO.getlimitedsuppliers(1));
+	    
+	    model.addAttribute("noofpages",(int) Math.ceil(supplierPerformanceDAO.getnoofsupplierreport() * 1.0 / 10));
+	    model.addAttribute("button","viewall");
+        model.addAttribute("success","false");
+        model.addAttribute("currentpage",1);
+        
+	   model.addAttribute("supplierPerformanceForm",supplierPerformanceForm);
+	    model.addAttribute("justcame",false);
+		return "view_supplier_details";
+	 	}
 		
+
 
 
 
@@ -81,6 +102,26 @@ import qms.forms.SupplierPerformanceForm;;
 		    model.addAttribute("success","true");
 		    model.addAttribute("justcame",false);
 		    return "view_supplierperformance";
+		    
+			
+		}
+
+		//supplier view
+		@RequestMapping(value="/viewsupplier_page", method=RequestMethod.GET)
+		public String viewsupplier_page(HttpSession session,HttpServletRequest request,@RequestParam("page") int page,ModelMap model) {	
+			
+			
+			SupplierPerformanceForm supplierPerformanceForm=new SupplierPerformanceForm();
+			supplierPerformanceForm.setSupplierperformance(supplierPerformanceDAO.getlimitedsuppliers(page));
+			model.addAttribute("noofpages",(int) Math.ceil(supplierPerformanceDAO.getnoofsupplierreport() * 1.0 / 10));	 
+			model.addAttribute("supplierPerformanceForm",supplierPerformanceForm);
+		  	model.addAttribute("noofrows",10);   
+		    model.addAttribute("currentpage",page);
+		    model.addAttribute("menu","supplier");
+		    model.addAttribute("button","viewall");
+		    model.addAttribute("success","true");
+		    model.addAttribute("justcame",false);
+		    return "view_supplier_details";
 		    
 			
 		}
@@ -108,6 +149,26 @@ import qms.forms.SupplierPerformanceForm;;
 		        model.addAttribute("success","false");
 		        model.addAttribute("button","close");
 		        return "view_supplierperformance";
+		        
+		}
+		
+		@RequestMapping(value={ "/viewallsupplier"}, method = RequestMethod.GET)
+		public String viewallsupplier(HttpSession session,HttpServletRequest request,ModelMap model,Principal principal )
+		{
+			
+			SupplierPerformanceForm supplierPerformanceForm=new SupplierPerformanceForm();
+			supplierPerformanceForm.setSupplierperformance(supplierPerformanceDAO.getsupplierperformance());
+				 
+			model.addAttribute("supplierPerformanceForm",supplierPerformanceForm);
+		   
+		   //narrativereportForm.getNarrativereport().size()
+		    model.addAttribute("menu","supplier");
+		    model.addAttribute("button","close");
+		    model.addAttribute("success","true");
+		    	model.addAttribute("menu","supplier");
+		        model.addAttribute("success","false");
+		        model.addAttribute("button","close");
+		        return "view_supplier_details";
 		        
 		}
 

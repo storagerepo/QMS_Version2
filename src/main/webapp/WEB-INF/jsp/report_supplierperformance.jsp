@@ -20,7 +20,13 @@
 									
 								</a>
 							</li>
-						
+							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+								<a href="view_supplier" class="<c:choose>
+								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
+									<span>View Supplier</span>
+									
+								</a>
+							</li>
 				          <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="view_supplierperformance" class="<c:choose>
 								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
