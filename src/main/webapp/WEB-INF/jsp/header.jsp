@@ -331,7 +331,7 @@
 							</li>
 				            <br>
 				            <li>
-								<a href="supplierperformancedelete" class="<c:choose>
+								<a href="Addsuppliercategory" class="<c:choose>
 								<c:when test="${menu=='supplier'}">buttonsub blueactive</c:when><c:otherwise>buttonsub blue</c:otherwise></c:choose>">
 									<span><img src="<c:url value="/resources/images/suplier.png" />" alt="" style="padding:5px 5px 0 0;" />Supplier Performance</span>
 								</a>
@@ -553,6 +553,26 @@
 							<li ><a href="documenttype_list">Document Type</a></li>
 							
 						</ul>
+						
+						<ul id="supplier11" class="ddsubmenustyle">
+							<li ><a href="Addsuppliercategory">Supplier Category</a></li>
+							<li ><a href="Add_certifiedto">Supplier Certified To</a></li>
+							
+							
+							
+						</ul>
+						
+						 <ul id="supplier1" class="ddsubmenustyle">
+							<!-- <li ><a href="Addsuppliercategory">Supplier Category</a></li>
+							<li ><a href="Add_certifiedto">Supplier Certified To</a></li> -->
+							<li><a href="suppliercategorylist">List Supplier Category</a></li>
+							<li><a href="suppliercertificatelist">List Supplier Certified To</a></li>
+							
+						
+							
+						</ul>
+						
+						
 						 <ul id="deletedoc" class="ddsubmenustyle">
 							<li ><a href="documentdelete">Document</a></li>
 							<li ><a href="formdelete">Forms / Records</a></li>
