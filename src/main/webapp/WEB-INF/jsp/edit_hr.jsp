@@ -9,27 +9,27 @@
 <script src="resources/js/popover.js"></script>
 <script src="resources/js/transition.js"></script>
 
+
 <script>
 
-$(function() {
+ $(function() {
 
-	 $( "#datepicker" ).datepicker();
-
-        });
-$(function() {
-
-	 $( "#datepicker1" ).datepicker();
-
-        });
-
-$(function() {
-
-     $( "#datepicker2" ).datepicker();
-         });
+	 $( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
+ });
 
  $(function() {
-	 $( "#datepicker3" ).datepicker();
+
+	 $( "#datepicker1" ).datepicker({dateFormat: 'yy-mm-dd'});
  });
+
+ $(function() {
+   $( "#datepicker2" ).datepicker({dateFormat: 'yy-mm-dd'});
+});
+
+$(function() {
+	$( "#datepicker3" ).datepicker({dateFormat: 'yy-mm-dd'});
+});
+
 </script>
 
 <form method="post" enctype="multipart/form-data" action="updatehr">
@@ -318,7 +318,7 @@ function validate()
 {
 	
 	var error="";
-	var date = /^(0?[1-9]|1[012])[\/](0?[1-9]|[12][0-9]|3[01])[\/]\d{4}$/;
+	var date = /^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/;
 	var name = document.getElementById('name').value;
 	var trainer = document.getElementById('trainer').value;
 	var jobtitle = document.getElementById('jobtitle').value;

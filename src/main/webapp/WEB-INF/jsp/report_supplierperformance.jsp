@@ -84,7 +84,25 @@
 								<!-- <input type="radio"  onclick="validation1()"  name="doc_type" value="1" id="id_disposition"/>No Disposition Over 30 Days<br/>
 								 <input type="radio" onclick="validation()" name="doc_type" value="2" id="id_cost_of_nonconformance"/>Cost of Non-Conformance<br/> 
 								 -->
-								</td>
+								
+								
+								
+								<table id="start" cellpadding="0" cellspacing="0" border="0" width="100%">
+	
+    								<tr class="row2">
+    								
+    								<td valign="middle" align="left" class="input_txt" style="padding-left: 23px">Enter the Start Date : </td>
+    								<td valign="top" align="left" class="input_txt"><input type="text" class="input_txtbx" id="datepicker" name="start"/><br><span style="color:red;" id="starterr"></span></td>
+    								</tr>
+    								<tr class="row2">
+    								
+    								<td valign="middle" align="left" class="input_txt" style="padding-left: 23px"> Enter the End Date :&nbsp;&nbsp;</td>
+    								<td valign="top" align="left" class="input_txt"><input type="text" class="input_txtbx" id="datepicker1" name="end" /><br><span style="color:red;" id="enderr"></span></td>
+    								</tr>
+    							</table>
+    							
+    							</td>
+    
 								</tr>
 								
     							
@@ -207,7 +225,9 @@ function validate()
 	var a13 = document.getElementById('13').checked;
 	var a14 = document.getElementById('14').checked;
 	var a15 = document.getElementById('15').checked;
-	
+	var date = /^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/;
+	var datepicker = document.getElementById('datepicker').value;
+	var datepicker1 = document.getElementById('datepicker1').value;
 	if(id_type_userdefined)
 		{
 		if(a1 || a2|| a3|| a4|| a5|| a6|| a7|| a8|| a9|| a10|| a11|| a12|| a13|| a14|| a15)
@@ -223,6 +243,50 @@ function validate()
 	{
 		document.getElementById("userdefineerror").innerHTML="";
 		}
+	if(datepicker=="")
+	{	
+	
+ document.getElementById("starterr").innerHTML="Required field should not be empty";
+ error="true";
+	}
+	
+else if(!datepicker.match(date))
+ {
+	
+ document.getElementById("starterr").innerHTML="Invalid date";
+ error="true";
+ }
+
+else if(datepicker > datepicker1)
+		{
+	
+			 document.getElementById("starterr").innerHTML="Please pickup the startdate not more than enddate";
+				error="true";
+		}	
+	else
+ {
+	
+ document.getElementById("starterr").innerHTML="";
+ 
+ } 
+	if(datepicker1=="")
+	{	
+	
+ document.getElementById("enderr").innerHTML="Required field should not be empty";
+ error="true";
+	}
+
+else if(!datepicker1.match(date))
+ {
+	
+ document.getElementById("enderr").innerHTML="Invalid date";
+ error="true";
+ }
+ else
+ {
+	 
+ document.getElementById("enderr").innerHTML="";
+ } 
 	
 	if(error == "true")
 		{
@@ -231,20 +295,21 @@ function validate()
 }
 </script>
 
-<script type="text/javascript">
 
+<script>
 $(function() {
-	 var format="yy-mm-dd";
-          $( "#datepicker" ).datepicker();
-          
-        });
-$(function() {
-	 var format="yy-mm-dd";
-          $( "#datepicker1" ).datepicker();
-          
-        });
+	 $( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
+       });
 
- function toggle2(value){
+</script>
+<script>
+$(function() {
+	 $( "#datepicker1" ).datepicker({dateFormat: 'yy-mm-dd'});
+       });
+
+</script>
+    <script type="text/javascript">
+             function toggle2(value){
     var e3=document.getElementById("document_type_table");
 if(value=="document_list_by_type")
     {

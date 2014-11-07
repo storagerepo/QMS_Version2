@@ -104,9 +104,8 @@ function doAjaxPost() {
 
  $(function() {
 
-	 $( "#datepicker" ).datepicker();
-
-        });
+	 $( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
+ });
 
  
 
@@ -116,25 +115,25 @@ function doAjaxPost() {
 
  $(function() {
 
-	 $( "#datepicker1" ).datepicker();
+	 $( "#datepicker1" ).datepicker({dateFormat: 'yy-mm-dd'});
+ });
 
-        });
 
  
 
 </script>
 
    <script>
+   $(function() {
+   $( "#datepicker2" ).datepicker({dateFormat: 'yy-mm-dd'});
+});
 
- $(function() {
-
-           $( "#datepicker2" ).datepicker();
-         });
 </script>
 <script>
- $(function() {
-	 $( "#datepicker3" ).datepicker();
- });
+$(function() {
+$( "#datepicker3" ).datepicker({dateFormat: 'yy-mm-dd'});
+});
+
 </script>
 <form method="post" action="addhr">
   <div id="right_content">
@@ -373,7 +372,7 @@ function validate()
 {
 	
 	var error="";
-	var date = /^(0?[1-9]|1[012])[\/](0?[1-9]|[12][0-9]|3[01])[\/]\d{4}$/;
+	var date = /^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/;
 	var name = document.getElementById('name').value;
 	var trainer = document.getElementById('trainer').value;
 	var jobtitle = document.getElementById('jobtitle').value;

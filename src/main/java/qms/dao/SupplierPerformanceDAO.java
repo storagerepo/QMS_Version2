@@ -8,21 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
+
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import qms.controllers.AbstractITextPdfView;
@@ -52,7 +54,11 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 							
 								@SuppressWarnings("unchecked")
 								List<SupplierPerformance> supplierPerformances = (List<SupplierPerformance>) model.get("supplierPerformances");
+								
+								
+								
 								String[] fields = (String[])model.get("fields");
+								String[] dates = (String[])model.get("dates");
 								
 								int memolist = fields.length;
 								System.out.println(memolist);
@@ -62,7 +68,38 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 								int i=1;
 								 table.addCell(createLabelCell("SNO"));
 								 width[0] = 1.0f;
-			
+								 List<String> supplierPerformances1 = this.get_supplierperformance_score("opensupplierperformance",dates[0],dates[1]);
+								 Double number = Double.parseDouble(supplierPerformances1.get(0));
+								 if(number >= 90)
+								 {
+								 Font f1 = new Font(FontFamily.TIMES_ROMAN, 8.0f, Font.BOLD, BaseColor.BLACK);
+								 Chunk ck = new Chunk("Good Standing", f1);
+								 ck.setBackground(BaseColor.WHITE);
+								 Paragraph p1 = new Paragraph(ck);
+								 p1.setAlignment(Element.ALIGN_RIGHT);
+								 doc.add(p1);
+								 doc.add( Chunk.NEWLINE );
+								 }
+								 else if(number >= 75 && number <= 89)
+								 {
+									 Font f1 = new Font(FontFamily.TIMES_ROMAN, 8.0f, Font.BOLD, BaseColor.BLACK);
+									 Chunk ck = new Chunk("Conditional... no new business", f1);
+									 ck.setBackground(BaseColor.WHITE);
+									 Paragraph p1 = new Paragraph(ck);
+									 p1.setAlignment(Element.ALIGN_RIGHT);
+									 doc.add(p1);
+									 doc.add( Chunk.NEWLINE );
+								 }
+								 else if(number <= 75)
+								 {
+									 Font f1 = new Font(FontFamily.TIMES_ROMAN, 8.0f, Font.BOLD, BaseColor.BLACK);
+									 Chunk ck = new Chunk(" must improve to higher category within the next 2 evaluation periods or potential for losing business", f1);
+									 ck.setBackground(BaseColor.WHITE);
+									 Paragraph p1 = new Paragraph(ck);
+									 p1.setAlignment(Element.ALIGN_RIGHT);
+									 doc.add(p1);
+									 doc.add( Chunk.NEWLINE );
+								 }
 		for (String field : fields) {
 			
 			if(field.equals("supplier_id"))
@@ -162,6 +199,20 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 				 table.addCell(createLabelCell("Email Address"));
 			
 			}
+			else if(field.equals("type_of_problem"))	
+			{
+				width[i] = 1.0f;
+				 i++;
+				 table.addCell(createLabelCell("Type of Problem"));
+			
+			}
+			else if(field.equals("deduction"))	
+			{
+				width[i] = 1.0f;
+				 i++;
+				 table.addCell(createLabelCell("Deduction"));
+			
+			}
 		}
 	
 		int j =1;
@@ -249,6 +300,17 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 					{
 							table.addCell(createValueCell(
 								supplierPerformance.getEmail_address()));
+					
+					}
+					else if(field.equals("type_of_problem"))	
+					{
+							table.addCell(createValueCell(
+								supplierPerformance.getType_of_problem()));
+						
+					}else if(field.equals("deduction"))	
+					{
+							table.addCell(createValueCell(
+								supplierPerformance.getDeduction()));
 					
 					}
 					
@@ -694,7 +756,7 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 	}
 
 	//REPORT GENERATION
-	public List<SupplierPerformance> get_supplierperformance_type(String type)
+	public List<SupplierPerformance> get_supplierperformance_type(String type,String start,String end)
 	 {
 		Connection con = null;
 		Statement statement = null;
@@ -709,10 +771,11 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 			e1.printStackTrace();
 		}
 		try {
-			String cmd_select = null;
+			String cmd_select = "";
 			
 			if(type=="opensupplierperformance")
-				cmd_select= "select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id" ;
+				cmd_select= "select t1.*,t2.* from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where t2.recording_date between '"+start+"' and '"+end+"'";
+				System.out.println(cmd_select);
 			//cmd_select= "select * from tbl_supplierperformance where disposition==0 AND disposition_complete_date==NULL" ;
 			
 		/*		else if(type=="nodispositionover30days")
@@ -724,6 +787,54 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 			while (resultSet.next()) {
 				System.out.println(" type result");
 				supplierPerformances.add(new SupplierPerformance(resultSet.getString("supplier_id"),resultSet.getString("supplier_name"), resultSet.getString("category"), resultSet.getString("address"), resultSet.getString("city"), resultSet.getString("state"), resultSet.getString("postalcode"), resultSet.getString("country"), resultSet.getString("website"), resultSet.getString("certified_to"), resultSet.getString("contact_name"), resultSet.getString("contact_title"), resultSet.getString("phone"), resultSet.getString("fax"), resultSet.getString("email_address"),resultSet.getString("performance_id"),resultSet.getString("receipt_date"),resultSet.getString("type_of_problem"),resultSet.getString("quality"),resultSet.getString("delivery"),resultSet.getString("customerservice"),resultSet.getString("problemdetails"),resultSet.getString("problem_found_at"),resultSet.getString("correctiveaction"),resultSet.getString("dueaction_date"),resultSet.getString("deduction"),resultSet.getString("recordedby"),resultSet.getString("recording_date")));
+				
+
+			}
+
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return supplierPerformances;
+	}
+
+	//REPORT GENERATION
+	public List<String> get_supplierperformance_score(String type,String start,String end)
+	 {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		boolean status = false;
+		List<String> supplierPerformances = new ArrayList<String>();
+
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			String cmd_select = null;
+			
+			if(type=="opensupplierperformance")
+				cmd_select= "select abs((count(*)*100-sum(t2.deduction))/(count(*)*100))*100 as deduction from tbl_supplierperformance as t1 join tbl_supplierperformance_child as t2 on t1.supplier_id = t2.performance_id where t2.recording_date between '"+start+"' and '"+end+"'";
+			//cmd_select= "select * from tbl_supplierperformance where disposition==0 AND disposition_complete_date==NULL" ;
+			
+		/*		else if(type=="nodispositionover30days")
+				//	cmd_select="select * from tbl_supplierperformance where disposition_complete_date between now() and DATE_ADDNOW(), INTERVAL 30 DAYS";
+					cmd_select="select * from tbl_supplierperformance  WHERE   disposition_complete_date BETWEEN NOW() + INTERVAL 30 DAY AND NOW()";
+					else if(type=="defined")
+						cmd_select="select * from tbl_supplierperformance where disposition_complete_date between start AND end";
+		*/	resultSet = statement.executeQuery(cmd_select);
+			while (resultSet.next()) {
+				System.out.println(" type result");
+				supplierPerformances.add(resultSet.getString("deduction"));
 				
 
 			}

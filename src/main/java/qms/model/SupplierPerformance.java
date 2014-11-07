@@ -105,6 +105,11 @@ public class SupplierPerformance {
 		this.recordedby = recordedby;
 		this.recording_date = recording_date;
 	}
+	
+	public SupplierPerformance(String deduction) {
+		super();
+		this.deduction = deduction;
+	}
 	public String getSupplier_id() {
 		return supplier_id;
 	}

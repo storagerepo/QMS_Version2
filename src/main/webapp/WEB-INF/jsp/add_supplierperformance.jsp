@@ -248,8 +248,8 @@
             <tr class="row2">
                <td valign="top" align="left" class="input_txt" width="40%">Request Corrective Action (Y/N)  :</td>
                <td valign="top" align="left" class="input_txt" width="40%">
-               <input type="radio" name="correctiveaction" value="Yes"  onclick="Correctiveaction();" id="correctiveaction_yes"  checked>Yes&nbsp;&nbsp;&nbsp;
-               <input type="radio" name="correctiveaction" value="No" onclick="Correctiveaction();" id="correctiveaction_no"  >No&nbsp;&nbsp;&nbsp;<br/><span class="err"></span>
+               <input type="radio" name="correctiveaction" value="Yes"  onclick="Correctiveaction();" id="correctiveaction_yes"  >Yes&nbsp;&nbsp;&nbsp;
+               <input type="radio" name="correctiveaction" value="No" onclick="Correctiveaction();" id="correctiveaction_no"  checked>No&nbsp;&nbsp;&nbsp;<br/><span class="err"></span>
                </td>
                </tr>
               
@@ -1510,7 +1510,7 @@ function Alphabets(e, t) {
  <script>
 	
 	window.onload = function(){
-		gettypeofproblem();
+		gettypeofproblem();Correctiveaction();
 	}
 		</script>
 </body>

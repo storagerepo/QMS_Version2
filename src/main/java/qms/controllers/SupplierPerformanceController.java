@@ -2,6 +2,7 @@
 
 	import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
 
 
 	import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 	import qms.dao.SupplierPerformanceDAO;
+import qms.model.EmailSender;
 import qms.model.SupplierPerformance;
 
 import qms.forms.SupplierPerformanceForm;;
@@ -34,6 +36,8 @@ import qms.forms.SupplierPerformanceForm;;
 		@Autowired
 		SupplierPerformanceDAO supplierPerformanceDAO;
 		
+		@Autowired  
+		EmailSender emailSender;
 		
 		//View method for supplier performance form
 		@RequestMapping(value={"/view_supplierperformance"}, method = RequestMethod.GET)
@@ -200,6 +204,7 @@ import qms.forms.SupplierPerformanceForm;;
 			session.removeAttribute("suppliername");
 			System.out.println("came");
 			session.setAttribute("supplier",supplierPerformance);
+			System.out.println("corrective action = "+supplierPerformance.getCorrectiveaction());
 			if(result.hasErrors())
 			{
 				model.addAttribute("id", supplierPerformanceDAO.get_maxid());
@@ -208,7 +213,13 @@ import qms.forms.SupplierPerformanceForm;;
 				
 			}
 			System.out.println("inserting....");
+			if(supplierPerformance.getCorrectiveaction().equals("Yes"))
+			{
+				System.out.println("emailsending.....");
+				emailSender.sendRequestForCAPA("krishnakanthdeemsys@gmail.com","lmsmoocadmin@deemsysinc.com", "Happy Geetings! As "+"\r"+"Please provide Corrective and Preventive Action details"+"\r"+"\r"+"\r"+"\r"+"Thanks & Regards,"+"\r"+"QMS Application");
+			}
 			supplierPerformanceDAO.insert_supplierperformance(supplierPerformance);
+		
 			SupplierPerformanceForm supplierPerformanceForm= new SupplierPerformanceForm();
 			supplierPerformanceForm.setSupplierperformance(supplierPerformanceDAO.getsupplierperformance());
 		//	model.addAttribute("supplierPerformanceForm",supplierPerformanceForm);
@@ -336,19 +347,26 @@ import qms.forms.SupplierPerformanceForm;;
 
 	//Report Generation
 	@RequestMapping(value = "/generate_supplierperformance_report", method = RequestMethod.POST)
-	public ModelAndView generatesupplierperformance_Report(HttpServletRequest request,ModelMap model, HttpServletResponse response)
+	public ModelAndView generatesupplierperformance_Report(HttpSession session,HttpServletRequest request,ModelMap model, HttpServletResponse response)
 	{
 	
 		String[] fields={"supplier_id","supplier_name","category","address","city","state","postalcode","country",
-				"website","certified_to","contact_name","contact_title","phone","fax","email_address"};
-	
-		System.out.println(request.getParameter("type_of_report"));
+				"website","certified_to","contact_name","contact_title","phone","fax","email_address","type_of_problem","deduction"};
 		
+		System.out.println(request.getParameter("type_of_report"));
+		String start_date = request.getParameter("start");
+		String end_date = request.getParameter("end");
+		String[] dates ={start_date,end_date};
 		java.util.List<SupplierPerformance> supplierPerformances=new ArrayList<SupplierPerformance>();
+	
 			switch(Integer.parseInt(request.getParameter("doc_type")))
 				  {
 		  case 0:
-			  supplierPerformances=supplierPerformanceDAO.get_supplierperformance_type("opensupplierperformance");
+			  supplierPerformances=supplierPerformanceDAO.get_supplierperformance_type("opensupplierperformance",start_date,end_date);
+			  List<String> supplierPerformances1 = supplierPerformanceDAO.get_supplierperformance_score("opensupplierperformance",start_date,end_date);
+			  model.addAttribute("supplierPerformances1", supplierPerformances1);
+			  
+			
 			  break;
 /*		  case 1:
 			  supplierPerformances=supplierPerformanceDAO.get_nonconformance_type("nodispositionover30days","start","end");
@@ -382,7 +400,7 @@ import qms.forms.SupplierPerformanceForm;;
 		ModelAndView modelAndView=new ModelAndView("supplierperformanceDAO","supplierPerformances",supplierPerformances);
 		
 		modelAndView.addObject("fields",fields);
-		
+		modelAndView.addObject("dates",dates);
 		System.out.println("now ok::::");
 		return modelAndView ;
 	}
