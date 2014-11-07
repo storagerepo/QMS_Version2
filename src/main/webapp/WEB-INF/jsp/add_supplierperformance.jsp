@@ -314,7 +314,7 @@
      <table id="showbutton" style="display:none;float:right;margin-top:20px">
       <tr class="row1" >
            <tr class="row1" >
-                  <td valign="bottom" colspan="4"align="right">&nbsp;<input type="submit" value="Submit1"  onclick="return validation();" class="submit_btn1"></td>
+                  <td valign="bottom" colspan="4"align="right">&nbsp;<input type="submit" value="Submit"  onclick="return validation();" class="submit_btn1"></td>
                   <td valign="top" align="left">
                   <input type="button" value="Hide Enter Performance Details" onclick="hidechildsection();"class="submit_btn1" style="width:350px;"> 
 				</td>
