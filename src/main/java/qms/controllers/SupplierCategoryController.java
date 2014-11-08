@@ -95,7 +95,7 @@ public String Documenttypelist(HttpServletRequest request,ModelMap model, Princi
 	addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getlimiteddocumenttypereport(1));
 	
   	
-model.addAttribute("noofpages",(int) Math.ceil(SuppliercategoryDAO.getnoofdocumenttypereport() * 1.0 / 5));	 
+	model.addAttribute("noofpages",(int) Math.ceil(SuppliercategoryDAO.getnoofdocumenttypereport() * 1.0 / 5));	 
 	   
 	model.addAttribute("button","viewall");
     model.addAttribute("success","false");
@@ -113,6 +113,7 @@ public String edit_suppliercategory(HttpServletRequest request,@RequestParam("id
 	
 	addsupplierCategoryform.setSuppliercategory(SuppliercategoryDAO.getsuppliercategory(id));
 	model.addAttribute("addsuppliercategoryform",addsupplierCategoryform);
+	model.addAttribute("menu","supplier");
         return "edit_suppliercategory";
 
 }

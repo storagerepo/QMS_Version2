@@ -20,13 +20,13 @@
 						  <ul class="horizmenu" >
 						  	<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="#" class="<c:choose>
-								<c:when test="${menu=='supplier'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>" rel="supplier11">
+								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>" rel="supplier11">
 									<span>Add Set-up</span>
 								</a>
 							</li>
 							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="#" class="<c:choose>
-									<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>"rel="supplier1">
+									<c:when test="${menu=='supplier'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>"rel="supplier1">
 									<span>List/Delete Set-up</span>
 							</a>
 							</li>
@@ -102,9 +102,8 @@
 			      <form action="suppliercategorylist" method="POST"> 
 						<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				     <tr class="title">
-							<td valign="top" align="left" width="20%"> ID</td>
 							
-							<td valign="top" align="left" width="20%">Category</td>
+							<td valign="top" align="left" width="20%">Certificate</td>
 							<td valign="top" align="left" width="20%">Actions</td>
 							</tr>
 							<c:if test="${fn:length(Certified_toform.certified_to) gt 0}">
@@ -112,7 +111,7 @@
         				       				<tr class="row1">
         				       				
         				       				
-        				       				 <td valign="top" align="left"  width="10%"> ${documenttype.id}</td>
+        				       				
         				       			
         				       				 <td valign="top" align="left" width="15%">${documenttype.certified_to}</td>
         				       					<td valign="top" align="left">
@@ -122,13 +121,13 @@
         				       				 </tr>
         				       				 </c:forEach>
         				       				 </c:if>
-        				       				 <%--  <c:if test="${fn:length(documentTypeForm.documentTypes) == 0}">	
+        				       			 <c:if test="${fn:length(Certified_toform.certified_to) == 0}">	
 							    	 <c:if test="${justcame=='false'}">
 							    	<tr class="row1">
 							    	<td colspan="7" width="100%"><center><span style="color:red;"><b>No Records Found!!!</b></span></center></td>
 							    		
 							    	</tr></c:if>
-							    	</c:if>  --%>
+							    	</c:if>  
         				       				 </table>
         				       				</form>
         				       				</div>

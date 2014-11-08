@@ -20,13 +20,13 @@
 						  <ul class="horizmenu" >
 						  	<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="#" class="<c:choose>
-								<c:when test="${menu=='supplier'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>" rel="supplier11">
+								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>" rel="supplier11">
 									<span>Add Set-up</span>
 								</a>
 							</li>
 							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="#" class="<c:choose>
-									<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>"rel="supplier1">
+									<c:when test="${menu=='supplier'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>"rel="supplier1">
 									<span>List/Delete Set-up</span>
 							</a>
 							</li>
