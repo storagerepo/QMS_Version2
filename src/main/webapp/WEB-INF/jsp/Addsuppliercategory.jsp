@@ -4,6 +4,18 @@
 <script src="resources/js/jquery-1.7.2.min.js"></script>
 <script src="resources/js/jquery-ui.js"></script>
 <script src="resources/js/modal.js"></script>
+ <script src="resources/js/jquery.js"></script>
+ 
+<head>
+<script>
+	 $('input[type=text]').on("focusout", function() {
+		    var dest = $(this);
+		    dest.val(jQuery.trim(dest.val()));        
+		    dest.val(dest.val().replace(/[ ]{2,}/, ' ')); 
+		     });
+
+	</script>
+	</head>
 <html>
 <div id="right_content">
 <form method="post" action="add_supplierprefix">
@@ -77,7 +89,7 @@
                 <tr class="row2">
                   <td valign="middle" align="left" class="input_txt" style="padding-left: 55px" >Supplier Category :</td>
                   <td valign="top" align="left" class="input_txt">
-                  <input type="text" name="category" class="input_txtbx" maxlength="32" id="category" value="${suppliercategory.category}" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}""/>
+                  <input type="text" name="category" class="input_txtbx" maxlength="32" id="category" value="${suppliercategory.category}" onkeypress="return onlyAlphabets(event,this);" />
                    <br> <span id="categoryerror" style="color:red">     
               
 </td>
@@ -101,6 +113,15 @@
  </table>
  </form>
  </div>
+<script>
+  $(function() {
+	$("#category").on("keypress", function(e) {
+		if (e.which === 32 && !this.value.length)
+	        e.preventDefault();
+	});
+	});	
+
+</script>
  <script>
     function validation()
     {
@@ -116,7 +137,13 @@
          document.getElementById("categoryerror").innerHTML="Required field should not be empty";
          error=true; 
       } 
-    
+       if(document.getElementById("category").value!="")
+       {
+         if(document.getElementById("category").value.length < 4 || document.getElementById("category").value.length > 32){
+                    document.getElementById("categoryerror").innerHTML="Required field should be length of 4 to 32";
+                    error=true; 
+                }
+       }   
       
        if(error==true)
        {
@@ -128,6 +155,31 @@
 
     }
 
+    </script>
+    
+    <script>
+   
+	
+	function onlyAlphabets(e, t) {
+		
+	    try {
+	        if (window.event) {
+	            var charCode = window.event.keyCode;
+	        }
+	        else if (e) {
+	            var charCode = e.which;
+	        }
+	        else { return true; }
+	        if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123)|| (charCode==32)||(charCode==45) || (charCode==8) || (charCode==9) )
+	            return true;
+	        else
+	            return false;
+	    }
+	    catch (err) {
+	        alert(err.Description);
+	    }
+	}
+	
     </script>
     
   <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>

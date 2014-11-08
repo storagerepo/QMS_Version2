@@ -75,7 +75,7 @@
 			<table cellpadding="0" cellspacing="0" border="0">
                <tr class="row1">
                   <td valign="middle" align="left" class="input_txt" style="padding-left: 55px">Certified To :</td>
-                  <td valign="top" align="left" class="input_txt"><input type="text" name="certified_to" class="input_txtbx" maxlength="32" id="certified_to" value="${certified_to.certified_to}" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}""/>
+                  <td valign="top" align="left" class="input_txt"><input type="text" name="certified_to" class="input_txtbx" maxlength="32" id="certified_to" value="${certified_to.certified_to}" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"/>
                    <br> <span id="certified_toerror" style="color:red">                           
                </td>
                 </tr>
@@ -97,6 +97,15 @@
  </tr>
  </table>
  </form>
+ <script>
+  $(function() {
+	$("#certified_to").on("keypress", function(e) {
+		if (e.which === 32 && !this.value.length)
+	        e.preventDefault();
+	});
+	});	
+
+</script>
  
 <script>
     function validation()
@@ -132,6 +141,8 @@
     }
 
     </script>
+    
+    
  
  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
  </div>
