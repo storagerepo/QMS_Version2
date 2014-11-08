@@ -40,7 +40,7 @@ import qms.model.Certified_To;
 
 
 @Controller
-@SessionAttributes({"documentprefix","prefixdocument"})
+@SessionAttributes({"category"})
 public class SupplierCategoryController {
 	
 	@Autowired
@@ -51,7 +51,7 @@ public class SupplierCategoryController {
 @RequestMapping(value = {"/Addsuppliercategory"}, method = RequestMethod.GET)
 	
 	public String addsupplier(HttpSession session,ModelMap model, Principal principal) {
-		session.removeAttribute("documentprefix");
+		session.removeAttribute("category");
 		model.addAttribute("menu","supplier");
 		return "Addsuppliercategory";
 	}
@@ -90,7 +90,7 @@ public String postsupplierPrefix(HttpSession session,@ModelAttribute("addsuppile
 	model.addAttribute("addsuppliercategoryform",addsuppliercategoryform);
 	model.addAttribute("success",true);*/
 	model.addAttribute("Success", "true");
-	session.removeAttribute("documentPrefix");
+	session.removeAttribute("category");
 	
 		
 		return "Addsuppliercategory";
@@ -98,16 +98,16 @@ public String postsupplierPrefix(HttpSession session,@ModelAttribute("addsuppile
 
 
 @RequestMapping(value="/suppliercategorylist", method=RequestMethod.GET)
-public String Documenttypelist(HttpServletRequest request,ModelMap model, Principal principal,HttpSession session) {
-	session.removeAttribute("dtype");
+public String categorytypelist(HttpServletRequest request,ModelMap model, Principal principal,HttpSession session) {
+	
 	SupplierCategoryform addsuppliercategoryform = new SupplierCategoryform();
 	model.addAttribute("menu","supplier");
   	model.addAttribute("noofrows",5);
 	
-	addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getlimiteddocumenttypereport(1));
+	addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getlimitedcategoryereport(1));
 	
   	
-	model.addAttribute("noofpages",(int) Math.ceil(SuppliercategoryDAO.getnoofdocumenttypereport() * 1.0 / 5));	 
+	model.addAttribute("noofpages",(int) Math.ceil(SuppliercategoryDAO.getnoofcategorytypereport() * 1.0 / 5));	 
 	   
 	model.addAttribute("button","viewall");
     model.addAttribute("success","false");
@@ -118,7 +118,7 @@ public String Documenttypelist(HttpServletRequest request,ModelMap model, Princi
 }
 
 @RequestMapping(value={"/edit_suppliercategory"}, method = RequestMethod.GET)
-public String edit_suppliercategory(HttpServletRequest request,@RequestParam("id") String id,@ModelAttribute("addsuppilercategory") @Valid SuppilerCategory addsuppilerCategory,ModelMap model, Principal principal ) {
+public String editsuppliercategory(HttpServletRequest request,@RequestParam("id") String id,@ModelAttribute("addsuppilercategory") @Valid SuppilerCategory addsuppilerCategory,ModelMap model, Principal principal ) {
 	
 	
 	SupplierCategoryform addsupplierCategoryform = new SupplierCategoryform();
@@ -130,46 +130,43 @@ public String edit_suppliercategory(HttpServletRequest request,@RequestParam("id
 
 }
 	@RequestMapping(value="/update_suppliercategory",method=RequestMethod.POST)
-	public String instructor_update_settings(@RequestParam("id") String id,HttpSession session,@ModelAttribute("addsuppilercategory") @Valid SuppilerCategory addsuppilercategory,BindingResult result, ModelMap model,HttpServletRequest request ) {
+	public String category_update(@RequestParam("id") String id,HttpSession session,@ModelAttribute("addsuppilercategory") @Valid SuppilerCategory addsuppilercategory,BindingResult result, ModelMap model,HttpServletRequest request ) {
 		
 	
 		
 		session.setAttribute("documentPrefix",addsuppilercategory);
 	
-	
-	
-	
 		SuppliercategoryDAO.update_suppliercategory(addsuppilercategory);
 		model.addAttribute("Success", "true");
   
- SupplierCategoryform addsuppliercategoryform = new SupplierCategoryform();
-	model.addAttribute("menu","supplier");
-	model.addAttribute("noofrows",5);
+		SupplierCategoryform addsuppliercategoryform = new SupplierCategoryform();
+		model.addAttribute("menu","supplier");
+		model.addAttribute("noofrows",5);
 	
-	addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getlimiteddocumenttypereport(1));
+		addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getlimitedcategoryereport(1));
 	
 	
-model.addAttribute("noofpages",(int) Math.ceil(SuppliercategoryDAO.getnoofdocumenttypereport() * 1.0 / 5));	 
+		model.addAttribute("noofpages",(int) Math.ceil(SuppliercategoryDAO.getnoofcategorytypereport() * 1.0 / 5));	 
 	   
-	model.addAttribute("button","viewall");
- model.addAttribute("success","false");
- model.addAttribute("currentpage",1);
-	model.addAttribute("addsuppliercategoryform",addsuppliercategoryform);
-	model.addAttribute("justcame","false");
-   return "suppliercategorylist";
+		model.addAttribute("button","viewall");
+		model.addAttribute("success","false");
+		model.addAttribute("currentpage",1);
+		model.addAttribute("addsuppliercategoryform",addsuppliercategoryform);
+		model.addAttribute("justcame","false");
+		return "suppliercategorylist";
 
 }
 
 	@RequestMapping(value = "/delete_suppliercategory", method = RequestMethod.GET)
-	public String deletedocumenttype(@RequestParam("id") String id,HttpSession session,@ModelAttribute("addsuppilercategory") @Valid SuppilerCategory addsuppilercategory,BindingResult result, ModelMap model,HttpServletRequest request ) {
+	public String deletesuppliercategory(@RequestParam("id") String id,HttpSession session,@ModelAttribute("addsuppilercategory") @Valid SuppilerCategory addsuppilercategory,BindingResult result, ModelMap model,HttpServletRequest request ) {
 
 		
 		
 		SuppliercategoryDAO.delete_suppliercategory(id);
 		model.addAttribute("Success", "Del");
 		SupplierCategoryform addsuppliercategoryform = new SupplierCategoryform();
-		addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getlimiteddocumenttypereport(1));
-		model.addAttribute("noofpages",(int) Math.ceil(SuppliercategoryDAO.getnoofdocumenttypereport() * 1.0 / 5));	 
+		addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getlimitedcategoryereport(1));
+		model.addAttribute("noofpages",(int) Math.ceil(SuppliercategoryDAO.getnoofcategorytypereport() * 1.0 / 5));	 
 		   
 		model.addAttribute("button","viewall");
 	    model.addAttribute("success","false");
@@ -184,10 +181,10 @@ model.addAttribute("noofpages",(int) Math.ceil(SuppliercategoryDAO.getnoofdocume
 		
 	}
 	@RequestMapping(value="/viewsuppliertypereport_page", method=RequestMethod.GET)
-	public String viewdocumenttypereport_page(HttpServletRequest request,@RequestParam("page") int page,ModelMap model) {	
+	public String viewsupplierreport_page(HttpServletRequest request,@RequestParam("page") int page,ModelMap model) {	
 		SupplierCategoryform addsuppliercategoryform = new SupplierCategoryform();
-		addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getlimiteddocumenttypereport(page));
-		model.addAttribute("noofpages",(int) Math.ceil(SuppliercategoryDAO.getnoofdocumenttypereport() * 1.0 / 5));	 
+		addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getlimitedcategoryereport(page));
+		model.addAttribute("noofpages",(int) Math.ceil(SuppliercategoryDAO.getnoofcategorytypereport() * 1.0 / 5));	 
 	  	model.addAttribute("noofrows",5);   
 	    model.addAttribute("currentpage",page);
 	    model.addAttribute("menu","supplier");
@@ -200,7 +197,7 @@ model.addAttribute("noofpages",(int) Math.ceil(SuppliercategoryDAO.getnoofdocume
 	
 	
 	@RequestMapping(value={"/viewallsuppliercategorytypereport"}, method = RequestMethod.GET)
-	public String viewalldocumenttypereport(HttpServletRequest request,ModelMap model, Principal principal ) {
+	public String viewallsuppliercategory(HttpServletRequest request,ModelMap model, Principal principal ) {
 		SupplierCategoryform addsuppliercategoryform = new SupplierCategoryform();
 		
 		addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getsuppliertype());
@@ -218,7 +215,7 @@ model.addAttribute("noofpages",(int) Math.ceil(SuppliercategoryDAO.getnoofdocume
 	}
 	
 	@RequestMapping(value="/category_search", method=RequestMethod.GET)
-	public String documentprefixlistsearch(HttpSession session, @RequestParam("category") String category, HttpServletRequest request,ModelMap model, Principal principal) {
+	public String categorysearch(HttpSession session, @RequestParam("category") String category, HttpServletRequest request,ModelMap model, Principal principal) {
 
 		SupplierCategoryform addsuppliercategoryform = new SupplierCategoryform();
 		addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getcategory(category));
