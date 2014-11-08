@@ -84,7 +84,23 @@
                   </tr>
                    <tr class="row2">
                  <td valign="middle" align="left" class="input_txt" width="50%">Frequency of Maintenance  :</td>
-                  <td valign="top" align="left" class="input_txt" width="50%">${maintenance.frequency_maintenance}
+                  <td valign="top" align="left" class="input_txt" width="50%">
+                   <c:if test="${maintenance.frequency_maintenance_weekly != 'null'}">
+                  ${maintenance.frequency_maintenance_weekly}
+                  </c:if><br>
+                  <c:if test="${maintenance.frequency_maintenance_monthly != 'null'}">
+                  ${maintenance.frequency_maintenance_monthly}
+                  </c:if><br>
+                  <c:if test="${maintenance.frequency_maintenance_quarterly != 'null'}">
+                  ${maintenance.frequency_maintenance_quarterly}
+                  </c:if><br>
+                  <c:if test="${maintenance.frequency_maintenance_semiannually != 'null'}">
+                  ${maintenance.frequency_maintenance_semiannually}
+                  </c:if><br>
+                  <c:if test="${maintenance.frequency_maintenance_annually != 'null'}">
+                  ${maintenance.frequency_maintenance_annually}
+                  </c:if>
+                 
                   
                   <br/><span class="err"></span></td>
                   </tr>
@@ -116,22 +132,8 @@
                    <tr class="row2">
                   <td valign="top" align="left" class="input_txt" width="50%">Frequency of Maintenance :</td>
                   <td valign="middle" align="left" class="input_txt" width="50%">
-                  <c:if test="${maintenance.weekly != 'null'}">
-                  ${maintenance.weekly}
-                  </c:if><br>
-                  <c:if test="${maintenance.monthly != 'null'}">
-                  ${maintenance.monthly}
-                  </c:if><br>
-                  <c:if test="${maintenance.quarterly != 'null'}">
-                  ${maintenance.quarterly}
-                  </c:if><br>
-                  <c:if test="${maintenance.semiannually != 'null'}">
-                  ${maintenance.semiannually}
-                  </c:if><br>
-                  <c:if test="${maintenance.annually != 'null'}">
-                  ${maintenance.annually}
-                  </c:if>
                  
+                  ${maintenance.frequency_maintenance_list}
                   
                   
                   
@@ -142,10 +144,12 @@
                   <td valign="middle" align="left" class="input_txt" width="50%">
                    <c:if test="${maintenance.reference1 != 'null'}">
                   ${maintenance.reference1}
-                  </c:if><br>
-                   <c:if test="${maintenance.reference2 != 'null'}">
+                  </c:if>
+                  <%--
+                  <br>
+                   <c:if test="${maintenance.reference1 != 'null'}">
                   ${maintenance.reference2}
-                  </c:if><br>
+                  </c:if> <br>
                    <c:if test="${maintenance.reference3 != 'null'}">
                   ${maintenance.reference3}
                   </c:if><br>
@@ -154,7 +158,7 @@
                   </c:if><br>
                    <c:if test="${maintenance.reference5 != 'null'}">
                   ${maintenance.reference5}
-                  </c:if>
+                  </c:if> --%>
               
                </td>
                 </tr>

@@ -63,10 +63,10 @@
 			      <form action="maintenance_list" method="POST"> 
 						<table cellpadding="0" cellspacing="0" border="0" width="100%">
 				     <tr class="title">
-							<td valign="top" align="left" width="20%">Equipment Id</td>
-							<td valign="top" align="left" width="20%">Equipment Name</td>
-							<td valign="top" align="left" width="20%">Equipment Model</td>
-							<td valign="top" align="left" width="20%">Acquired Date </td>
+							<td valign="top" align="left" width="25%">Equipment Id</td>
+							<td valign="top" align="left" width="25%">Equipment Name</td>
+							<td valign="top" align="left" width="25%">Equipment Model</td>
+							<td valign="top" align="left" width="25%">Acquired Date </td>
 							
 							</tr>
 							<c:if test="${fn:length(maintenanceForm.maintenance) gt 0}">
