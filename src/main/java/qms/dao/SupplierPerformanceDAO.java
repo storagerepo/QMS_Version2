@@ -69,6 +69,7 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 								 table.addCell(createLabelCell("SNO"));
 								 width[0] = 1.0f;
 								 List<String> supplierPerformances1 = this.get_supplierperformance_score("opensupplierperformance",dates[0],dates[1]);
+								 if(supplierPerformances1.get(0) != null){
 								 Double number = Double.parseDouble(supplierPerformances1.get(0));
 								 if(number >= 90)
 								 {
@@ -94,6 +95,17 @@ public class SupplierPerformanceDAO extends AbstractITextPdfView {
 								 {
 									 Font f1 = new Font(FontFamily.TIMES_ROMAN, 8.0f, Font.BOLD, BaseColor.BLACK);
 									 Chunk ck = new Chunk(" must improve to higher category within the next 2 evaluation periods or potential for losing business", f1);
+									 ck.setBackground(BaseColor.WHITE);
+									 Paragraph p1 = new Paragraph(ck);
+									 p1.setAlignment(Element.ALIGN_RIGHT);
+									 doc.add(p1);
+									 doc.add( Chunk.NEWLINE );
+								 }
+								 }
+								 else
+								 {
+									 Font f1 = new Font(FontFamily.TIMES_ROMAN, 8.0f, Font.BOLD, BaseColor.BLACK);
+									 Chunk ck = new Chunk("No Data ", f1);
 									 ck.setBackground(BaseColor.WHITE);
 									 Paragraph p1 = new Paragraph(ck);
 									 p1.setAlignment(Element.ALIGN_RIGHT);

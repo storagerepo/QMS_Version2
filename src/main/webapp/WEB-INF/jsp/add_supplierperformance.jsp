@@ -89,6 +89,10 @@
 														<option
 															<c:if test="${supplierperformance.certified_to eq 'ISO 9002'}"><c:out value="Selected"/></c:if>
 															value="ISO 9002">ISO 9002</option>
+															 <c:forEach items="${Certified_toform.certified_to}" var="certified" varStatus="status">
+        				    								   <option  value="${certified.certified_to}">${certified.certified_to}</option>
+			                  								</c:forEach>
+															
 															</select><br><span style="color: red;" id="certifiederror"><form:errors path="SupplierPerformance.certified_to"></form:errors></span></td>
                                   
       
@@ -104,6 +108,9 @@
 														<option
 															<c:if test="${supplierperformance.category eq 'Non Critical'}"><c:out value="Selected"/></c:if>
 															value="Non Critical">Non Critical</option>
+														   <c:forEach items="${addsuppliercategoryform.suppliercategory}" var="category" varStatus="status">
+        				    								   <option  value="${category.category}">${category.category}</option>
+			                  								</c:forEach>
 															</select>
 															<br/><span style="color: red;" id="categoryerror"><form:errors path="SupplierPerformance.category"></form:errors></span></td>
                                   

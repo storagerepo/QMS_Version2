@@ -86,7 +86,13 @@
 														<option
 															<c:if test="${supplierperformance.certified_to eq 'ISO 9002'}"><c:out value="Selected"/></c:if>
 															value="ISO 9002">ISO 9002</option>
-															</select>
+															
+															 
+							 
+			                <c:forEach items="${Certified_toform.certified_to}" var="certified" varStatus="status">
+        				       <option value="${certified.certified_to}"<c:if test="${certified.certified_to == supplierperformance.certified_to}"><c:out value="selected"/></c:if>>${certified.certified_to}</option>
+			                  </c:forEach>
+			                 </select>
 															<br/><span style="color: red;" id="certifiederror"><form:errors path="SupplierPerformance.certified_to"></form:errors></span></td>
                                   
                 
@@ -101,6 +107,9 @@
 														<option
 															<c:if test="${supplierperformance.category eq 'Non Critical'}"><c:out value="Selected"/></c:if>
 															value="Non Critical">Non Critical</option>
+														  <c:forEach items="${addsuppliercategoryform.suppliercategory}" var="category" varStatus="status">
+        				       <option value="${category.category}"<c:if test="${category.category == supplierperformance.category}"><c:out value="selected"/></c:if>>${category.category}</option>
+			                  </c:forEach>
 															</select>
 															<br/><span style="color: red;" id="categoryerror"></span><form:errors path="SupplierPerformance.category"></form:errors></td>
                   <td valign="top" align="left" class="input_txt">Contact name :</td>
@@ -247,6 +256,7 @@
                <td valign="top" align="left" class="input_txt" width="40%">
                <input type="radio" name="correctiveaction" value="Yes"  onclick="Correctiveaction();" id="correctiveaction_yes"  <c:if test="${supplierperformance.correctiveaction=='Yes'}"><c:out value="Checked=checked"/></c:if>>Yes&nbsp;&nbsp;&nbsp;
                <input type="radio" name="correctiveaction" value="No" onclick="Correctiveaction();" id="correctiveaction_no"  <c:if test="${supplierperformance.correctiveaction=='No'}"><c:out value="Checked=checked"/></c:if>>No&nbsp;&nbsp;&nbsp;<br/><span class="err"></span>
+               <br><span id="correctiveaction_error" style="color:red;"></span>
                </td>
                </tr>
               
@@ -643,6 +653,7 @@ $("#inp_phone").focus(function(){
 		 var yes = document.getElementById('correctiveaction_yes').checked;
 		 var datepicker1 = document.getElementById('datepicker1').value;
 		 var recorded_by = document.getElementById('recordedby').value;
+		 
 		if(certified=="")
 		{
 		
@@ -1033,7 +1044,18 @@ $("#inp_phone").focus(function(){
 		    	{
 		    	document.getElementById("recordedby_error").innerHTML="";
 		    	}
+	    var yes = document.getElementById('correctiveaction_yes').checked;
+	    var no = document.getElementById('correctiveaction_no').checked;
 	    
+	    if(!(yes) && !(no))
+	    	{
+	    	document.getElementById("correctiveaction_error").innerHTML="Required field should not be empty";
+	    	 error="true";
+	    	}
+	    else
+	    	{
+	    	document.getElementById("correctiveaction_error").innerHTML="";
+	    	}
 	    if(error == "true")
 	    	{
 		return false;

@@ -410,7 +410,7 @@
 
 <table id="hidebutton"style="float:right;margin-top:20px;">
     <tr class="row1" >
-                  <td valign="bottom" colspan="2"align="right">&nbsp;<input type="submit" onclick="return validationmain();" value="Submit"  class="submit_btn1"></td>
+                  <td valign="bottom" colspan="2"align="right">&nbsp;<input type="submit" onclick="return validationMain();" value="Submit"  class="submit_btn1"></td>
                   <!-- onclick="return validation();" -->
                   <td valign="top" align="left">
                   <input type="button" value="Enter/Modify Revision Details" onclick="showchildsection();"class="submit_btn1" style="width:350px;"> 
@@ -451,98 +451,6 @@
  }
   </script>
   
-<script>
-    function validationmain()
-    {
-       //alert("calling");
-        var error="";
-     
-      document.getElementById("documentiderror").innerHTML="";
-      document.getElementById("mediatypeerror").innerHTML="";
-      document.getElementById("documenttitle1").innerHTML="";
-      document.getElementById("hard").innerHTML="";
-      document.getElementById("documenttypeerror").innerHTML="";
-      document.getElementById("inprocesserror").innerHTML="";
-
-
-       if(document.getElementById("document_id").value=="")
-      {
-        //alert("hai");
-         document.getElementById("documentiderror").innerHTML="Required field should not be empty";
-         error=true; 
-      } 
-
-      if(document.getElementById("document_id").value!="")
-      {
-         if(document.getElementById("document_id").value.length < 4 || document.getElementById("document_id").value.length > 32){
-         // alert("calling");
-                    document.getElementById("documentiderror").innerHTML="Required field should be length 4 to 32";
-                    error=true; 
-                }
-        }
-
-
-      if(!(document.getElementById('id_hardcopy').checked) &&  !(document.getElementById('id_electronic').checked) && !(document.getElementById('id_both').checked) )
-  {
-    
-     document.getElementById("mediatypeerror").innerHTML="Required field should not be empty";
-      error ="true";
-  }
-
-    if(document.getElementById("documenttitle").value=="")
-      {
-        //alert("hai");
-         document.getElementById("documenttitle1").innerHTML="Required field should not be empty";
-         error=true; 
-      } 
-
-      if(document.getElementById("location_text").value=="")
-      {
-        //alert("hai");
-         document.getElementById("hard").innerHTML="Required field should not be empty";
-         error=true; 
-      } 
-       if(document.getElementById("documenttype").value=="")
-      {
-        //alert("hai");
-         document.getElementById("documenttypeerror").innerHTML="Required field should not be empty";
-         error=true; 
-      } 
-       if(document.getElementById("id_inpprocess").value=="")
-      {
-        //alert("hai");
-         document.getElementById("inprocesserror").innerHTML="Required field should not be empty";
-         error=true; 
-      } 
-
-      if(document.getElementById("retention").value=="")
-      {
-        //alert("hai");
-         document.getElementById("retentionerr").innerHTML="Required field should not be empty";
-         error=true; 
-      } 
-     /* if(document.getElementById("job_role").value!="")
-      {
-         if(document.getElementById("job_role").value.length < 6 || document.getElementById("job_role").value.length > 32){
-                    document.getElementById("job_titleerror").innerHTML="Job title count 6 to 32 characters";
-                    error=true; 
-                }
-        }*/
-       
-    
-       
-       if(error==true)
-       {
-         return false;
-        
-       }
-       else{
-        return true;
-       }
-
-    }
-
-    </script>
 
 <script>
 $(function() {
@@ -737,7 +645,7 @@ function validation()
 	 var id_inpprocess = document.getElementById('id_inpprocess').value;
 	 var filter_value = document.getElementById('filter_value').value;
 	 var filter_value1 = document.getElementById('filter_value1').value;
-	 var datepicker123=document.getElementById('datepicker123').value;
+	 
 	 var e2=document.getElementById('location_text').value;
 	 var e3=document.getElementById('id_file').value;
 	 var documenttitle = document.getElementById('documenttitle').value;
@@ -972,23 +880,7 @@ function validation()
 		
 	
 	 
-		 if(datepicker123 == "")
-		 {
 			
-		 document.getElementById("datepicker1234").innerHTML="Required field should not be empty";
-		 error ="true";
-		 
-		 }
-		 else if(datepicker123.match(date))
-		 {
-		 document.getElementById("datepicker1234").innerHTML="";
-		 }
-		 else
-		 {
-		 document.getElementById("datepicker1234").innerHTML="Invalid date";
-		 error ="true";
-		 }
-		
 	
 			
 			if(ajax_issuer == "false")
@@ -1151,6 +1043,212 @@ function validation()
 	
 	
 </script>
+<script>
+function validationMain()
+{
+	
+	
+	var date = /^(0?[1-9]|1[012])[\/](0?[1-9]|[12][0-9]|3[01])[\/]\d{4}$/;
+	var dotnumber = /^[a-zA-Z0-9]*$|[a-zA-Z0-9][\w\.]+[a-zA-Z0-9]$/;
+	
+	 var error ="";
+	 var document_id = document.getElementById('document_id').value;
+	 var id_hardcopy = document.getElementById('id_hardcopy').checked;
+	 var id_electronic = document.getElementById('id_electronic').checked;
+	 var id_both = document.getElementById('id_both').checked;
+	 var location_text = document.getElementById('location_text').value;
+	 var documenttype = document.getElementById('documenttype').value;
+	 var id_inpprocess = document.getElementById('id_inpprocess').value;
+	
+	 var e2=document.getElementById('location_text').value;
+	 var e3=document.getElementById('id_file').value;
+	 var documenttitle = document.getElementById('documenttitle').value;
+	
+	document.getElementById("hard").innerHTML="";
+	 document.getElementById("mediatypeerror").innerHTML= "";
+	 document.getElementById("attach").innerHTML="";
+		 
+		
+	 if(document_id == "")
+		 {
+		
+		 document.getElementById("documentiderror").innerHTML="Required field should not be empty";
+			error ="true";
+		 }
+	 else
+		{
+		 document.getElementById("documentiderror").innerHTML= "";
+		}
+	
+	 if(document_id!=""){
+		 if(document.getElementById("document_id").value.length<4 || document.getElementById("document_id").value.length>15 ){
+			 document.getElementById("documentiderror").innerHTML="Required field should be length 4 to 15";
+				error ="true";
+			 } 
+		 }
+	
+	 if(!(document.getElementById('id_hardcopy').checked) &&  !(document.getElementById('id_electronic').checked) && !(document.getElementById('id_both').checked) )
+	{
+		
+		 document.getElementById("mediatypeerror").innerHTML="Required field should not be empty";
+			error ="true";
+	}
+	 else
+		 {
+		 document.getElementById("mediatypeerror").innerHTML= "";
+		 }
+	
+	if(document.getElementById('id_hardcopy').checked)
+	 {
+		if(e2=="")
+			{
+			
+			document.getElementById("hard").innerHTML="Required field should not be empty";
+			error ="true";
+			}
+		
+	 }
+	 
+	 
+	 
+	 
+	 
+	 if(document.getElementById('id_electronic').checked)
+	{
+		 if(e3=="")
+			 {
+			
+			 document.getElementById("attach").innerHTML="No file uploaded";
+			 error ="true";
+			 }
+		
+	}
+	 
+	 
+	 
+	 
+	if(document.getElementById('id_both').checked)
+		{
+		if(e2=="")
+		{
+			 
+		document.getElementById("hard").innerHTML="Required field should not be empty";
+		error ="true";
+		}
+	
+		 if(e3=="")
+		 {
+			 
+		 document.getElementById("attach").innerHTML="No file uploaded";
+		 error ="true";
+		 }
+	
+		}
+	
+	
+	
+	
+	
+	 if(documenttitle =="")
+	 {
+		 
+		 document.getElementById("documenttitle1").innerHTML="Required field should not be empty";
+		 error ="true";
+	 }
+	 else if(documenttitle.charAt(0) == " ")
+	{
+		 document.getElementById("documenttitle1").innerHTML="Should not accept initial space";
+		 error ="true";
+	}
+	 else
+	 {
+		 if((documenttitle.length < 4) ||(documenttitle.length > 32))
+	 	{
+			 document.getElementById("documenttitle1").innerHTML="Required field should be length 4 to 32";
+			   	error ="true";
+ 		 }
+		 else
+		 {
+			 document.getElementById("documenttitle1").innerHTML= "";
+		 }
+	}
+	
+	if(documenttype == "")
+	{
+		
+		 document.getElementById("documenttypeerror").innerHTML="Required field should not be empty";
+		 error ="true";
+	}
+	else
+	{
+		 document.getElementById("documenttypeerror").innerHTML="";
+	}
+	
+	 if(id_inpprocess == "")
+	{
+		 
+		 document.getElementById("inprocesserror").innerHTML="Required field should not be empty";
+		 error ="true";
+	}
+	else
+	{
+		 document.getElementById("inprocesserror").innerHTML="";
+	}
+	
+	
+	
+	 
+	 
+	
+	
+	 
+		
+			
+		
+		 if(error == "true")
+			 {
+			 
+		 return false;
+			 }
+		 var document_id = document.getElementById('generated_id').value;
+		 //var equipment_id=document.getElementById("equipment_id").value;
+		
+		 $.ajax({
+				type : "POST",
+				url : "/QMS_App/ajax_documentcorrerror",
+				data : "document_id_hidden="+document_id,
+				success : function(response) {
+				//	alert("response"+response);	
+				
+		    	
+		    		//	alert("if loop 0");
+		    	if(response!='')
+		    		{
+		    		alert(response);
+		    		}
+		    		if(response=='')
+		    			{
+		    			document.forms[0].method = "POST";
+		    			document.forms[0].action = "insert_documents";
+		    			document.forms[0].submit();
+		    			}
+		    		
+		    		
+		    		
+		    		  
+				},
+				error : function(e) {
+					alert('Error: ' + e);
+				}
+			});
+		 return false;
+	
+	}
+	
+	
+	
+</script>
+
          <script>
          $(function() {
         	 

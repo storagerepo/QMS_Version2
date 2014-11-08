@@ -23,10 +23,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import qms.dao.SupplierCertificatetoDAO;
 	import qms.dao.SupplierPerformanceDAO;
+import qms.dao.SuppliercategoryDAO;
 import qms.model.EmailSender;
 import qms.model.SupplierPerformance;
 
+import qms.forms.Certified_toform;
+import qms.forms.SupplierCategoryform;
 import qms.forms.SupplierPerformanceForm;;
 
 	@Controller
@@ -38,6 +42,12 @@ import qms.forms.SupplierPerformanceForm;;
 		
 		@Autowired  
 		EmailSender emailSender;
+		
+		@Autowired
+		SuppliercategoryDAO SuppliercategoryDAO;
+		
+		@Autowired
+		SupplierCertificatetoDAO SupplierCertificatetoDAO;
 		
 		//View method for supplier performance form
 		@RequestMapping(value={"/view_supplierperformance"}, method = RequestMethod.GET)
@@ -186,6 +196,14 @@ import qms.forms.SupplierPerformanceForm;;
 		{
 			session.removeAttribute("supplier");
 			model.addAttribute("id", supplierPerformanceDAO.get_maxid());
+			SupplierCategoryform addsuppliercategoryform = new SupplierCategoryform();
+			addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getsuppliertype());
+			model.addAttribute("addsuppliercategoryform",addsuppliercategoryform);
+			Certified_toform Certified_toform = new Certified_toform();
+			Certified_toform.setCertified_to(SupplierCertificatetoDAO.getsuppliercerticate());
+			  model.addAttribute("Certified_toform",Certified_toform);
+			
+			
 			System.out.println("get method");
 			 model.addAttribute("menu","supplier");
 	     return "add_supplierperformance";
@@ -279,6 +297,15 @@ import qms.forms.SupplierPerformanceForm;;
 		{
 	    
 			model.addAttribute("id", supplierPerformanceDAO.get_maxid());
+			
+			SupplierCategoryform addsuppliercategoryform = new SupplierCategoryform();
+			addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getsuppliertype());
+			model.addAttribute("addsuppliercategoryform",addsuppliercategoryform);
+			
+			Certified_toform Certified_toform = new Certified_toform();
+			Certified_toform.setCertified_to(SupplierCertificatetoDAO.getsuppliercerticate());
+			  model.addAttribute("Certified_toform",Certified_toform);
+			
 			SupplierPerformanceForm supplierPerformanceForm=new SupplierPerformanceForm();
 			supplierPerformanceForm.setSupplierperformance(supplierPerformanceDAO.getsupplierperformance_byid(supplier_id));
 			model.addAttribute("supplierPerformanceForm",supplierPerformanceForm);
@@ -363,8 +390,6 @@ import qms.forms.SupplierPerformanceForm;;
 				  {
 		  case 0:
 			  supplierPerformances=supplierPerformanceDAO.get_supplierperformance_type("opensupplierperformance",start_date,end_date);
-			  List<String> supplierPerformances1 = supplierPerformanceDAO.get_supplierperformance_score("opensupplierperformance",start_date,end_date);
-			  model.addAttribute("supplierPerformances1", supplierPerformances1);
 			  
 			
 			  break;

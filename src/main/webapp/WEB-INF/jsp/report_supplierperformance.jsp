@@ -181,6 +181,10 @@
 								<td><input type="checkbox" name="report_field[]" value="email_address" id="14"/>&nbsp;Email Address</td>
 								<td><input type="checkbox" name="report_field[]" value="address" id="15"/>&nbsp;Address</td>
 								</tr>
+								<tr>
+								<td><input type="checkbox" name="report_field[]" value="type_of_problem" id="14"/>&nbsp;Type of Problem</td>
+								<td><input type="checkbox" name="report_field[]" value="deduction" id="15"/>&nbsp;Deduction</td>
+								</tr>
 								</table>
 								
 								</td>
