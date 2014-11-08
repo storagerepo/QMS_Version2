@@ -140,7 +140,7 @@ public String edit_suppliercategory(HttpServletRequest request,@RequestParam("id
 	
 	
 		SuppliercategoryDAO.update_suppliercategory(addsuppilercategory);
-		 model.addAttribute("success","update");
+		model.addAttribute("Success", "true");
   
  SupplierCategoryform addsuppliercategoryform = new SupplierCategoryform();
 	model.addAttribute("menu","supplier");
@@ -166,6 +166,7 @@ model.addAttribute("noofpages",(int) Math.ceil(SuppliercategoryDAO.getnoofdocume
 		
 		
 		SuppliercategoryDAO.delete_suppliercategory(id);
+		model.addAttribute("Success", "Del");
 		SupplierCategoryform addsuppliercategoryform = new SupplierCategoryform();
 		addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getlimiteddocumenttypereport(1));
 		model.addAttribute("noofpages",(int) Math.ceil(SuppliercategoryDAO.getnoofdocumenttypereport() * 1.0 / 5));	 

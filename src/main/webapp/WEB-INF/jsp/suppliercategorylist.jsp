@@ -62,7 +62,7 @@
 					</div></td>
 			</tr>
 		</c:if>
-		<c:if test="${success=='update'}">
+		  <c:if test="${Success=='true'}">
 			<tr>
 				<td valign="top" align="left" style="padding: 5px 0 10px 200px;">&nbsp;
 					<div id="success_statusbar" class="status success">
@@ -74,13 +74,13 @@
 					</div></td>
 			</tr>
 		</c:if>
-		<c:if test="${success=='delete'}">
+		  <c:if test="${Success=='Del'}">
 			<tr>
 				<td valign="top" align="left" style="padding: 5px 0 10px 200px;">&nbsp;
 					<div id="success_statusbar" class="status success">
 						<p class="closestatus">
 						<img alt="Success" src="resources/images/icons/removed.png"/>
-						<a title="Close" href="documenttype_list">
+						<a title="Close" href="suppliercategorylist">
 						<img alt="Success" src="resources/images/icons/icon_square_close.png"></a>
 						</p>
 					</div></td>
