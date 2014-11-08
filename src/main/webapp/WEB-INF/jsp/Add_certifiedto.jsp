@@ -50,13 +50,13 @@
 				</div>
 			</div>
 			</td></tr>	
-    <c:if test="${success=='insert'}">
+    <c:if test="${Success=='true'}">
 			<tr>
 				<td valign="top" align="left" style="padding: 5px 50px 10px 220px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<div id="success_statusbar" class="status success">
 						<p class="closestatus">
 						<img alt="Success" src="resources/images/icons/inserted.png">
-						<a title="Close" href="add_prefixform">
+						<a title="Close" href="Add_certifiedto">
 						<img alt="Success" src="resources/images/icons/icon_square_close.png"></a>		
 						</p>
 					</div></td>

@@ -62,13 +62,13 @@
 				</div>
 			</div>
 			</td></tr>	
-				<c:if test="${success=='insert'}">
+				<c:if test="${Success=='true'}">
 			<tr>
 				<td valign="top" align="left" style="padding: 5px 50px 10px 220px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<div id="success_statusbar" class="status success">
 						<p class="closestatus">
 						<img alt="Success" src="resources/images/icons/inserted.png">
-						<a title="Close" href="add_prefixdocument">
+						<a title="Close" href="Addsuppliercategory">
 						<img alt="Success" src="resources/images/icons/icon_square_close.png"></a>		
 						</p>
 					</div></td>
@@ -90,7 +90,7 @@
                   <td valign="middle" align="left" class="input_txt" style="padding-left: 55px" >Supplier Category :</td>
                   <td valign="top" align="left" class="input_txt">
                   <input type="text" name="category" class="input_txtbx" maxlength="32" id="category" value="${suppliercategory.category}" onkeypress="return onlyAlphabets(event,this);" />
-                   <br> <span id="categoryerror" style="color:red">     
+                   <br> <span id="categoryerror" style="color:red">     </span>
               
 </td>
                 

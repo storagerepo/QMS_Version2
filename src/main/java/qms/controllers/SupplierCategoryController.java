@@ -66,7 +66,7 @@ public String postsupplierPrefix(HttpSession session,@ModelAttribute("addsuppile
 		SupplierCategoryform addsuppliercategoryform = new SupplierCategoryform();
 		addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getsuppliertype());
 		model.addAttribute("addsuppliercategoryform",addsuppliercategoryform);
-		model.addAttribute("Success", "true");
+		//model.addAttribute("Success", "true");
 			
 
 		return "Addsuppliercategory";
@@ -77,6 +77,7 @@ public String postsupplierPrefix(HttpSession session,@ModelAttribute("addsuppile
 	addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getsuppliertype());
 	model.addAttribute("addsuppliercategoryform",addsuppliercategoryform);
 	model.addAttribute("success",true);*/
+	model.addAttribute("Success", "true");
 	session.removeAttribute("documentPrefix");
 	
 		
@@ -126,7 +127,7 @@ public String edit_suppliercategory(HttpServletRequest request,@RequestParam("id
 	
 	
 		SuppliercategoryDAO.update_suppliercategory(addsuppilercategory);
-
+		 model.addAttribute("success","update");
   
  SupplierCategoryform addsuppliercategoryform = new SupplierCategoryform();
 	model.addAttribute("menu","supplier");

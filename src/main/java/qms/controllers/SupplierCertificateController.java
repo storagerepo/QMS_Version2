@@ -83,7 +83,7 @@ public String postsupplierPrefix(HttpSession session,@ModelAttribute("certified_
 	Certified_toform.setCertified_to(SupplierCertificatetoDAO.getsuppliercerticate());
 	  model.addAttribute("Certified_toform",Certified_toform);*/
 	  //model.addAttribute("success","insert");
-	
+	model.addAttribute("Success", "true");
 		
 		return "Add_certifiedto";
 }

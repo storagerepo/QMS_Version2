@@ -60,17 +60,26 @@
               <tr>
 			<td align="left" valign="top" width="50%" style="padding-right: 25px;">
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
-                <tr class="row2">
+			<tr>
+			<td align="left" valign="top" width="50%" style="padding-right: 25px;">
+			<table cellpadding="0" cellspacing="0" border="0">
+               <tr class="row1">
+                  <td valign="middle" align="left" class="input_txt" style="padding-left: 55px">Certified To :</td>
+                  <td> <input type="text" class="input_txtbx" name="certified_to" value="${certified_to.certified_to}" id="certified_to" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');"/>
+                   <br> <span id="certified_toerror" style="color:red">       </span>                    
+               </td>
+                </tr>
+              <%--   <tr class="row2">
                 
-                  <td valign="top" align="left" class="input_txt" width="30%" style="padding-left: 70px">&nbsp;:</td>
-                  <td valign="top" align="left" class="input_txt" width="70%">
+                     <td valign="middle" align="left" class="input_txt" style="padding-left: 55px">Certified To :</td>
+                  <td valign="top" align="left" class="input_txt" >
                     <input type="text" class="input_txtbx" name="certified_to" value="${certified_to.certified_to}" id="certified_to" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');"/>
                     <font color="Red"><span id="certified_toerror"></span></font>
                   
                   
                   <input type="hidden" name="id" id="id" value="${certified_to.id}"/>
                   </td>
-                </tr>
+                </tr> --%>
                 <tr height="10"></tr>
                  <tr class="row1">
                   <td valign="top" align="right">&nbsp;</td>
@@ -87,62 +96,50 @@
              </table>
              </div>
              </form>
-             <script type="text/javascript">
-             $(function() {
-         		$("#documenttype").on("keypress", function(e) {
-         			if (e.which === 32 && !this.value.length)
-         		        e.preventDefault();
-         		});
-         		});
-             function validateAlpha4(){
-         	    var textInput = document.getElementById("documenttype").value;
-         	    textInput = textInput.replace(/[^A-Za-z ]/g, "");
-         	    document.getElementById("documenttype").value = textInput;
-         	}
-             function onlyAlphabets(e, t) {
-            	    try {
-            	        if (window.event) {
-            	            var charCode = window.event.keyCode;
-            	        }
-            	        else if (e) {
-            	            var charCode = e.which;
-            	        }
-            	        else { return true; }
-            	        if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123)|| (charCode==32)|| (charCode > 47 && charCode < 58))
-            	            return true;
-            	        else
-            	            return false;
-            	    }
-            	    catch (err) {
-            	        alert(err.Description);
-            	    }
-            	}
-             
-             function validation()
-             {
-               // alert("calling");
-                 var error="";
-              
-               document.getElementById("certified_toerror").innerHTML="";
-              
+            <script>
+  $(function() {
+	$("#certified_to").on("keypress", function(e) {
+		if (e.which === 32 && !this.value.length)
+	        e.preventDefault();
+	});
+	});	
 
-                if(document.getElementById("certified_to").value=="")
-               {
-                 //alert("hai");
-                  document.getElementById("certified_toerror").innerHTML="Required field should not be empty";
-                  error=true; 
-               } 
-             
-               
-                if(error==true)
-                {
+</script>
+ 
+<script>
+    function validation()
+    {
+      // alert("calling");
+        var error="";
+     
+      document.getElementById("certified_toerror").innerHTML="";
+     
 
-                  return false;
+       if(document.getElementById("certified_to").value=="")
+      {
+        //alert("hai");
+         document.getElementById("certified_toerror").innerHTML="Required field should not be empty";
+         error=true; 
+      } 
+       if(document.getElementById("certified_to").value!="")
+       {
+         if(document.getElementById("certified_to").value.length < 4 || document.getElementById("certified_to").value.length > 200){
+                    document.getElementById("certified_toerror").innerHTML="Required field should be length of 4 to 200";
+                    error=true; 
                 }
+       }   
+      
+       if(error==true)
+       {
 
-               
+         return false;
+       }
 
-             }
- </script>   
+      
+
+    }
+
+    </script>
+    
 </body>
 </html>

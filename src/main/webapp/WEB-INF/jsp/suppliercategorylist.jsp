@@ -56,7 +56,7 @@
 					<div id="success_statusbar" class="status success">
 						<p class="closestatus">
 						<img alt="Success" src="resources/images/icons/inserted.png">
-						<a title="Close" href="documenttype_list">
+						<a title="Close" href="suppliercategorylist">
 						<img alt="Success" src="resources/images/icons/icon_square_close.png"></a>		
 						</p>
 					</div></td>
@@ -68,7 +68,7 @@
 					<div id="success_statusbar" class="status success">
 						<p class="closestatus">
 						<img alt="Success" src="resources/images/icons/success.png"/>
-						<a title="Close" href="documenttype_list">
+						<a title="Close" href="suppliercategorylist">
 						<img alt="Success" src="resources/images/icons/icon_square_close.png"></a>
 						</p>
 					</div></td>
@@ -121,13 +121,13 @@
         				       				 </tr>
         				       				 </c:forEach>
         				       				 </c:if>
-        				       				 <%--  <c:if test="${fn:length(documentTypeForm.documentTypes) == 0}">	
-							    	 <c:if test="${justcame=='false'}">
+        				       				 <c:if test="${fn:length(addsuppliercategoryform.suppliercategory) == 0}">	
+							    	<c:if test="${justcame=='false'}">
 							    	<tr class="row1">
-							    	<td colspan="7" width="100%"><center><span style="color:red;"><b>No Records Found!!!</b></span></center></td>
-							    		
-							    	</tr></c:if>
-							    	</c:if>  --%>
+							    	<td colspan="7" width="100%"><center><b style="color:red">No Records Found!!!</b></center></td>
+							    	</tr>
+							    	</c:if>
+							    	</c:if> 
         				       				 </table>
         				       				</form>
         				       				</div>
