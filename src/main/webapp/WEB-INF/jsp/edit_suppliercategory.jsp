@@ -15,6 +15,27 @@
 <title>Edit Document Type</title>
 </head>
 <body>
+<script type="text/javascript">
+function checksuppliercategory() {
+
+	var category = $('#category').val();
+	var id=$("#id").val();
+	/*   var education = $('#education').val();	 */		
+	$.ajax({
+		type : "POST",
+		url : "/QMS_App/ajax_suppliercategory",
+		data : "category="+category+"&&category_id="+id+"&&Type="+"edit",
+		success : function(response) {
+			
+			$('#categoryerror').html(response);
+		
+		},
+		error : function(e) {
+			alert('Error: ' + e);
+		}
+	});
+}
+</script>
 <form method="post" action="update_suppliercategory">
   <div id="right_content">
     <table cellpadding="0" cellspacing="0" border="0" width="98%" class="margin_table">
@@ -61,7 +82,7 @@
                 
                   <td valign="top" align="left" class="input_txt" width="30%" style="padding-left: 70px">&nbsp;Supplier Category :</td>
                   <td valign="top" align="left" class="input_txt" width="70%">
-                  <input type="text" class="input_txtbx" name="category" value="${suppliercategory.category}" id="category" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" onkeypress="return onlyAlphabets(event,this);"/>
+                  <input type="text" class="input_txtbx" name="category" onblur="checksuppliercategory()" onkeyup="checksuppliercategory()" value="${suppliercategory.category}" id="category" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" onkeypress="return onlyAlphabets(event,this);"/>
                     <%--  <select name="category" class="AL_admin_createcourse_selectbx1" id="category" >
 
 <option value="">-Select Supplier Category-</option>
@@ -103,10 +124,8 @@
     function validation()
     {
        //alert("calling");
-        var error="";
-     
-      document.getElementById("categoryerror").innerHTML="";
-     
+        var error="";    
+    
 
        if(document.getElementById("category").value=="")
       {
@@ -127,7 +146,10 @@
 
          return false;
        }
-
+       if(document.getElementById("categoryerror").innerText!="")
+       {
+    	   return false;
+       }
       
 
     }

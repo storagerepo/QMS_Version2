@@ -55,6 +55,18 @@ public class SupplierCategoryController {
 		model.addAttribute("menu","supplier");
 		return "Addsuppliercategory";
 	}
+@RequestMapping(value = { "/ajax_suppliercategory" }, method = RequestMethod.POST)
+public @ResponseBody String categoryexist(@RequestParam("category")String category,@RequestParam("category_id")String categoryid,@RequestParam("Type")String Type,  HttpSession session,	HttpServletRequest request, ModelMap model) {
+	String resultHTML="";
+	String exists=SuppliercategoryDAO.checkcategory(category,categoryid,Type);
+	resultHTML=exists;
+	if(exists.equals("true"))
+	{
+		resultHTML="Supplier category already exists";
+	}
+	
+	return resultHTML;
+}
 
 //Insert a record
 @RequestMapping(value = "/add_supplierprefix", method = RequestMethod.POST)

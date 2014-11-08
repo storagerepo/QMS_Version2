@@ -23,7 +23,62 @@ public class SuppliercategoryDAO {
 	private DataSource dataSource;
 	
 	
-	
+	/*
+	 * check category already exist or not
+	 */
+	public String checkcategory(String category,String category_id,String Type) {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		
+		int noofRecords = 0;
+		String exists="";
+		
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<SuppilerCategory> documentTypes = new ArrayList<SuppilerCategory>();
+		try {
+			String cmd="";
+			
+		
+			System.out.println(Type);
+if(Type.trim().equals("add"))
+{
+	cmd="select category from tbl_suppliercategory where category='"+category+"'";
+}
+if(Type.trim().equals("edit"))
+{
+	cmd="select category from tbl_suppliercategory where category='"+category+"' and id!='"+category_id+"'";
+}
+System.out.println("cmd..."+cmd);
+resultSet=statement.executeQuery(cmd);
+while(resultSet.next())
+{
+	exists="true";
+}
+System.out.println("cmd..."+cmd);
+			
+
+						
+			
+
+		} catch (Exception e) {
+			System.out.println(e);
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return exists;
+
+	}
 	
 	/*
 	 * Insert category 

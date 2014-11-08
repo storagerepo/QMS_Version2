@@ -7,6 +7,26 @@
  <script src="resources/js/jquery.js"></script>
  
 <head>
+<script type="text/javascript">
+function checksuppliercategory() {
+
+	var category = $('#category').val();
+	/*   var education = $('#education').val();	 */		
+	$.ajax({
+		type : "POST",
+		url : "/QMS_App/ajax_suppliercategory",
+		data : "category=" + category+"&&category_id=" +""+"&&Type="+"add",
+		success : function(response) {
+			
+			$('#categoryerror').html(response);
+		
+		},
+		error : function(e) {
+			alert('Error: ' + e);
+		}
+	});
+}
+</script>
 <script>
 	 $('input[type=text]').on("focusout", function() {
 		    var dest = $(this);
@@ -89,7 +109,7 @@
                 <tr class="row2">
                   <td valign="middle" align="left" class="input_txt" style="padding-left: 55px" >Supplier Category :</td>
                   <td valign="top" align="left" class="input_txt">
-                  <input type="text" name="category" class="input_txtbx" maxlength="32" id="category" value="${suppliercategory.category}" onkeypress="return onlyAlphabets(event,this);" />
+                  <input type="text" name="category" class="input_txtbx" maxlength="32" id="category" onblur="checksuppliercategory()" onkeyup="checksuppliercategory()" value="${suppliercategory.category}" onkeypress="return onlyAlphabets(event,this);" />
                    <br> <span id="categoryerror" style="color:red">     </span>
               
 </td>
@@ -128,7 +148,7 @@
        //alert("calling");
         var error="";
      
-      document.getElementById("categoryerror").innerHTML="";
+      
      
 
        if(document.getElementById("category").value=="")
@@ -144,14 +164,18 @@
                     error=true; 
                 }
        }   
-      
+             
        if(error==true)
        {
 
          return false;
        }
-
       
+       if(document.getElementById("categoryerror").innerText!="")
+       {
+    	   return false;
+       }
+       document.getElementById("categoryerror").innerHTML="";
 
     }
 
