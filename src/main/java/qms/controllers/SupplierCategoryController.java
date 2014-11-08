@@ -73,7 +73,7 @@ public @ResponseBody String categoryexist(@RequestParam("category")String catego
 public String postsupplierPrefix(HttpSession session,@ModelAttribute("addsuppilercategory") @Valid SuppilerCategory addsuppilercategory,BindingResult result, ModelMap model) {
 
 	
-	session.setAttribute("documentPrefix",addsuppilercategory);
+	session.setAttribute("category",addsuppilercategory);
 	if (result.hasErrors()) {
 		SupplierCategoryform addsuppliercategoryform = new SupplierCategoryform();
 		addsuppliercategoryform.setSuppliercategory(SuppliercategoryDAO.getsuppliertype());

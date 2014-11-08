@@ -42,7 +42,7 @@ import qms.forms.Certified_toform;
 
 
 @Controller
-@SessionAttributes({"documentprefix","prefixdocument"})
+@SessionAttributes({"certifiedto"})
 public class SupplierCertificateController {
 	
 	@Autowired
@@ -54,14 +54,14 @@ public class SupplierCertificateController {
 @RequestMapping(value = {"/Add_certifiedto"}, method = RequestMethod.GET)
 	
 	public String add_certifiedto(HttpSession session,ModelMap model, Principal principal) {
-		session.removeAttribute("documentprefix");
+		session.removeAttribute("certifiedto");
 		model.addAttribute("menu","supplier");
 		return "Add_certifiedto";
 	}
 
 //Insert a record
 @RequestMapping(value = "/add_certifiedto", method = RequestMethod.POST)
-public String postsupplierPrefix(HttpSession session,@ModelAttribute("certified_to") @Valid Certified_To certified_to,BindingResult result, ModelMap model) {
+public String postcertifiedto(HttpSession session,@ModelAttribute("certified_to") @Valid Certified_To certified_to,BindingResult result, ModelMap model) {
 
 	
 	
@@ -84,14 +84,14 @@ public String postsupplierPrefix(HttpSession session,@ModelAttribute("certified_
 	  model.addAttribute("Certified_toform",Certified_toform);*/
 	  //model.addAttribute("success","insert");
 	model.addAttribute("Success", "true");
-		
+	session.removeAttribute("certifiedto");
 		return "Add_certifiedto";
 }
 
 
 @RequestMapping(value="/suppliercertificatelist", method=RequestMethod.GET)
-public String Documenttypelist(HttpServletRequest request,ModelMap model, Principal principal,HttpSession session) {
-	session.removeAttribute("dtype");
+public String certifiedtolist(HttpServletRequest request,ModelMap model, Principal principal,HttpSession session) {
+	
 	Certified_toform Certified_toform = new Certified_toform();
 	model.addAttribute("menu","supplier");
   	model.addAttribute("noofrows",5);
@@ -111,7 +111,7 @@ model.addAttribute("noofpages",(int) Math.ceil(SupplierCertificatetoDAO.getnoofc
 
 
 @RequestMapping(value={"/edit_suppliercertificate"}, method = RequestMethod.GET)
-public String edit_suppliercategory(HttpServletRequest request,@RequestParam("id") String id,@ModelAttribute("addsuppilercategory") @Valid Certified_To addsuppilerCategory,ModelMap model, Principal principal ) {
+public String edit_suppliercertifiedto(HttpServletRequest request,@RequestParam("id") String id,@ModelAttribute("addsuppilercategory") @Valid Certified_To addsuppilerCategory,ModelMap model, Principal principal ) {
 	
 	
 	Certified_toform Certified_toform = new Certified_toform();
@@ -122,11 +122,11 @@ public String edit_suppliercategory(HttpServletRequest request,@RequestParam("id
 
 }
 	@RequestMapping(value="/update_suppliercertificate",method=RequestMethod.POST)
-	public String instructor_update_settings(@RequestParam("id") String id,HttpSession session,@ModelAttribute("Certified_To") @Valid Certified_To Certified_To,BindingResult result, ModelMap model,HttpServletRequest request ) {
+	public String updatecertifiedto(@RequestParam("id") String id,HttpSession session,@ModelAttribute("Certified_To") @Valid Certified_To Certified_To,BindingResult result, ModelMap model,HttpServletRequest request ) {
 		
 	
 		
-		session.setAttribute("documentPrefix",Certified_To);
+		session.setAttribute("certifiedto",Certified_To);
 	
 		SupplierCertificatetoDAO.update_suppliercertificate(Certified_To);
 		model.addAttribute("Success", "Update");
@@ -150,7 +150,7 @@ model.addAttribute("noofpages",(int) Math.ceil(SupplierCertificatetoDAO.getnoofc
 }
 
 	@RequestMapping(value = "/delete_suppliercertificate", method = RequestMethod.GET)
-	public String deletedocumenttype(@RequestParam("id") String id,HttpSession session,@ModelAttribute("Certified_To") @Valid Certified_To Certified_To,BindingResult result, ModelMap model,HttpServletRequest request ) {
+	public String deletecertifiedto(@RequestParam("id") String id,HttpSession session,@ModelAttribute("Certified_To") @Valid Certified_To Certified_To,BindingResult result, ModelMap model,HttpServletRequest request ) {
 
 		
 		
@@ -191,7 +191,7 @@ model.addAttribute("noofpages",(int) Math.ceil(SupplierCertificatetoDAO.getnoofc
 	
 	
 	@RequestMapping(value={"/viewallsuppliercertificatetypereport"}, method = RequestMethod.GET)
-	public String viewalldocumenttypereport(HttpServletRequest request,ModelMap model, Principal principal ) {
+	public String viewallcertifedto(HttpServletRequest request,ModelMap model, Principal principal ) {
 		Certified_toform Certified_toform = new Certified_toform();
 		
 		Certified_toform.setCertified_to(SupplierCertificatetoDAO.getsuppliercerticate());
