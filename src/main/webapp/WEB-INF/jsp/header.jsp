@@ -539,10 +539,9 @@
 							<li ><a href="add_documenttype">Document Type</a></li>
 							<li ><a href="setrevision">Set Revision Format</a></li>
 						</ul>
-						 <ul id="auditfinding" class="ddsubmenustyle">
+						 <ul id="audit_finding" class="ddsubmenustyle">
 							<li ><a href="add_finding">Add Finding</a></li>
 							<li ><a href="finding_list">View Finding</a></li>
-							
 						</ul>
 						
 						 <ul id="document1" class="ddsubmenustyle">

@@ -28,9 +28,9 @@
 								</a>
 							</li>
 							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
-								<a href="#" class="<c:choose>
+								<a href="add_finding" class="<c:choose>
 								<c:when test="${menu=='audits'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>" rel="auditfinding">
-									<span>Internal Audits Finding</span>
+									<span>Add Internal Audits Finding</span>
 									
 								</a>
 							</li>
@@ -42,7 +42,15 @@
 									
 								</a>
 							</li>
-						
+						<c:if test="${role==2}">
+								<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+									<a href="finding_list" class="<c:choose>
+									<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
+										<span>View Internal Audits Finding</span>
+										
+									</a>
+							</li>
+						    </c:if>
 				         <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="internalaudit_report" class="<c:choose>
 								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">

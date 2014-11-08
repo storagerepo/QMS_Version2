@@ -13,11 +13,18 @@
 			<div>
 				<ul class="horizmenu" style=" float:left;margin-left:205px; margin-top:8px;">
 			<c:if test="${role==2}">
-			<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+						<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="addinternalaudits" class="<c:choose>
 								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
 									<span>Add Internal Audits</span>
 									
+								</a>
+							</li>
+							
+							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+								<a href="add_finding" class="<c:choose>
+								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>" rel="audit_finding">
+									<span>Add Internal Audits Finding</span>
 								</a>
 							</li>
 					</c:if>		
@@ -28,7 +35,15 @@
 									
 								</a>
 							</li>
-						
+						<c:if test="${role==2}">
+								<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+									<a href="finding_list" class="<c:choose>
+									<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
+										<span>View Internal Audits Finding</span>
+										
+									</a>
+							</li>
+						    </c:if>
 				         <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="internalaudit_report" class="<c:choose>
 								<c:when test="${menu=='audits'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>">
