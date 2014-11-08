@@ -193,7 +193,6 @@
 									</td>
 									
 									</tr>
-									<br/><br/>
 										<c:forEach items="${revisionDocumentForm.revisionDocuments}" var="revision" varStatus="status">
 										<c:if test="${revision.auto_number == documentMains.auto_number}">
 											<tr class="row2" style="color:#0000A0; font-style: inherit;">

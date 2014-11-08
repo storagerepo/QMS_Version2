@@ -189,8 +189,7 @@
              </table>
              
              	
-           <table  width=300 height=30>
-			<tr height=30><td></td></tr></table>
+         
 							
 	
 <script type="text/javascript">

@@ -468,6 +468,5 @@ function subhide()
 }
 
 </script>
-<table height="90%">
-			<tr height=90%;><td></td></tr></table>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
  <jsp:include page="footer.jsp"></jsp:include> 
