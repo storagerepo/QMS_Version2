@@ -471,5 +471,5 @@ $('#select_all').change(function() {
 
  <table  width=300 height=30>
 			<tr height=30><td></td></tr></table>
-			
+			 <br><br><br><br><br><br>
 <jsp:include page="footer.jsp"></jsp:include>		

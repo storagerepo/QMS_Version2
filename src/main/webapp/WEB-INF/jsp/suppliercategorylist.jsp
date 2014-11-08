@@ -90,7 +90,7 @@
     <tr><td>
 	<form method="get" action="category_search">
 		<table>
-		<tr><td width="1160" align="right" valign="middle">Category&nbsp;:&nbsp;&nbsp;&nbsp;<input type="text"  class="input_txtbx" name="category">&nbsp;&nbsp;&nbsp;</td>
+		<tr><td width="1160" align="right" valign="middle">Category&nbsp;:&nbsp;&nbsp;&nbsp;<input type="text"  class="input_txtbx" name="category" maxlength="500">&nbsp;&nbsp;&nbsp;</td>
 		<td><input type="submit" class="submit_btn1" value="search"></td></tr></table></td></tr></form>
       		<tr>
         		<td valign="top" align="left">

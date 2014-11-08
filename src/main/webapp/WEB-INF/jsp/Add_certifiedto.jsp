@@ -75,7 +75,7 @@
 			<table cellpadding="0" cellspacing="0" border="0">
                <tr class="row1">
                   <td valign="middle" align="left" class="input_txt" style="padding-left: 55px">Certified To :</td>
-                  <td valign="top" align="left" class="input_txt"><input type="text" name="certified_to" class="input_txtbx" maxlength="32" id="certified_to" value="${certified_to.certified_to}" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"/>
+                  <td valign="top" align="left" class="input_txt"><input type="text" name="certified_to" class="input_txtbx" maxlength="32" onkeypress="return AlphabetsNumber1(event,this);" id="certified_to" value="${certified_to.certified_to}" onblur="ChangeCase(this);" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"/>
                    <br> <span id="certified_toerror" style="color:red">                           
                </td>
                 </tr>
@@ -107,6 +107,12 @@
 
 </script>
  
+<script>
+function ChangeCase(elem)
+{
+    elem.value = elem.value.toUpperCase();
+}
+</script>
 <script>
     function validation()
     {
@@ -142,9 +148,72 @@
 
     </script>
     
+    <!-- <script>
+function AlphabetsNumber1(e, t) {
+    try {
     
+    	
+        if (window.event) {
+            var charCode = window.event.keyCode;
+        }
+        else if (e) {
+            var charCode = e.which;
+        }
+        
+        else { return true; }
+       /*  if(t.value.substring(0,1))
+        	{
+        	alert()
+        	alert(e.which);
+        	} */
+        	  if(t.value.substring(0,1))
+          	{
+          if ( (charCode==73)|| (charCode==105))
+              return true;
+          else
+              return false;
+          	}
+        	 if(t.value.substring(0,1))
+           	{
+           if ( (charCode==73)|| (charCode==105))
+               return true;
+           else
+               return false;
+           	}
+         	
+        if(t.value.length<3)
+        	{
+        if ( (charCode==73) || (charCode==83) || (charCode==79) || (charCode==105)|| (charCode==115)|| (charCode==111))
+            return true;
+        else
+            return false;
+        	}
+        if(t.value.length==3)
+        	{
+        	
+        	t.value+=" ";
+        	}
+        
+        
+        if(t.value.length>=3)
+    	{
+        	
+    if ((charCode >47 && charCode < 59)|| (charCode==46)|| (charCode==45) )
+        return true;
+    else
+        return false;
+    	
+    	}
+    }
+    catch (err) {
+        alert(err.Description);
+    }
+}
+
+
+</script> -->
  
- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+ <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
  </div>
       <jsp:include page="footer.jsp"></jsp:include> 
  </html>

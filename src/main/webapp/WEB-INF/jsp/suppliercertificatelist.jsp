@@ -90,7 +90,7 @@
     <tr><td>
 		<form method="get" action="certificate_search">
 		<table>
-		<tr><td width="1160" align="right" valign="middle">Certified To&nbsp;:&nbsp;&nbsp;&nbsp;<input type="text"  class="input_txtbx" name="certified_to">&nbsp;&nbsp;&nbsp;</td>
+		<tr><td width="1160" align="right" valign="middle">Certified To&nbsp;:&nbsp;&nbsp;&nbsp;<input type="text"  class="input_txtbx" name="certified_to" maxlength="500">&nbsp;&nbsp;&nbsp;</td>
 		<td><input type="submit" class="submit_btn1" value="search"></td></tr></table></td></tr></form>
       		<tr>
         		<td valign="top" align="left">
@@ -172,9 +172,9 @@
         				       				
         				       				</table>
         				       				</div>
- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
- <jsp:include page="footer.jsp"></jsp:include>    </html>       				       				
-<script language="javascript">
+        				       				
+        				       				
+        				       				<script language="javascript">
 
 function onlyAlphabets(e, t) {
     try {
@@ -206,4 +206,7 @@ function confirmation() {
 
 
 </script> 
-        				       		
+        	
+ <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+ <jsp:include page="footer.jsp"></jsp:include>    </html>       				       				
+			       		

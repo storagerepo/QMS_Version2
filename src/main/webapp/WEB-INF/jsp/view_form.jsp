@@ -294,7 +294,7 @@
                 </c:choose>
             </c:forEach>          
             <c:if test="${currentpage!=noofpages}">
-              <li class="page_unselect"><a href="viewformreport_page?page=${currentpage+1}&process=${processarea}">Nextgfg</a></li> 
+              <li class="page_unselect"><a href="viewformreport_page?page=${currentpage+1}&process=${processarea}">Next</a></li> 
                  </c:if>
               <c:choose>
               <c:when test="${button=='viewall'}">
