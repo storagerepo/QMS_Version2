@@ -23,25 +23,25 @@
         <div>
   <ul class="horizmenu">
 						
-							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
-								<a href="#" class="<c:choose>
-								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>" rel="supplier11">
+						<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+								<a href="Addsuppliercategory" class="<c:choose>
+								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>" >
 									<span>Add Set-up</span>
 								</a>
 							</li>
 							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
-								<a href="#" class="<c:choose>
-									<c:when test="${menu=='supplier'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>"rel="supplier1">
+								<a href="suppliercategorylist" class="<c:choose>
+									<c:when test="${menu=='supplier'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>">
 									<span>List/Delete Set-up</span>
 							</a>
 							</li>
-							
-							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+						<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="supplierperformancedelete" class="<c:choose>
 								<c:when test="${menu=='supplier'}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
 									Delete Supplier Performance
 								</a>
 							</li>
+				          
 							
 							
 				          
