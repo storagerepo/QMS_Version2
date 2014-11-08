@@ -20,6 +20,12 @@ public class ManagementReviewAttendee {
 		this.job_title = job_title;
 	}
 
+	public ManagementReviewAttendee(String attendee_name, String job_title) {
+		super();
+		this.attendee_name = attendee_name;
+		this.job_title = job_title;
+	}
+
 	public String getId() {
 		return id;
 	}

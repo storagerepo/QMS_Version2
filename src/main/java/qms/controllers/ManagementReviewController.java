@@ -47,8 +47,9 @@ import qms.forms.NonConformanceForm;
 import qms.model.InternalAudits;
 import qms.model.Maintenance;
 import qms.model.ManagementReview;
+import qms.model.ManagementReviewAttendee;
 @Controller
-@SessionAttributes({"managementreview"})
+@SessionAttributes({"managementreview","session_attendee"})
 public class ManagementReviewController
 {
 	
@@ -60,7 +61,7 @@ public class ManagementReviewController
 
 @RequestMapping(value={"/addmanagementreview"}, method = RequestMethod.GET)
 	
-	public String add_managementreview(ModelMap model, Principal principal)  {
+	public String add_managementreview(HttpSession session,ModelMap model, Principal principal)  {
 	
 	model.addAttribute("id", managementreviewDAO.getMax_reviewid());
 	EmployeeForm employeeForm=new EmployeeForm();
@@ -68,7 +69,8 @@ public class ManagementReviewController
 	model.addAttribute("employeeForm",employeeForm);
 	model.addAttribute("menu","managementreview");
 	
-	
+	List<ManagementReviewAttendee> attendee=new ArrayList<ManagementReviewAttendee>();
+	session.setAttribute("session_attendee",attendee);
 	
 	
 	return "add_managementreview";
@@ -116,10 +118,63 @@ public @ResponseBody 	String ajax_getnew_attendee(HttpSession session,	HttpServl
 
 }
 
+//get added attendee
 
+@SuppressWarnings("unchecked")
+@RequestMapping(value="/get_added_attendee",method=RequestMethod.POST)
+public @ResponseBody String getAttendee(HttpSession session,HttpServletRequest request,@RequestParam("name") String attendee_name,@RequestParam("job_title") String job_title,ModelMap model)
+{
+	
+	List<ManagementReviewAttendee> attendee=new ArrayList<ManagementReviewAttendee>();
+	attendee=(List<ManagementReviewAttendee>) session.getAttribute("session_attendee");
+	attendee.add(new ManagementReviewAttendee(attendee_name,job_title));
+	System.out.println("Array Size:"+attendee.size());
+	
+	String returnString="<tr><td valign='middle' align='left' class='input_txt' width='20%'>S.No</td><td valign='middle' align='left' class='input_txt' width='100px'>Attendee List :</td><td valign='middle' align='left' class='input_txt' width='100px'>Job Title :</td><td width='20px'>Action</td></tr>";
+	int i=0;
+	for (ManagementReviewAttendee attendees : attendee) {
+		returnString+="<tr>";
+		returnString+="<td valign='middle' align='left' class='input_txt' width='20%'>"+(i+1)+"</td><td valign='middle' align='left' class='input_txt' width='100px'>"+attendees.getAttendee_name()+"</td><td valign='middle' id='job_title' align='left' class='input_txt' width='100px'>"+attendees.getJob_title()+"</td><td width='20px'><a href='#' onclick='doRemoveattendee("+i+")'>Remove</a></td></tr>";
+		
+	i++;
+	System.out.println(returnString);
+	}
+	
+	session.setAttribute("session_attendee", attendee);
+	return returnString;
+	
+}
 
+//remove added attendee
+
+@SuppressWarnings("unchecked")
+@RequestMapping(value="/remove_added_attendee",method=RequestMethod.POST)
+public @ResponseBody String removeAttendee(HttpSession session,HttpServletRequest request,@RequestParam("id") String id ,ModelMap model)
+{
+	
+	List<ManagementReviewAttendee> attendee=new ArrayList<ManagementReviewAttendee>();
+	attendee=(List<ManagementReviewAttendee>) session.getAttribute("session_attendee");
+	attendee.remove(Integer.parseInt(id));
+	System.out.println("Array Size:"+attendee.size());
+
+	 String returnString="<tr><td valign='middle' align='left' class='input_txt' width='20%'>S.No</td><td valign='middle' align='left' class='input_txt' width='100px'>Attendee List :</td><td valign='middle' align='left' class='input_txt' width='100px'>Job Title :</td><td width='20px'>Action</td></tr>";
+	int i=0;
+	for (ManagementReviewAttendee attendees : attendee) {
+		returnString+="<tr>";
+		returnString+="<td valign='middle' align='left' class='input_txt' width='20%'>"+(i+1)+"</td><td valign='middle' align='left' class='input_txt' width='100px'>"+attendees.getAttendee_name()+"</td><td valign='middle' id='job_title' align='left' class='input_txt' width='100px'>"+attendees.getJob_title()+"</td><td width='20px'><a href='#' onclick='doRemoveattendee("+i+")'>Remove</a></td></tr>";
+		
+	i++;
+	System.out.println(returnString);
+	}
+	
+	session.setAttribute("session_attendee", attendee);
+	return returnString;
+	
+}
+
+@SuppressWarnings("unchecked")
 @RequestMapping(value="/addmanagementreview", method = RequestMethod.POST)
-public String insert_managementreview(HttpSession session,@ModelAttribute("ManagementReview") @Valid ManagementReview managementReview, BindingResult result,ModelMap model, Principal principal)
+public String insert_managementreview(HttpSession session,@ModelAttribute("ManagementReview") @Valid ManagementReview managementReview,ManagementReviewAttendee reviewAttendee, BindingResult result,ModelMap model, Principal principal)
 {
 	session.removeAttribute("categoryvalue");
 	session.removeAttribute("reviewid");
@@ -135,7 +190,31 @@ public String insert_managementreview(HttpSession session,@ModelAttribute("Manag
 	else
 	{
 	
-	if(!managementreviewDAO.insert_managementreview(managementReview))
+		//Insert Management review details
+		managementreviewDAO.insert_managementreview(managementReview);
+		
+		String[] attendee_names=new String[100];
+		String[] job_titles=new String[300];
+		
+		List<ManagementReviewAttendee> attendee_session=new ArrayList<ManagementReviewAttendee>();
+	   
+	   attendee_session=(List<ManagementReviewAttendee>) session.getAttribute("session_attendee");
+		
+	   int index=0;
+	   for (ManagementReviewAttendee attendee1 : attendee_session) {
+		attendee_names[index]=attendee1.getAttendee_name();
+		job_titles[index]=attendee1.getJob_title();
+		
+		index++;
+	   }
+	   
+	   for(int k=0;k<index;k++){
+		   reviewAttendee.setAttendee_name(attendee_names[k]);
+		   reviewAttendee.setJob_title(job_titles[k]);
+		   managementreviewDAO.insert_managementreviewattendee(reviewAttendee,managementReview.getReview_id());
+	   }
+		
+	/*if(!managementreviewDAO.insert_managementreview(managementReview))
 	{
 		String  attendee_name = managementReview.getAttendee_list_with_titles();
 		String review_id = managementReview.getReview_id();
@@ -152,8 +231,9 @@ public String insert_managementreview(HttpSession session,@ModelAttribute("Manag
 				
 			}
 		}
-		session.removeAttribute("managementreview");
-	}
+		
+	}*/
+	  session.removeAttribute("managementreview");
 	}
 	ManagementReviewForm managementreviewform= new ManagementReviewForm();
 	managementreviewform.setManagementreviewdetails(managementreviewDAO.get_managementreview());
@@ -177,7 +257,7 @@ public String viewmaintenance(HttpServletRequest request,@RequestParam("review_i
 }
   //for EDITING REVIEW 
 @RequestMapping(value = "/edit_managementreview", method = RequestMethod.GET)
-public String edit_review(@RequestParam("review_id") String review_id,ModelMap model,Principal principal) {
+public String edit_review(HttpSession session,@RequestParam("review_id") String review_id,ModelMap model,Principal principal) {
 	
 	
 	EmployeeForm employeeForm=new EmployeeForm();
@@ -192,10 +272,90 @@ public String edit_review(@RequestParam("review_id") String review_id,ModelMap m
 	managementreviewForm.setManagementreviewdetails(managementreviewDAO.edit_managementreview(review_id));
 	model.addAttribute("managementreviewForm", managementreviewForm);
 	model.addAttribute("menu","managementreview");
+	
     return "edit_managementreview";
 }
 
+@RequestMapping(value="/edit_attendees", method=RequestMethod.POST)
+public @ResponseBody String edit_review_attendee(HttpSession session,@RequestParam("review_id") String review_id,ModelMap model){
 
+	ManagementReview_Attendee_Form managementReview_Attendee_Form = new ManagementReview_Attendee_Form();
+	managementReview_Attendee_Form.setManagementReviewAttendees(managementreviewDAO.get_managementreviewattendee(review_id));
+	model.addAttribute("managementReview_Attendee_Form",managementReview_Attendee_Form);
+	
+	List<ManagementReviewAttendee> attendee=new ArrayList<ManagementReviewAttendee>();
+	attendee=managementreviewDAO.get_managementreviewattendee(review_id);
+	System.out.println("Array Size:"+attendee.size());
+	session.setAttribute("session_attendee", attendee);
+	
+	String returnString="<tr><td valign='middle' align='left' class='input_txt' width='20%'>S.No</td><td valign='middle' align='left' class='input_txt' width='100px'>Attendee List :</td><td valign='middle' align='left' class='input_txt' width='100px'>Job Title :</td><td width='20px'>Action</td></tr>";
+	int i=0;
+	for (ManagementReviewAttendee attendees : attendee) {
+		returnString+="<tr>";
+		returnString+="<td valign='middle' align='left' class='input_txt' width='20%'>"+(i+1)+"</td><td valign='middle' align='left' class='input_txt' width='100px'>"+attendees.getAttendee_name()+"</td><td valign='middle' id='job_title' align='left' class='input_txt' width='100px'>"+attendees.getJob_title()+"</td><td width='20px'><a href='#' onclick='doRemoveattendee("+attendees.getId()+","+attendees.getReview_id()+")'>Remove</a></td>";
+		
+	i++;
+	System.out.println(returnString);
+	}
+	
+	returnString+="</tr>";
+	
+	return returnString;	
+}
+
+//edit remove added attendee
+
+@RequestMapping(value="/edit_remove_added_attendee",method=RequestMethod.POST)
+public @ResponseBody String edit_removeAttendee(HttpSession session,HttpServletRequest request,@RequestParam("id") String id,@RequestParam("review_id") String review_id,ModelMap model)
+{
+
+	boolean status=managementreviewDAO.delete_reviewattendee(id);
+	String returnString="";
+	if(status==true){
+	List<ManagementReviewAttendee> attendee=new ArrayList<ManagementReviewAttendee>();
+	attendee=managementreviewDAO.get_managementreviewattendee(review_id);
+	
+	returnString="<tr><td valign='middle' align='left' class='input_txt' width='20%'>S.No</td><td valign='middle' align='left' class='input_txt' width='100px'>Attendee List :</td><td valign='middle' align='left' class='input_txt' width='100px'>Job Title :</td><td width='20px'>Action</td></tr>";
+	int i=0;
+	for (ManagementReviewAttendee attendees : attendee) {
+		returnString+="<tr>";
+		returnString+="<td valign='middle' align='left' class='input_txt' width='20%'>"+(i+1)+"</td><td valign='middle' align='left' class='input_txt' width='100px'>"+attendees.getAttendee_name()+"</td><td valign='middle' id='job_title' align='left' class='input_txt' width='100px'>"+attendees.getJob_title()+"</td><td width='20px'><a href='#' onclick='doRemoveattendee("+i+")'>Remove</a></td></tr>";
+		
+	i++;
+	System.out.println(returnString);
+	}
+	
+	}
+	return returnString;
+	
+}
+
+//In edit add attendee
+
+@RequestMapping(value="/add_attendee_in_edit",method=RequestMethod.POST)
+public @ResponseBody String edit_addAttendee(HttpSession session,HttpServletRequest request,@RequestParam("name") String name,@RequestParam("job_title") String job_title,@RequestParam("review_id") String review_id,ModelMap model)
+{
+
+	boolean status=managementreviewDAO.insert_reviewattendee(name,job_title,review_id);
+	String returnString="";
+	if(status==true){
+	List<ManagementReviewAttendee> attendee=new ArrayList<ManagementReviewAttendee>();
+	attendee=managementreviewDAO.get_managementreviewattendee(review_id);
+	
+	returnString="<tr><td valign='middle' align='left' class='input_txt' width='20%'>S.No</td><td valign='middle' align='left' class='input_txt' width='100px'>Attendee List :</td><td valign='middle' align='left' class='input_txt' width='100px'>Job Title :</td><td width='20px'>Action</td></tr>";
+	int i=0;
+	for (ManagementReviewAttendee attendees : attendee) {
+		returnString+="<tr>";
+		returnString+="<td valign='middle' align='left' class='input_txt' width='20%'>"+(i+1)+"</td><td valign='middle' align='left' class='input_txt' width='100px'>"+attendees.getAttendee_name()+"</td><td valign='middle' id='job_title' align='left' class='input_txt' width='100px'>"+attendees.getJob_title()+"</td><td width='20px'><a href='#' onclick='doRemoveattendee("+attendees.getId()+","+attendees.getReview_id()+")'>Remove</a></td></tr>";
+		
+	i++;
+	System.out.println(returnString);
+	}
+	
+	}
+	return returnString;
+	
+}
 
 //For view review
 
@@ -275,8 +435,6 @@ public String update_review(HttpSession session,HttpServletRequest request,@Mode
 	session.removeAttribute("categoryvalue");
 	session.removeAttribute("reviewid");
 	session.removeAttribute("managementreviewdate");
-	System.out.println(managementreview.getAttendee_list_with_titles());
-	System.out.println(managementreview.getJob_title());
 	session.setAttribute("managementreview",managementreview);
 	session.removeAttribute("categoryvalue");
 	session.removeAttribute("reviewid");
@@ -305,43 +463,6 @@ public String update_review(HttpSession session,HttpServletRequest request,@Mode
 	*/
 	managementreviewDAO.update_managementreview(managementreview);
 	
-	String  attendee_name = managementreview.getAttendee_list_with_titles();
-	/*String id = request.getParameter("id");*/
-	String []costArray = request.getParameterValues("id");
-	StringBuilder builder = new StringBuilder();
-	for (String string : costArray)
-	{
-	
-	    builder.append(string);
-	    builder.append(',');
-	}
-	String id= builder.toString();
-	System.out.println("ids = "+id);
-	String review_id = managementreview.getReview_id();
-	
-	String  job_title = managementreview.getJob_title();
-	String[] name = attendee_name.split(",");
-	String[] ids = id.split(",");
-	System.out.println(ids.length);
-	if(job_title != null)
-	{
-		String[] job = job_title.split(",");
-		if((name.length > 0) && (job.length > 0))
-		{
-			for (int k = 0; k < ids.length; k++) {
-				
-			
-			for (int i = ids.length; i <= name.length; i++) {
-				for (int j =ids.length ; j <= job.length; j++) {
-	
-					managementreviewDAO.update_managementreviewattendee(name[k],job[k],ids[k]);
-					System.out.println("attendee updated");
-				}
-				
-			}
-			}	
-		}
-	}
 	model.addAttribute("menu", "managementreview");
 	ManagementReviewForm managementreviewform= new ManagementReviewForm();
 	managementreviewform.setManagementreviewdetails(managementreviewDAO.get_managementreview());

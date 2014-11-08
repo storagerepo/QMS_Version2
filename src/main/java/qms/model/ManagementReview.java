@@ -34,7 +34,7 @@ public class ManagementReview
 	public String review_id;
 	@NotEmpty
 	private String management_review_date;
-	@NotEmpty
+
 	private String attendee_list_with_titles;
 	
 	private String job_title;

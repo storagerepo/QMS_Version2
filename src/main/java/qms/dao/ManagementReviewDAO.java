@@ -630,8 +630,7 @@ public class ManagementReviewDAO extends AbstractITextPdfView {
 	}
 
 	// to INSERT INTO TABLE
-	public boolean insert_managementreviewattendee(String name, String job,
-			String review_id) {
+	public boolean insert_managementreviewattendee(ManagementReviewAttendee reviewAttendee,String review_id) {
 		Connection con = null;
 		Statement statement = null;
 		ResultSet resultSet = null;
@@ -645,7 +644,7 @@ public class ManagementReviewDAO extends AbstractITextPdfView {
 		}
 		try {
 			String cmd_insert = "insert into tbl_managementreviewattendee(review_id,attendee_name,job_title)  values('"
-					+ review_id + "','" + name + "','" + job + "')";
+					+ review_id + "','" + reviewAttendee.getAttendee_name() + "','" + reviewAttendee.getJob_title() + "')";
 
 			System.out.println(statement.execute(cmd_insert));
 
@@ -706,6 +705,67 @@ public class ManagementReviewDAO extends AbstractITextPdfView {
 		return managementreviewdetails;
 	}
 
+	// to Insert Review Attendee
+			public boolean insert_reviewattendee(String name,String job_title,String review_id) {
+				Connection con = null;
+				Statement statement = null;
+				ResultSet resultSet = null;
+				boolean status = false;
+				try {
+					con = dataSource.getConnection();
+					statement = con.createStatement();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				try {
+					String cmd_insert = "Insert into tbl_managementreviewattendee(review_id,attendee_name,job_title) values('"+review_id+ "','"+name+"','"+job_title+"')";
+					statement.execute(cmd_insert);
+					status=true;
+				} catch (Exception e) {
+					System.out.println(e.toString());
+					releaseResultSet(resultSet);
+					releaseStatement(statement);
+					releaseConnection(con);
+				} finally {
+					releaseResultSet(resultSet);
+					releaseStatement(statement);
+					releaseConnection(con);
+				}
+				return status;
+
+			}
+	
+	// to DELETE Review Attendee
+		public boolean delete_reviewattendee(String id) {
+			Connection con = null;
+			Statement statement = null;
+			ResultSet resultSet = null;
+			boolean status = false;
+			try {
+				con = dataSource.getConnection();
+				statement = con.createStatement();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			try {
+				String cmd_delete = "delete from tbl_managementreviewattendee where id='"
+						+id+ "'";
+				statement.execute(cmd_delete);
+				status=true;
+			} catch (Exception e) {
+				System.out.println(e.toString());
+				releaseResultSet(resultSet);
+				releaseStatement(statement);
+				releaseConnection(con);
+			} finally {
+				releaseResultSet(resultSet);
+				releaseStatement(statement);
+				releaseConnection(con);
+			}
+			return status;
+
+		}
+	
 	// get attendee names and jobs by review id from managementreviewattendee
 	// table
 	public List<ManagementReview> edit_managementreview(String review_id) {
@@ -777,10 +837,6 @@ public class ManagementReviewDAO extends AbstractITextPdfView {
 		try {
 			String cmd_update = "update tbl_managementreviewmain set management_review_date='"
 					+ managementreviewdetails.getManagement_review_date()
-					+ "',attendee_list_with_titles='"
-					+ managementreviewdetails.getAttendee_list_with_titles()
-					+ "',job_title='"
-					+ managementreviewdetails.getJob_title()
 					+ "',next_management_review_by='"
 					+ managementreviewdetails.getNext_management_review_by()
 					+ "' where review_id='"

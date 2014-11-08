@@ -66,7 +66,7 @@
              <tr class="row2">
 				                  <td valign="middle" align="left" class="input_txt" width="30%">Review ID :</td>
 				                  <td valign="middle" align="left" class="input_txt" width="30%">
-                                  <input type="text" name="review_id" class="input_txtbx" readonly="readonly" value="<c:out value="${managementReviewdetails.review_id}"/>"/>
+                                  <input type="text" name="review_id" id="review_id" class="input_txtbx" readonly="readonly" value="<c:out value="${managementReviewdetails.review_id}"/>"/>
 				                  	<font color="Red" size="+1"></font>
 				                  	
 				                  </td>
@@ -79,37 +79,34 @@
                 </tr>
                 
                   <tr class="row1">
-                 <td valign="middle" align="left" class="input_txt" width="30%">Attendee List: <br/>Job Title :</td>
-                  <td valign="middle" align="left" class="input_txt" width="30%">
-                 <%--  <input type="text" class="input_txtbx" name="attendee_list_with_titles" id="attendeelistwithtitles"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onkeypress="return onlyAlphabets(event,this);" maxlength="32" value="<c:out value="${managementReviewdetails.attendee_list_with_titles}"></c:out>" maxlength="32"/> --%>
-                 <c:forEach items="${managementReview_Attendee_Form.managementReviewAttendees}" var="attendee" varStatus="true">  
-                 <input type="hidden" name="id" value="${attendee.id}"/>        
-                  <select name="attendee_list_with_titles" class="input_txtbx" id="attendeelistwithtitles" onchange="doAjaxPost_getjobtitle();">
+                 <td valign="middle" align="left" class="input_txt" width="30%">Attendee List:</td>
+                  <td valign="middle" align="left" class="input_txt" width="20%">
+                 
+                    <select name="attendee_list_with_titles" class="input_txtbx" id="attendeelistwithtitles" onchange="doAjaxPost_getjobtitle();">
 						                  <option value="">--Select--</option>
-						                      	<c:forEach items="${employeeForm.employees}" var="managements" varStatus="true">
-						                      		
-						                      	
-               						<option value="<c:out value="${managements.name}"/>" <c:if test="${attendee.attendee_name==managements.name}"><c:out value="Selected"/></c:if>><c:out value="${managements.name}"/></option>
+						                     	<c:forEach items="${employeeForm.employees}" var="managements" varStatus="true">
+               						<option value="<c:out value="${managements.name}"/>"><c:out value="${managements.name}"/></option>
                						</c:forEach>
-               						
 				                 </select>
-				                  <br/>
-				                  <input type="hidden" value="${attendee.job_title}" name="job_title"/>
-				                  <span  id="initial_job" valign="middle" align="left" class="input_txt" width="20%">${attendee.job_title}</span> 
-                  <span id="change_job" valign="middle" align="left" class="input_txt" style="display:none" width="20%"> <span id="job_title_id"></span></span> 
-		 			<br/><br/>
-				                 </c:forEach>
-                  <br/>
-                    				
+				                
+                  <br/>				
                     <span id="attendeelistwithtitleserror" style="color:red"></span>
-                  <span class="err"><form:errors path="ManagementReview.attendee_list_with_titles"></form:errors></span></td>
+                  <span class="err"></span></td>
                  
                  <td valign="middle" align="left" class="input_txt" width="30%">Next Management Review By :</td>
                   <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="next_management_review_by" class="input_txtbx" id="nextmanagementreviewby"onkeypress="return onlyAlphabets(event,this);" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" maxlength="32" value='<c:out value="${managementReviewdetails.next_management_review_by}"></c:out>'>
                   <br>   <span id="nextmanagementreviewbyerror" style="color:red"></span>
                    <span class="err"><form:errors path="ManagementReview.next_management_review_by"></form:errors></span></td>
                   </tr>
+                   <tr class="row2">
+				 <td valign="middle" align="left" class="input_txt" width="20%">Job Title :</td>
+                  <td valign="middle" id="job_title" align="left" class="input_txt" width="20%" style="display:none;"> <span id="job_title_id"></span>
+                  <br/><input type="button" value="Add" onclick="add_new_attendee();" id="add1"/>
+                  
+                  </td> 
+		 		</tr>
                    <tr class="row1">
+                   <td colspan="4" align="center"><div id="review_attendees"></div></td>
 					</tr>
                    <tr class="row2">
                  <td valign="middle" align="left" class="input_txt" width="30%">Category :</td>
@@ -213,9 +210,10 @@ function doAjaxPost_getjobtitle()
 {
 
 	var management_name = $('#attendeelistwithtitles').val();
-	document.getElementById('initial_job').style.display="none";
-	document.getElementById('change_job').style.display="block";
-	
+	if(management_name == "")
+		document.getElementById('job_title').style.display="none";
+	else
+		document.getElementById('job_title').style.display="block";
 	$.ajax({
 		type : "POST",
 		url : "/QMS_App/ajax_getjobtitle",
@@ -304,6 +302,73 @@ function validateres(id){
     document.getElementById(id).value = textInput;
 }
 </script>
+
+<!-- Load Review Attendees List  -->
+<script>
+$(window).load(
+		function doGetattendees() {
+			var review_id = $('#review_id').val();
+			
+			$.ajax({  
+				    type: "POST",  
+				    url: "/QMS_App/edit_attendees",  
+				    data: "review_id=" + review_id,
+				    success: function(response){ 
+				    	
+					$('#review_attendees').html(response);
+		  			},  
+				    error: function(e){  
+				      alert('Error: ' + e);  
+				    }  
+				  });  
+				}  
+				);			
+</script>
+<script>
+function doRemoveattendee(auto_id,review_id)
+{
+
+		$.ajax({
+		type : "POST",
+		url : "/QMS_App/edit_remove_added_attendee",
+		data : "id="+auto_id+"&review_id="+review_id,
+		success : function(response) {
+			
+			$('#review_attendees').html(response);
+			
+		},
+		error : function(e) {
+			//alert('Error: ' + e);
+		}
+	});
+}
+
+function add_new_attendee()
+{
+	var review_id = $('#review_id').val();
+	var management_name = $('#attendeelistwithtitles').val();
+	var job_title = $('#hidden_process_owner').val();
+	
+	$.ajax({
+		type : "POST",
+		url : "/QMS_App/add_attendee_in_edit",
+		data : "name=" + management_name+"&job_title="+job_title+"&review_id="+review_id,
+		success : function(response) {
+			
+			$('#review_attendees').html(response);
+			 $('#attendeelistwithtitles').val("");
+			 $('#process_owner_lbl').text("");
+			 $('#hidden_process_owner').val("");
+			 
+		},
+		error : function(e) {
+			//alert('Error: ' + e);
+		}
+	});
+}			
+
+</script>
+
 <script type="text/javascript">
 function validate()
 {
@@ -322,11 +387,11 @@ function validate()
 	var datepicker2 = document.getElementById('datepicker2').value;
 	var responsibility = document.getElementById('responsibility').value;
 	var datepicker1 = document.getElementById('datepicker1').value;
-	if(attendeelistwithtitles =="")
+	/* if(attendeelistwithtitles =="")
 		{
 		 document.getElementById("attendeelistwithtitleserror").innerHTML="Required field should not be empty";
 			error="true";
-		}
+		} */
 	/* else if(attendeelistwithtitles.charAt(0) == " ")
 	{
 		 document.getElementById("attendeelistwithtitleserror").innerHTML="Should not accept initial space";
@@ -338,10 +403,6 @@ function validate()
 		error="true";
 		
 		} */
-	else {
-		document.getElementById("attendeelistwithtitleserror").innerHTML="";
-		
-	}
 	
 	if(nextmanagementreviewby == "")
 		{

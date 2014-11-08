@@ -73,7 +73,7 @@
               <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr class="row2" valign="right">
                
-                  <td valign="middle" align="left" class="input_txt" width="20%">Review ID :</td>
+                  <td valign="middle" align="left" class="input_txt" width="20%"><input type="hidden" id="attendee_session"> Review ID :</td>
 	                  <td valign="middle" align="left" class="input_txt" width="20%"><input type="text" class="input_txtbx" readonly="readonly" name="review_id" value="<c:out value="${id}"/>"/><br/></td>
       
                   <td valign="middle" align="left" class="input_txt" width="20%">Review Date :</td>
@@ -96,7 +96,7 @@
 				                
                   <br/>
                   <span id="attendeelistwithtitleserror" style="color:red"></span>
-                  <span class="err"><form:errors path="ManagementReview.attendee_list_with_titles"></form:errors></span></td>  
+                  <span class="err"></span></td>  
                               
                	 <td valign="middle" align="left" class="input_txt" width="20%">Next Management Review By :</td>
                   <td valign="middle" align="left" class="input_txt" width="20%"><input type="text" name="next_management_review_by" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  class="input_txtbx" id="nextmanagementreviewby" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" onkeypress="return onlyAlphabets(event,this);" maxlength="32"/><br/>
@@ -112,6 +112,12 @@
                
                   </td> 
 		 </tr>
+		 
+		  	<tr class="row1">
+               
+				 <td colspan="4" align="center"><div id="attendee_list"></div></td>
+		 		</tr>
+		 
 		 <tr class="row1">
 		 <td valign="middle" id="job_title" align="left" class="input_txt" width="20%" ></td>
 		<td valign="middle" id="job_title" align="left" class="input_txt" width="20%" > <span id="attendee_label_id"></span><br/>
@@ -208,6 +214,8 @@
                   <td valign="middle" align="left" class="input_txt" width="20%">
               <td valign="middle" align="left" class="input_txt" width="20%">
                </tr> -->
+              
+               
                  <tr class="row1">
                   <td valign="bottom" colspan="4"align="right">&nbsp;<input type="submit" value="Submit" onclick="return validate();"class="submit_btn1"></td>
                   
@@ -274,36 +282,47 @@ function doAjaxPost_getjobtitle2()
 
 	
 }
-
 function add_new_attendee()
 {
-	document.getElementById('attendee_label_id').style.display="block";	
+	
+	document.getElementById("attendee_session").value="";
 	var management_name = $('#attendeelistwithtitles').val();
-	document.getElementById('add1').style.display="none";
-	document.getElementById('remove1').style.display="block";
-	document.getElementById('add2').style.display="block";
+	var job_title = $('#hidden_process_owner').val();
 	
 	$.ajax({
 		type : "POST",
-		url : "/QMS_App/ajax_getnew_attendee",
-		data : "name=" + management_name,
+		url : "/QMS_App/get_added_attendee",
+		data : "name=" + management_name+"&job_title="+job_title,
 		success : function(response) {
 			
-			$('#attendee_label_id').html(response);
-		
+			$('#attendee_list').html(response);
+			document.getElementById("attendee_session").value=response;
+			$('#attendeelistwithtitles').val("");
+			 $('#process_owner_lbl').text("");
+			 $('#hidden_process_owner').val("");
+			 
 		},
 		error : function(e) {
 			//alert('Error: ' + e);
 		}
 	});
 }
-function remove_attendee()
+
+function doRemoveattendee(id)
 {
-document.getElementById('attendee_label_id').style.display="none";	
-document.getElementById('add1').style.display="block";
-document.getElementById('remove1').style.display="none";
-document.getElementById('job_title2').style.display="none";
-document.getElementById('add2').style.display="none";
+		$.ajax({
+		type : "POST",
+		url : "/QMS_App/remove_added_attendee",
+		data : "id="+id,
+		success : function(response) {
+			
+			$('#attendee_list').html(response);
+			
+		},
+		error : function(e) {
+			//alert('Error: ' + e);
+		}
+	});
 }
 $(function() {
 	$("#attendeelistwithtitles").on("keypress", function(e) {
@@ -379,7 +398,7 @@ function validate()
 	 var website= /^[a-zA-Z0-9]+[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
 	var date = /^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/;
 	
-	var attendeelistwithtitles = document.getElementById('attendeelistwithtitles').value;
+	var attendeelistwithtitles = document.getElementById('attendee_session').value;
 	var datepicker3 = document.getElementById('datepicker3').value;
 	var nextmanagementreviewby  = document.getElementById('nextmanagementreviewby').value;
 	var category = document.getElementById('category').value;
@@ -391,7 +410,7 @@ function validate()
 	var datepicker1 = document.getElementById('datepicker1').value;
 	if(attendeelistwithtitles =="")
 		{
-		 document.getElementById("attendeelistwithtitleserror").innerHTML="Required field should not be empty";
+		 document.getElementById("attendeelistwithtitleserror").innerHTML="Please add atlest one attendee";
 		 error="true";
 		}
 	/* else if(attendeelistwithtitles.charAt(0) == " ")
