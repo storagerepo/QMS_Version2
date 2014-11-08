@@ -25,13 +25,13 @@
 						
 							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="#" class="<c:choose>
-								<c:when test="${menu=='supplier'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>" rel="supplier11">
+								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>" rel="supplier11">
 									<span>Add Set-up</span>
 								</a>
 							</li>
 							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="#" class="<c:choose>
-									<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>"rel="supplier1">
+									<c:when test="${menu=='supplier'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>"rel="supplier1">
 									<span>List/Delete Set-up</span>
 							</a>
 							</li>
@@ -66,10 +66,11 @@
                <tr class="row1">
                   <td valign="middle" align="left" class="input_txt" style="padding-left: 55px">Certified To :</td>
                   <td> <input type="text" class="input_txtbx" name="certified_to" value="${certified_to.certified_to}" id="certified_to" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');"/>
-                   <br> <span id="certified_toerror" style="color:red">       </span>                    
+                   <br> <span id="certified_toerror" style="color:red">       </span>         
+                    <input type="hidden" name="id" id="id" value="${certified_to.id}"/>           
                </td>
-                </tr>
-              <%--   <tr class="row2">
+                </tr> 
+            <%--   <tr class="row2">
                 
                      <td valign="middle" align="left" class="input_txt" style="padding-left: 55px">Certified To :</td>
                   <td valign="top" align="left" class="input_txt" >
@@ -79,7 +80,7 @@
                   
                   <input type="hidden" name="id" id="id" value="${certified_to.id}"/>
                   </td>
-                </tr> --%>
+                </tr>  --%>
                 <tr height="10"></tr>
                  <tr class="row1">
                   <td valign="top" align="right">&nbsp;</td>

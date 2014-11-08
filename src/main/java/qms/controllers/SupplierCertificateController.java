@@ -129,7 +129,7 @@ public String edit_suppliercategory(HttpServletRequest request,@RequestParam("id
 		session.setAttribute("documentPrefix",Certified_To);
 	
 		SupplierCertificatetoDAO.update_suppliercertificate(Certified_To);
-
+		model.addAttribute("Success", "Update");
 	session.removeAttribute("dtype");
 	Certified_toform Certified_toform = new Certified_toform();
 	model.addAttribute("menu","supplier");
@@ -155,6 +155,7 @@ model.addAttribute("noofpages",(int) Math.ceil(SupplierCertificatetoDAO.getnoofc
 		
 		
 		SupplierCertificatetoDAO.deletesuppliercertificate(id);
+		model.addAttribute("Success", "Del");
 		Certified_toform Certified_toform = new Certified_toform();
 		Certified_toform.setCertified_to(SupplierCertificatetoDAO.getlimitedcertificatetypereport(1));
 		
