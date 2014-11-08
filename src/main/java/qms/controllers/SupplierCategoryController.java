@@ -134,7 +134,7 @@ public String editsuppliercategory(HttpServletRequest request,@RequestParam("id"
 		
 	
 		
-		session.setAttribute("documentPrefix",addsuppilercategory);
+		session.setAttribute("category",addsuppilercategory);
 	
 		SuppliercategoryDAO.update_suppliercategory(addsuppilercategory);
 		model.addAttribute("Success", "true");
