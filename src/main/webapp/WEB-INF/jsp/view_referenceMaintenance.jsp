@@ -106,8 +106,8 @@
 				     <tr class="title">
 							
 							<td valign="top" align="left" width="20%">Frequency of Maintenance</td>
-							<td valign="top" align="left" width="20%">Attachment Name</td>
-							<td valign="top" align="left" width="20%">Attachment</td>
+							<td valign="top" align="left" width="20%">Instructions</td>
+							<td valign="top" align="left" width="20%">Instruction</td>
 							<td valign="top" align="left" width="20%">Actions</td>
 							</tr>
 							<c:if test="${fn:length(referenceMaintenance_Form.references) gt 0}">

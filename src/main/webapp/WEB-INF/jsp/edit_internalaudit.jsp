@@ -195,7 +195,7 @@
                 <tr class="row1">
                   <td valign="middle" align="left" class="input_txt" width="30%">Audit start date :</td>
                   
-                  <td valign="top" align="left" class="input_txt" width="30%"><input type="text" name="audit_start_date" readonly="readonly" class="input_txtbx" id="datepicker1" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value='<c:out value="${internalaudits.audit_start_date}"></c:out>' /><br/>
+                  <td valign="top" align="left" class="input_txt" width="30%"><input type="text" name="audit_start_date"  disabled="disabled" class="input_txtbx" id="datepicker1" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value='<c:out value="${internalaudits.audit_start_date}"></c:out>' /><br/>
                   <span id="datepicker11" style="color:red"></span>
                   <span class="err"><form:errors path="InternalAudits.audit_start_date"></form:errors></span></td>
                
@@ -203,7 +203,7 @@
                 </tr>
                  <tr class="row2">
                   <td valign="middle" align="left" class="input_txt" width="30%">Audit due date :</td>
-                  <td valign="top" align="left" class="input_txt" width="30%"><input type="text" name="audit_due_date" readonly="readonly" class="input_txtbx" id="datepicker"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${internalaudits.audit_due_date}" /><br/>
+                  <td valign="top" align="left" class="input_txt" width="30%"><input type="text" name="audit_due_date" disabled="disabled" class="input_txtbx" id="datepicker"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${internalaudits.audit_due_date}" /><br/>
                     <span id="datepicker00" style="color:red"></span>
                   <span class="err"><form:errors path="InternalAudits.audit_due_date"></form:errors></span></td>
                 </tr>
@@ -289,7 +289,11 @@
 </div>
  <script>
    
-  
+ 
+ $('#update').on('submit', function() {
+	    $('#datepicker').attr('disabled', false);
+	    $('#datepicker1').attr('disabled', false);	    
+	});
    
    $(function() {
 		$("#auditor_notes").on("keypress", function(e) {

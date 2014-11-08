@@ -17,7 +17,7 @@
 </head>
 <body>
   <div id="right_content" style="height:100%">
-<form method="post" action="updatesupplierperformance" name="calc">
+<form method="post" action="updatesupplierperformance" name="calc" id="formid">
 
     <table cellpadding="0" cellspacing="0" border="0" width="98%" class="margin_table">
       <tr>
@@ -69,16 +69,17 @@
               <table cellpadding="0" cellspacing="0" border="0" width="100%" style="padding-left: 30px; padding-right: 30px;">
               <tr class="row2">
                   <td valign="top" align="left" class="input_txt" width="20%">Supplier ID :</td>
-                  <td valign="top" align="left" class="input_txt" width="30%"><input type="text" name="supplier_id" id="inp_id" class="input_txtbx" value="<c:out value="${supplierperformance.supplier_id }"/>"/><br/><span style="color: red;"><form:errors path="SupplierPerformance.supplier_id"></form:errors></span></td>
+                  <td valign="top" align="left" class="input_txt" width="30%"><input type="text" name="supplier_id" id="inp_id" class="input_txtbx" readonly="readonly" value="<c:out value="${supplierperformance.supplier_id }"/>"/><br/><span style="color: red;"><form:errors path="SupplierPerformance.supplier_id"></form:errors></span></td>
                   <td valign="top" align="left" class="input_txt" width="20%">Website :</td>
-                  <td valign="top" align="left" class="input_txt" width="40%"><input type="text" name="website" placeholder="www.example.com" class="input_txtbx" id="inp_website" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.website}" /><br/><span style="color: red;" id="websiteerror"><form:errors path="SupplierPerformance.website"></form:errors></span></td>
+                  <td valign="top" align="left" class="input_txt" width="40%"><input type="text" name="website" placeholder="www.example.com" readonly="readonly" class="input_txtbx" id="inp_website" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.website}" /><br/><span style="color: red;" id="websiteerror"><form:errors path="SupplierPerformance.website"></form:errors></span></td>
                 
                 </tr>                                                                                
                   <tr class="row1">
                   <td valign="top" align="left" class="input_txt" >Supplier name :</td>
                   <td valign="top" align="left" class="input_txt" ><input type="text" name="supplier_name" class="input_txtbx" id="inp_supplier_name" maxlength="32" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" onkeypress="return onlyAlphabets(event,this);" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  value="${supplierperformance.supplier_name}" /><br/><span style="color: red;" id="nameerror"><form:errors path="SupplierPerformance.supplier_name"></form:errors></span></td>
                   <td valign="top" align="left" class="input_txt" >Certified to :</td>
-				<td valign="top" align="left" class="input_txt"><select	name="certified_to" class="input_txtbx" id="certified">
+				<td valign="top" align="left" class="input_txt">
+													<select	name="certified_to" class="input_txtbx" id="certified" disabled="disabled">
                   										<option value="">--Select--</option>
                   										<option
 															<c:if test="${supplierperformance.certified_to eq 'ISO 9001'}"><c:out value="Selected"/></c:if>
@@ -99,7 +100,7 @@
                 </tr>
 		        <tr class="row2">
 				  <td valign="top" align="left" class="input_txt" >Category :</td>
-				<td valign="top" align="left" class="input_txt"><select	name="category" class="input_txtbx" id="category">
+				<td valign="top" align="left" class="input_txt"><select	name="category" class="input_txtbx" id="category" disabled="disabled">
                   										<option value="">--Select--</option>
                   										<option
 															<c:if test="${supplierperformance.category eq 'Critical'}"><c:out value="Selected"/></c:if>
@@ -120,37 +121,37 @@
                   <td valign="top" align="left" class="input_txt" >Address :</td>
                   <td valign="top" align="left" class="input_txt" >
                   <%-- <input type="text" name="address" class="input_txtbx" id="inp_address" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.address}" /><br/><span style="color: red;"><form:errors path="SupplierPerformance.address"></form:errors></span></td> --%>
-                   <textarea class="input_txtbx" id="inp_address" name="address"  style="height: 70px;">${supplierperformance.address}</textarea><br/>
+                   <textarea class="input_txtbx" id="inp_address" name="address" readonly="readonly" style="height: 70px;">${supplierperformance.address}</textarea><br/>
 				<span style="color: red;" id="addresserror"><form:errors path="supplierperformance.address"></form:errors></span></td>
 			
                   <td valign="top" align="left" class="input_txt" >Title :</td>
-                  <td valign="top" align="left" class="input_txt" ><input type="text" name="contact_title" class="input_txtbx" id="inp_contact_title" maxlength="32" onkeypress="return onlyAlphabetsnumeric(event,this);" onmouseover="showTooltip('tooltip_id','inp_id3');" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.contact_title}" /><br/><span style="color: red;" id="titleerror"><form:errors path="SupplierPerformance.contact_title"></form:errors></span></td>
+                  <td valign="top" align="left" class="input_txt" ><input type="text" name="contact_title" readonly="readonly" class="input_txtbx" id="inp_contact_title" maxlength="32" onkeypress="return onlyAlphabetsnumeric(event,this);" onmouseover="showTooltip('tooltip_id','inp_id3');" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.contact_title}" /><br/><span style="color: red;" id="titleerror"><form:errors path="SupplierPerformance.contact_title"></form:errors></span></td>
                 
                 </tr>
 				<tr class="row2">
 				  <td valign="top" align="left" class="input_txt" >City :</td>
-				  <td valign="top" align="left" class="input_txt" ><input type="text" name="city" class="input_txtbx" id="inp_city" maxlength="32" onkeypress="return onlyAlphabets(event,this);" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  value="${supplierperformance.city}" /><br/><span style="color: red;" id="cityerror"><form:errors path="SupplierPerformance.city"></form:errors></span></td>
+				  <td valign="top" align="left" class="input_txt" ><input type="text" name="city" readonly="readonly" class="input_txtbx" id="inp_city" maxlength="32" onkeypress="return onlyAlphabets(event,this);" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  value="${supplierperformance.city}" /><br/><span style="color: red;" id="cityerror"><form:errors path="SupplierPerformance.city"></form:errors></span></td>
                   <td valign="top" align="left" class="input_txt" >Phone :</td>
-                  <td valign="top" align="left" class="input_txt" ><input type="text" name="phone" class="input_txtbx" placeholder="9876543210" id="inp_phone" maxlength="10"  onkeypress="return validate(event)";  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.phone}" /><br/><span style="color: red;" id="phoneerror"><form:errors path="SupplierPerformance.phone"></form:errors></span></td>
+                  <td valign="top" align="left" class="input_txt" ><input type="text" name="phone" readonly="readonly" class="input_txtbx" placeholder="9876543210" id="inp_phone" maxlength="10"  onkeypress="return validate(event)";  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.phone}" /><br/><span style="color: red;" id="phoneerror"><form:errors path="SupplierPerformance.phone"></form:errors></span></td>
                 
                 </tr>
               	<tr class="row1">
               	<td valign="top" align="left" class="input_txt" >State :</td>
-              	<td valign="top" align="left" class="input_txt" ><input type="text" name="state" onkeypress="return onlyAlphabets(event,this);" maxlength="32" class="input_txtbx" id="inp_state" onmouseover="showTooltip('tooltip_id','inp_id3');" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.state}" /><br/><span style="color: red;" id="stateerror"><form:errors path="SupplierPerformance.state"></form:errors></span></td>
+              	<td valign="top" align="left" class="input_txt" ><input type="text" name="state" readonly="readonly" onkeypress="return onlyAlphabets(event,this);" maxlength="32" class="input_txtbx" id="inp_state" onmouseover="showTooltip('tooltip_id','inp_id3');" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.state}" /><br/><span style="color: red;" id="stateerror"><form:errors path="SupplierPerformance.state"></form:errors></span></td>
               	  <td valign="top" align="left" class="input_txt" >Fax :</td>
-                  <td valign="top" align="left" class="input_txt" ><input type="text" maxlength="10"  placeholder="6143229928" onkeypress="return Number(event,this);" name="fax" class="input_txtbx" id="inp_fax" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.fax}" /><br/><span style="color: red;" id="faxerror"><form:errors path="SupplierPerformance.fax"></form:errors></span></td>
+                  <td valign="top" align="left" class="input_txt" ><input type="text" maxlength="10" readonly="readonly"  placeholder="6143229928" onkeypress="return Number(event,this);" name="fax" class="input_txtbx" id="inp_fax" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.fax}" /><br/><span style="color: red;" id="faxerror"><form:errors path="SupplierPerformance.fax"></form:errors></span></td>
                 
               	</tr>
                 <tr class="row2">
 				<td valign="top" align="left" class="input_txt" >Postal code :</td>
-				<td valign="top" align="left" class="input_txt" ><input type="text" name="postalcode" placeholder="OH 43230" maxlength="8" onblur="ChangeCase(this);" onkeypress="return AlphabetsNumber1(event,this);" class="input_txtbx" id="inp_postalcode"   onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.postalcode}" /><br/><span style="color: red;" id="postalerror"><form:errors path="SupplierPerformance.postalcode"></form:errors></span></td>
+				<td valign="top" align="left" class="input_txt" ><input type="text" name="postalcode" readonly="readonly" placeholder="OH 43230" maxlength="8" onblur="ChangeCase(this);" onkeypress="return AlphabetsNumber1(event,this);" class="input_txtbx" id="inp_postalcode"   onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.postalcode}" /><br/><span style="color: red;" id="postalerror"><form:errors path="SupplierPerformance.postalcode"></form:errors></span></td>
                   <td valign="top" align="left" class="input_txt">Email :</td>
-                  <td valign="top" align="left" class="input_txt" ><input type="text" name="email_address" class="input_txtbx" id="inp_email_address" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  value="${supplierperformance.email_address}" /><br/><span style="color: red;"id="emailerror"><form:errors path="SupplierPerformance.email_address"></form:errors></span></td>
+                  <td valign="top" align="left" class="input_txt" ><input type="text" name="email_address" readonly="readonly" class="input_txtbx" id="inp_email_address" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  value="${supplierperformance.email_address}" /><br/><span style="color: red;"id="emailerror"><form:errors path="SupplierPerformance.email_address"></form:errors></span></td>
                 
                 </tr>
 				<tr class="row1">
                   <td valign="top" align="left" class="input_txt" >Country :</td>
-                  <td valign="top" align="left" class="input_txt" ><input type="text" name="country" class="input_txtbx" id="inp_country" maxlength="32" onkeypress="return onlyAlphabets(event,this);" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.country}" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  /><br/><span style="color: red;" id="countryerror"><form:errors path="SupplierPerformance.country"></form:errors></span></td>
+                  <td valign="top" align="left" class="input_txt" ><input type="text" name="country" readonly="readonly" class="input_txtbx" id="inp_country" maxlength="32" onkeypress="return onlyAlphabets(event,this);" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.country}" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  /><br/><span style="color: red;" id="countryerror"><form:errors path="SupplierPerformance.country"></form:errors></span></td>
                 </tr>
                 
                 <tr class="row2">
@@ -629,6 +630,13 @@ $("#inp_phone").focus(function(){
 });
 </script>
 <script>
+
+$('#formid').on('submit', function() {
+	
+	    $('#certified').attr('disabled', false);
+	    $('#category').attr('disabled', false);
+	});
+	
 	function validation()
 	{
 		var contact = document.getElementById('inp_contact_name').value;
@@ -1465,9 +1473,11 @@ $("#inp_phone").focus(function(){
 		gettypeofproblem();Correctiveaction1();
 	}
 		</script>  
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
 </body>
 </html>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br><br><br>
 <jsp:include page="footer.jsp"></jsp:include>
                 
