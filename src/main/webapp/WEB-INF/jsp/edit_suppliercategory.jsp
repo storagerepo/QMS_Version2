@@ -62,9 +62,9 @@
 			<table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr class="row2">
                 
-                  <td valign="top" align="left" class="input_txt" width="30%" style="padding-left: 70px">&nbsp;:</td>
+                  <td valign="top" align="left" class="input_txt" width="30%" style="padding-left: 70px">&nbsp;Supplier Category :</td>
                   <td valign="top" align="left" class="input_txt" width="70%">
-                  <input type="text" class="input_txtbx" name="category" value="${suppliercategory.category}" id="category" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');"/>
+                  <input type="text" class="input_txtbx" name="category" value="${suppliercategory.category}" id="category" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" onkeypress="return onlyAlphabets(event,this);"/>
                     <%--  <select name="category" class="AL_admin_createcourse_selectbx1" id="category" >
 
 <option value="">-Select Supplier Category-</option>
@@ -93,63 +93,49 @@
              </table>
              </div>
              </form>
-             <script type="text/javascript">
-             $(function() {
-         		$("#documenttype").on("keypress", function(e) {
-         			if (e.which === 32 && !this.value.length)
-         		        e.preventDefault();
-         		});
-         		});
-             function validateAlpha4(){
-         	    var textInput = document.getElementById("documenttype").value;
-         	    textInput = textInput.replace(/[^A-Za-z ]/g, "");
-         	    document.getElementById("documenttype").value = textInput;
-         	}
-             function onlyAlphabets(e, t) {
-            	    try {
-            	        if (window.event) {
-            	            var charCode = window.event.keyCode;
-            	        }
-            	        else if (e) {
-            	            var charCode = e.which;
-            	        }
-            	        else { return true; }
-            	        if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123)|| (charCode==32)|| (charCode > 47 && charCode < 58))
-            	            return true;
-            	        else
-            	            return false;
-            	    }
-            	    catch (err) {
-            	        alert(err.Description);
-            	    }
-            	}
-             
- function validation()
- {
-	 var  chars = /[A-Za-z ]+$/;
-	 var documenttype = document.getElementById('documenttype').value;
-	 if(documenttype == "")
-		 {
-		 document.getElementById("documenttype1").innerHTML="Required field should not be empty";
-		 return false;
-		 }
-	 else if(documenttype.charAt(0) == " ")
-		 {
-		 document.getElementById("documenttype1").innerHTML="Should not accept initial space";
-		 return false;
-		 }
-	 else if(documenttype.length<4)
-	 {
-	 document.getElementById("documenttype1").innerHTML="Required field should be of length 4 to 32.";
-	 return false;
-	 }
-	 else if(documenttype.match(chars))
-		 {
-		 document.getElementById("documenttype1").innerHTML="";
-		 }
-	
- }
- 
- </script>   
+             <script>
+  $(function() {
+	$("#category").on("keypress", function(e) {
+		if (e.which === 32 && !this.value.length)
+	        e.preventDefault();
+	});
+	});	
+
+</script>
+ <script>
+    function validation()
+    {
+       //alert("calling");
+        var error="";
+     
+      document.getElementById("categoryerror").innerHTML="";
+     
+
+       if(document.getElementById("category").value=="")
+      {
+        //alert("hai");
+         document.getElementById("categoryerror").innerHTML="Required field should not be empty";
+         error=true; 
+      } 
+       if(document.getElementById("category").value!="")
+       {
+         if(document.getElementById("category").value.length < 4 || document.getElementById("category").value.length > 32){
+                    document.getElementById("categoryerror").innerHTML="Required field should be length of 4 to 32";
+                    error=true; 
+                }
+       }   
+      
+       if(error==true)
+       {
+
+         return false;
+       }
+
+      
+
+    }
+
+    </script>
+
 </body>
 </html>
