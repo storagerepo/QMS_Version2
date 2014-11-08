@@ -1,5 +1,6 @@
 package qms.dao;
 
+import java.security.Principal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -523,7 +524,7 @@ import qms.model.InternalAudits;
 	}
 	
 		//Search operation for find a particular record
-	public List<InternalAudits> search_internalaudit(String id,String process,String auditee_name,int page) {
+	public List<InternalAudits> search_internalaudit(String id,String process,String auditee_name,int page,Principal principal) {
 		Connection con = null;
 		Statement statement = null;
 		ResultSet resultSet = null;
@@ -538,52 +539,138 @@ import qms.model.InternalAudits;
 			e1.printStackTrace();
 		}
 		try {
+			String roles="";
+			String role="select role from login where username='"+principal.getName()+"'";
+			resultSet=statement.executeQuery(role);
+			while(resultSet.next())
+			{
+				roles=resultSet.getString("role");
+			}
+			
 			if(page >= 1)
 	    	{
 	    	int offset = 5 * (page - 1);
 			int limit = 5;
 			if(!id.equals("") && !process.equals("") && !auditee_name.equals(""))
+			{				
+			if(roles.equals("2"))
 			{
-				resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"'and process='"+process+"' and auditee_name='"+auditee_name+"') and audit_start_date <= NOW() limit " + offset + ","+ limit+"");
-			}
-			else if(id.equals("") && !process.equals("") && !auditee_name.equals(""))
-			{
-				resultSet = statement.executeQuery("select * from tb1_internalaudits where (process='"+process+"' and auditee_name='"+auditee_name+"') and audit_start_date <= NOW() limit " + offset + ","+ limit+"");
-			}
-			else if(!id.equals("") && process.equals("") && !auditee_name.equals(""))
-			{
-				resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"' and auditee_name='"+auditee_name+"') and audit_start_date <= NOW() limit " + offset + ","+ limit+"");
-			}
-			else if(!id.equals("") && !process.equals("") && auditee_name.equals(""))
-			{
-				resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"' and process='"+process+"') and audit_start_date <= NOW() limit " + offset + ","+ limit+"");
+				resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"'and process='"+process+"' and auditee_name='"+auditee_name+"') limit " + offset + ","+ limit+"");	
 			}
 			else
 			{
-				resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"'or process='"+process+"' or auditee_name='"+auditee_name+"') and audit_start_date <= NOW() limit " + offset + ","+ limit+"");
+				resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"'and process='"+process+"' and auditee_name='"+auditee_name+"') and audit_start_date <= NOW() limit " + offset + ","+ limit+"");	
+			}
+			}
+			else if(id.equals("") && !process.equals("") && !auditee_name.equals(""))
+			{
+			
+				if(roles.equals("2"))
+				{
+					resultSet = statement.executeQuery("select * from tb1_internalaudits where (process='"+process+"' and auditee_name='"+auditee_name+"') limit " + offset + ","+ limit+"");	
+				}
+				else
+				{
+					resultSet = statement.executeQuery("select * from tb1_internalaudits where (process='"+process+"' and auditee_name='"+auditee_name+"') and audit_start_date <= NOW() limit " + offset + ","+ limit+"");
+				}
+			}
+			else if(!id.equals("") && process.equals("") && !auditee_name.equals(""))
+			{
+			
+				if(roles.equals("2"))
+				{
+					resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"' and auditee_name='"+auditee_name+"') limit " + offset + ","+ limit+"");	
+				}
+				else
+				{
+					resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"' and auditee_name='"+auditee_name+"') and audit_start_date <= NOW() limit " + offset + ","+ limit+"");
+				}
+			}
+			else if(!id.equals("") && !process.equals("") && auditee_name.equals(""))
+			{
+			
+				if(roles.equals("2"))
+				{
+					resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"' and process='"+process+"') limit " + offset + ","+ limit+"");	
+				}
+				else
+				{
+					resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"' and process='"+process+"') and audit_start_date <= NOW() limit " + offset + ","+ limit+"");
+				}
+			}
+			else
+			{
+			
+				if(roles.equals("2"))
+				{
+					resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"'or process='"+process+"' or auditee_name='"+auditee_name+"') limit " + offset + ","+ limit+"");	
+				}
+				else
+				{
+					resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"'or process='"+process+"' or auditee_name='"+auditee_name+"') and audit_start_date <= NOW() limit " + offset + ","+ limit+"");
+				}
 			}
 	    	}
 			else
 			{
 				if(!id.equals("") && !process.equals("") && !auditee_name.equals(""))
 				{
-					resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"'and process='"+process+"' and auditee_name='"+auditee_name+"') and audit_start_date <= NOW()");
+				
+					if(roles.equals("2"))
+					{
+						resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"'and process='"+process+"' and auditee_name='"+auditee_name+"')");	
+					}
+					else
+					{
+						resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"'and process='"+process+"' and auditee_name='"+auditee_name+"') and audit_start_date <= NOW()");
+					}
 				}
 				else if(id.equals("") && !process.equals("") && !auditee_name.equals(""))
 				{
-					resultSet = statement.executeQuery("select * from tb1_internalaudits where (process='"+process+"' and auditee_name='"+auditee_name+"') and audit_start_date <= NOW()");
+				
+					if(roles.equals("2"))
+					{
+						resultSet = statement.executeQuery("select * from tb1_internalaudits where (process='"+process+"' and auditee_name='"+auditee_name+"')");	
+					}
+					else
+					{
+						resultSet = statement.executeQuery("select * from tb1_internalaudits where (process='"+process+"' and auditee_name='"+auditee_name+"') and audit_start_date <= NOW()");
+					}
 				}
 				else if(!id.equals("") && process.equals("") && !auditee_name.equals(""))
 				{
-					resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"' and auditee_name='"+auditee_name+"') and audit_start_date <= NOW()");
+				
+					if(roles.equals("2"))
+					{
+						resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"' and auditee_name='"+auditee_name+"')");	
+					}
+					else
+					{
+						resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"' and auditee_name='"+auditee_name+"') and audit_start_date <= NOW()");
+					}
 				}
 				else if(!id.equals("") && !process.equals("") && auditee_name.equals(""))
 				{
-					resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"' and process='"+process+"') and audit_start_date <= NOW()");
+				
+					if(roles.equals("2"))
+					{
+						resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"' and process='"+process+"')");	
+					}
+					else
+					{
+						resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"' and process='"+process+"') and audit_start_date <= NOW()");
+					}
 				}
 				else
 				{
-					resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"'or process='"+process+"' or auditee_name='"+auditee_name+"') and audit_start_date <= NOW() ");
+				
+					if(roles.equals("2"))
+					{
+						resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"'or process='"+process+"' or auditee_name='"+auditee_name+"')");	
+					}
+					else{
+						resultSet = statement.executeQuery("select * from tb1_internalaudits where (id='"+id+"'or process='"+process+"' or auditee_name='"+auditee_name+"') and audit_start_date <= NOW() ");
+					}
 				}
 			}
 			while (resultSet.next()) {

@@ -359,13 +359,13 @@ model.remove("id");
 	@RequestMapping(value="/viewinternalreport_page", method=RequestMethod.GET)
 	public String viewinternalreport_page(HttpServletRequest request,HttpSession session,@RequestParam("page") int page,
 			@RequestParam("id") String id,@RequestParam("process") String process,
-			@RequestParam("auditee_name") String auditee_name,ModelMap model) {
+			@RequestParam("auditee_name") String auditee_name,ModelMap model,Principal principal) {
 		
 		session.setAttribute("id",id);
 		session.setAttribute("name",auditee_name);
 		session.setAttribute("process", process);
 		InternalAuditsForm internalAuditsForm = new InternalAuditsForm();
-		internalAuditsForm.setInternalAudits(internalAuditsDAO.search_internalaudit(id, process, auditee_name, page));
+		internalAuditsForm.setInternalAudits(internalAuditsDAO.search_internalaudit(id, process, auditee_name, page,principal));
 		model.addAttribute("noofpages",(int) Math.ceil(internalAuditsDAO.FindAudits(id, process, auditee_name) * 1.0 / 5));	 
 		model.addAttribute("internalAuditsForm", internalAuditsForm);	
 	  	model.addAttribute("noofrows",5);
@@ -386,7 +386,7 @@ model.remove("id");
 		session.setAttribute("name", auditee_name);
 		session.setAttribute("process", process);
 	InternalAuditsForm internalAuditsForm = new InternalAuditsForm();
-	internalAuditsForm.setInternalAudits(internalAuditsDAO.search_internalaudit(id, process, auditee_name, 0));
+	internalAuditsForm.setInternalAudits(internalAuditsDAO.search_internalaudit(id, process, auditee_name, 0,principal));
 //	model.addAttribute("noofpages",(int) Math.ceil(documentControlDAO.FindDocuments(search_document_type, search_process) * 1.0 / 5));	 
 	model.addAttribute("internalAuditsForm", internalAuditsForm);
 
@@ -459,7 +459,7 @@ model.remove("id");
 	
 	InternalAuditsForm internalAuditsForm= new InternalAuditsForm();
 	
-	internalAuditsForm.setInternalAudits(internalAuditsDAO.search_internalaudit(id,process,auditee_name,1));
+	internalAuditsForm.setInternalAudits(internalAuditsDAO.search_internalaudit(id,process,auditee_name,1,principal));
 	model.addAttribute("noofpages",(int) Math.ceil(internalAuditsDAO.FindAudits(id, process, auditee_name) * 1.0 / 5));
 	model.addAttribute("button","viewall");
     model.addAttribute("success","false");
@@ -513,7 +513,7 @@ model.remove("id");
 		
 		InternalAuditsForm internalAuditsForm= new InternalAuditsForm();
 		
-		internalAuditsForm.setInternalAudits(internalAuditsDAO.search_internalaudit(id,process,auditee_name,1));
+		internalAuditsForm.setInternalAudits(internalAuditsDAO.search_internalaudit(id,process,auditee_name,1,principal));
 		model.addAttribute("noofpages",(int) Math.ceil(internalAuditsDAO.FindAudits(id, process, auditee_name) * 1.0 / 5));
 		model.addAttribute("button","viewall");
 	    model.addAttribute("success","false");
@@ -528,13 +528,13 @@ model.remove("id");
 	@RequestMapping(value="/viewdeleteinternalreport_page", method=RequestMethod.GET)
 	public String viewdeleteinternalreport_page(HttpServletRequest request,HttpSession session,@RequestParam("page") int page,
 			@RequestParam("id") String id,@RequestParam("process") String process,
-			@RequestParam("auditee_name") String auditee_name,ModelMap model) {
+			@RequestParam("auditee_name") String auditee_name,ModelMap model,Principal principal) {
 		
 		session.setAttribute("id",id);
 		session.setAttribute("name",auditee_name);
 		session.setAttribute("process", process);
 		InternalAuditsForm internalAuditsForm = new InternalAuditsForm();
-		internalAuditsForm.setInternalAudits(internalAuditsDAO.search_internalaudit(id, process, auditee_name, page));
+		internalAuditsForm.setInternalAudits(internalAuditsDAO.search_internalaudit(id, process, auditee_name, page,principal));
 		model.addAttribute("noofpages",(int) Math.ceil(internalAuditsDAO.FindAudits(id, process, auditee_name) * 1.0 / 5));	 
 		model.addAttribute("internalAuditsForm", internalAuditsForm);	
 	  	model.addAttribute("noofrows",5);
@@ -555,7 +555,7 @@ model.remove("id");
 		session.setAttribute("name", auditee_name);
 		session.setAttribute("process", process);
 	InternalAuditsForm internalAuditsForm = new InternalAuditsForm();
-	internalAuditsForm.setInternalAudits(internalAuditsDAO.search_internalaudit(id, process, auditee_name, 0));
+	internalAuditsForm.setInternalAudits(internalAuditsDAO.search_internalaudit(id, process, auditee_name, 0,principal));
 //	model.addAttribute("noofpages",(int) Math.ceil(documentControlDAO.FindDocuments(search_document_type, search_process) * 1.0 / 5));	 
 	model.addAttribute("internalAuditsForm", internalAuditsForm);
 
