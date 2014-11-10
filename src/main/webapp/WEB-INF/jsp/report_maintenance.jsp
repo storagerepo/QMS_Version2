@@ -148,7 +148,7 @@
 					      		<tr>
 								<td><input type="checkbox" name="report_field[]" value="maintenance_frequency" id="10"/>Maintenance Frequency</td>
 							<td><input type="checkbox" name="report_field[]" value="reference" id="11"/>Reference</td>
-							<td><input type="checkbox" name="report_field[]" value="instructions" id="12"/>Instructions</td>
+							
 							</tr>
 							<tr>
 							<td><input type="checkbox" name="report_field[]" value="due_date" id="13"/>Due Date</td>
@@ -252,7 +252,7 @@ function validate()
 	var a9 = document.getElementById('9').checked;
 	var a10 = document.getElementById('10').checked;
 	var a11 = document.getElementById('11').checked;
-	var a12 = document.getElementById('12').checked;
+	
 	var a13 = document.getElementById('13').checked;
 	var a14 = document.getElementById('14').checked;
 	var a15 = document.getElementById('15').checked;
@@ -277,7 +277,7 @@ function validate()
 		}
 	if(id_type_userdefined)
 		{
-		if(a1 || a2|| a3|| a4|| a5|| a6|| a7|| a8|| a9|| a10|| a11|| a12|| a13|| a14|| a15|| a16)
+		if(a1 || a2|| a3|| a4|| a5|| a6|| a7|| a8|| a9|| a10|| a11|| a13|| a14|| a15|| a16)
 			{
 			document.getElementById("userdefineerror").innerHTML="";
 			}
@@ -330,7 +330,7 @@ if(value==1)
 	document.getElementById('9').checked = false;
 	document.getElementById('10').checked = false;
 	document.getElementById('11').checked = false;
-	document.getElementById('12').checked = false;
+	
 	document.getElementById('13').checked = false;
 	document.getElementById('14').checked = false;
 	document.getElementById('15').checked = false;
