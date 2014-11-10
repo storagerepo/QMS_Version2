@@ -83,13 +83,7 @@
            		  <td valign="top" align="left" class="input_txt" >Certified to :</td>
 				<td valign="top" align="left" class="input_txt"><select	name="certified_to" class="input_txtbx"  id="certified">
 															<option value="">--Select--</option>			
-                  										<option
-															<c:if test="${supplierperformance.certified_to eq 'ISO 9001'}"><c:out value="Selected"/></c:if>
-															value="ISO 9001">ISO 9001</option>
-														<option
-															<c:if test="${supplierperformance.certified_to eq 'ISO 9002'}"><c:out value="Selected"/></c:if>
-															value="ISO 9002">ISO 9002</option>
-															 <c:forEach items="${Certified_toform.certified_to}" var="certified" varStatus="status">
+                  										 <c:forEach items="${Certified_toform.certified_to}" var="certified" varStatus="status">
         				    								   <option  value="${certified.certified_to}">${certified.certified_to}</option>
 			                  								</c:forEach>
 															
@@ -102,13 +96,7 @@
 				<td valign="top" align="left" class="input_txt"><select	name="category" class="input_txtbx" id="category">
 					<option value="">--Select--</option>
 				                  									
-                  										<option
-															<c:if test="${supplierperformance.category eq 'Critical'}"><c:out value="Selected"/></c:if>
-															value="Critical">Critical</option>
-														<option
-															<c:if test="${supplierperformance.category eq 'Non Critical'}"><c:out value="Selected"/></c:if>
-															value="Non Critical">Non Critical</option>
-														   <c:forEach items="${addsuppliercategoryform.suppliercategory}" var="category" varStatus="status">
+                  									  <c:forEach items="${addsuppliercategoryform.suppliercategory}" var="category" varStatus="status">
         				    								   <option  value="${category.category}">${category.category}</option>
 			                  								</c:forEach>
 															</select>

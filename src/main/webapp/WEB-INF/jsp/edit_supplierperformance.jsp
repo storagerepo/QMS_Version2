@@ -81,14 +81,7 @@
 				<td valign="top" align="left" class="input_txt">
 													<select	name="certified_to" class="input_txtbx" id="certified" disabled="disabled">
                   										<option value="">--Select--</option>
-                  										<option
-															<c:if test="${supplierperformance.certified_to eq 'ISO 9001'}"><c:out value="Selected"/></c:if>
-															value="ISO 9001">ISO 9001</option>
-														<option
-															<c:if test="${supplierperformance.certified_to eq 'ISO 9002'}"><c:out value="Selected"/></c:if>
-															value="ISO 9002">ISO 9002</option>
-															
-															 
+                  											 
 							 
 			                <c:forEach items="${Certified_toform.certified_to}" var="certified" varStatus="status">
         				       <option value="${certified.certified_to}"<c:if test="${certified.certified_to == supplierperformance.certified_to}"><c:out value="selected"/></c:if>>${certified.certified_to}</option>
@@ -102,13 +95,7 @@
 				  <td valign="top" align="left" class="input_txt" >Category :</td>
 				<td valign="top" align="left" class="input_txt"><select	name="category" class="input_txtbx" id="category" disabled="disabled">
                   										<option value="">--Select--</option>
-                  										<option
-															<c:if test="${supplierperformance.category eq 'Critical'}"><c:out value="Selected"/></c:if>
-															value="Critical">Critical</option>
-														<option
-															<c:if test="${supplierperformance.category eq 'Non Critical'}"><c:out value="Selected"/></c:if>
-															value="Non Critical">Non Critical</option>
-														  <c:forEach items="${addsuppliercategoryform.suppliercategory}" var="category" varStatus="status">
+                  										 <c:forEach items="${addsuppliercategoryform.suppliercategory}" var="category" varStatus="status">
         				       <option value="${category.category}"<c:if test="${category.category == supplierperformance.category}"><c:out value="selected"/></c:if>>${category.category}</option>
 			                  </c:forEach>
 															</select>
