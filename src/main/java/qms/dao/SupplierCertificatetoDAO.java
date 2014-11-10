@@ -27,6 +27,62 @@ public class SupplierCertificatetoDAO {
 	private DataSource dataSource;
 	
 	
+	/*
+	 * check category already exist or not
+	 */
+	public String checkcertificate(String certified_to,String category_id,String Type) {
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		
+		int noofRecords = 0;
+		String exists="";
+		
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<Certified_To> documentTypes = new ArrayList<Certified_To>();
+		try {
+			String cmd="";
+			
+		
+			System.out.println(Type);
+if(Type.trim().equals("add"))
+{
+	cmd="select certified_to from tbl_certifiedto where certified_to='"+certified_to+"'";
+}
+if(Type.trim().equals("edit"))
+{
+	cmd="select certified_to from tbl_certifiedto where certified_to='"+certified_to+"' and id!='"+category_id+"'";
+}
+System.out.println("cmd..."+cmd);
+resultSet=statement.executeQuery(cmd);
+while(resultSet.next())
+{
+	exists="true";
+}
+System.out.println("cmd..."+cmd);
+			
+
+						
+			
+
+		} catch (Exception e) {
+			System.out.println(e);
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return exists;
+
+	}
 	
 	
 	/*
