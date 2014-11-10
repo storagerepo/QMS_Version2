@@ -319,7 +319,7 @@ public @ResponseBody String edit_removeAttendee(HttpSession session,HttpServletR
 	int i=0;
 	for (ManagementReviewAttendee attendees : attendee) {
 		returnString+="<tr>";
-		returnString+="<td valign='middle' align='left' class='input_txt' width='20%'>"+(i+1)+"</td><td valign='middle' align='left' class='input_txt' width='100px'>"+attendees.getAttendee_name()+"</td><td valign='middle' id='job_title' align='left' class='input_txt' width='100px'>"+attendees.getJob_title()+"</td><td width='20px'><a href='#' onclick='doRemoveattendee("+i+")'>Remove</a></td></tr>";
+		returnString+="<td valign='middle' align='left' class='input_txt' width='20%'>"+(i+1)+"</td><td valign='middle' align='left' class='input_txt' width='100px'>"+attendees.getAttendee_name()+"</td><td valign='middle' id='job_title' align='left' class='input_txt' width='100px'>"+attendees.getJob_title()+"</td><td width='20px'><a href='#' onclick='doRemoveattendee("+attendees.getId()+","+attendees.getReview_id()+")'>Remove</a></td></tr>";
 		
 	i++;
 	System.out.println(returnString);

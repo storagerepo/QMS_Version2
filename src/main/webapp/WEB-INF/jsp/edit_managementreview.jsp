@@ -349,6 +349,11 @@ function add_new_attendee()
 	var management_name = $('#attendeelistwithtitles').val();
 	var job_title = $('#hidden_process_owner').val();
 	
+	document.getElementById("attendeelistwithtitleserror").innerHTML="";
+	if(management_name==""){
+		document.getElementById("attendeelistwithtitleserror").innerHTML="Required field should not be empty";
+	}
+	else{
 	$.ajax({
 		type : "POST",
 		url : "/QMS_App/add_attendee_in_edit",
@@ -365,6 +370,7 @@ function add_new_attendee()
 			//alert('Error: ' + e);
 		}
 	});
+	}
 }			
 
 </script>
