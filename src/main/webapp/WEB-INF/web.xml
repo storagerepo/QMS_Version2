@@ -21,7 +21,8 @@
 			/WEB-INF/qmsapp-servlet.xml,
 			/WEB-INF/qms-database.xml,
 			/WEB-INF/qms-dao.xml,
-			/WEB-INF/qms-security.xml
+			/WEB-INF/qms-security.xml,
+			/WEB-INF/spring-scheduler.xml
 		</param-value>
 	</context-param>
  

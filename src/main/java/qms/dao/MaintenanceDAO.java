@@ -24,6 +24,12 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
+
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+
+
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -1129,6 +1135,88 @@ public class MaintenanceDAO extends AbstractITextPdfView
 
 	}
 
+	/*
+	 * For Mail
+	 */
+	public List<Maintenance> getDetailsForWeekMail()
+	{
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+			
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<Maintenance> maintenance = new ArrayList<Maintenance>();
+		try {
+			DateTimeZone zone=DateTimeZone.forID("EST");
+			LocalDate date=new LocalDate(zone);
+			
+			
+			String cmd_details;
+			cmd_details = "select equipmentid,type_of_maintenance,frequency_maintenance_list,due_date,calibration from tbl_maintenancechild as t1 join tbl_maintenance as t2 on t1.equipmentid=t2.equipment_id where due_date>'"+date+"' and due_date<'"+date.plusDays(6)+"' and t2.calibration='Yes'";
+			resultSet = statement.executeQuery(cmd_details);
+			while (resultSet.next()) {
+				maintenance.add(new Maintenance(resultSet.getString("equipmentid"),resultSet.getString("calibration"),resultSet.getString("type_of_maintenance"),resultSet.getString("frequency_maintenance_list"),resultSet.getString("due_date")));
+			}
+
+		} catch (Exception e) {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return maintenance;
+	}
+	
+	
+	/*
+	 * For Monthly Mail
+	 */
+	public List<Maintenance> getDetailsForMonthlyMail()
+	{
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+			
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<Maintenance> maintenance = new ArrayList<Maintenance>();
+		try {
+			DateTimeZone zone=DateTimeZone.forID("EST");
+			LocalDate date=new LocalDate(zone);
+			
+			String dateMonth=date.getYear()+"-"+date.getMonthOfYear()+"-%";
+			
+			String cmd_details;
+			cmd_details = "select equipmentid,type_of_maintenance,frequency_maintenance_list,due_date,calibration from tbl_maintenancechild as t1 join tbl_maintenance as t2 on t1.equipmentid=t2.equipment_id where due_date like '"+dateMonth+"' and t2.calibration='Yes'";
+			resultSet = statement.executeQuery(cmd_details);
+			while (resultSet.next()) {
+				maintenance.add(new Maintenance(resultSet.getString("equipmentid"),resultSet.getString("calibration"),resultSet.getString("type_of_maintenance"),resultSet.getString("frequency_maintenance_list"),resultSet.getString("due_date")));
+			}
+
+		} catch (Exception e) {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		} finally {
+			releaseResultSet(resultSet);
+			releaseStatement(statement);
+			releaseConnection(con);
+		}
+		return maintenance;
+	}
+	
 	
 	
 	public void releaseConnection(Connection con) {

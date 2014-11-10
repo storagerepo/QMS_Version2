@@ -21,6 +21,7 @@ public class Maintenance
 	private String equipment_id;
 	@NotEmpty
 	private String equipment_name;
+	
 	@NotEmpty
 	private String equipment_model;
 	@NotEmpty
@@ -92,6 +93,19 @@ public class Maintenance
 		this.completed_by = completed_by;
 		this.notes = notes;
 	}
+	
+	//For Mail Sending
+	public Maintenance(String equipment_id, String calibration,
+			String type_of_maintenance, String frequency_maintenance_list,
+			String due_date) {
+		super();
+		this.equipment_id = equipment_id;
+		this.calibration = calibration;
+		this.type_of_maintenance = type_of_maintenance;
+		this.frequency_maintenance_list = frequency_maintenance_list;
+		this.due_date = due_date;
+	}
+	
 	public String getEquipment_id() {
 		return equipment_id;
 	}

@@ -110,4 +110,7 @@
 	<bean id="SupplierCertificatetoDAO" class="qms.dao.SupplierCertificatetoDAO">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	<bean id="AutoMailSender" class="qms.dao.AutoMailSender">
+		
+	</bean>
 </beans>

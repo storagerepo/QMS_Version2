@@ -1,6 +1,8 @@
 package qms.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -14,6 +16,8 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
+import com.sun.tools.apt.Main;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -21,6 +25,8 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import qms.model.*;
 
 @Component("emailSender")
 public class EmailSender {
@@ -32,6 +38,8 @@ public class EmailSender {
     private VelocityEngine velocityEngine;
     
     public static final String TEMPLATE_NAME = "sample_template.vm";
+    public static final String WEEKLY_MAIL_TEMPLATE_NAME = "WeeklyMail.vm";
+    public static final String MONTHLY_MAIL_TEMPLATE_NAME = "MonthlyMail.vm";
 
 
     public void sendEmail(final String toEmailAddresses, final String fromEmailAddress, final String subject) {
@@ -114,4 +122,72 @@ public class EmailSender {
 	        }
 	    }
 
+	   public void sendWeekly(final String toEmailAddresses, final String fromEmailAddress,final String subject,final List<Maintenance> maintenances) {
+	        sendWeeklyEmail(toEmailAddresses, fromEmailAddress, subject,maintenances);
+	    }
+	   
+	   public void sendMonthly(final String toEmailAddresses, final String fromEmailAddress,final String subject,final List<Maintenance> maintenances) {
+	        sendMonthlyEmail(toEmailAddresses, fromEmailAddress, subject,maintenances);
+	    }
+	   
+	   private void sendWeeklyEmail(final String toEmailAddresses, final String fromEmailAddress,
+				               final String subject,final List<Maintenance> maintenances) {
+				MimeMessagePreparator preparator = new MimeMessagePreparator() {
+				public void prepare(MimeMessage mimeMessage) throws Exception {
+				    MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
+				    message.setTo(toEmailAddresses);
+				    message.setFrom(new InternetAddress(fromEmailAddress));
+				    message.setSubject(subject);
+				   
+				    
+				    Map<String,List<Maintenance>> model = new HashMap<String,List<Maintenance>>();
+				    
+				   
+				   
+				    model.put("main",maintenances);
+				    /*modelMain.put("toName", "Deemsys");
+				    modelMain.put("fromName", "Suresh");	*/		  
+				    
+				    
+				    //Pass values to Template End
+				    String body = VelocityEngineUtils.mergeTemplateIntoString(
+				            velocityEngine, "templates/" + WEEKLY_MAIL_TEMPLATE_NAME, "UTF-8", model);
+				    message.setText(body, true);
+				   
+				}
+				};
+				this.mailSender.send(preparator);
+				}
+	   
+					   private void sendMonthlyEmail(final String toEmailAddresses, final String fromEmailAddress,
+				               final String subject,final List<Maintenance> maintenances) {
+				MimeMessagePreparator preparator = new MimeMessagePreparator() {
+				public void prepare(MimeMessage mimeMessage) throws Exception {
+				    MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
+				    message.setTo(toEmailAddresses);
+				    message.setFrom(new InternetAddress(fromEmailAddress));
+				    message.setSubject(subject);
+				   
+				    
+				    Map<String,List<Maintenance>> model = new HashMap<String,List<Maintenance>>();
+				    
+				   
+				   
+				    model.put("main",maintenances);
+				    /*modelMain.put("toName", "Deemsys");
+				    modelMain.put("fromName", "Suresh");	*/		  
+				    
+				    
+				    //Pass values to Template End
+				    String body = VelocityEngineUtils.mergeTemplateIntoString(
+				            velocityEngine, "templates/" + MONTHLY_MAIL_TEMPLATE_NAME, "UTF-8", model);
+				    message.setText(body, true);
+				   
+				}
+				};
+				this.mailSender.send(preparator);
+				}
+									   
+	   
+	   
 }
