@@ -22,7 +22,7 @@ function checksuppliercategory() {
 		
 		},
 		error : function(e) {
-			alert('Error: ' + e);
+			//alert('Error: ' + e);
 		}
 	});
 }

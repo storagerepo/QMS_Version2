@@ -122,7 +122,7 @@ function checksuppliercertificate() {
 		
 		},
 		error : function(e) {
-			alert('Error: ' + e);
+			//alert('Error: ' + e);
 		}
 	});
 }
