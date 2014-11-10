@@ -148,15 +148,16 @@
 					      		<tr>
 								<td><input type="checkbox" name="report_field[]" value="maintenance_frequency" id="10"/>Maintenance Frequency</td>
 							<td><input type="checkbox" name="report_field[]" value="reference" id="11"/>Reference</td>
-							
+							<td><input type="checkbox" name="report_field[]" value="due_date" id="13"/>Due Date</td>
 							</tr>
 							<tr>
-							<td><input type="checkbox" name="report_field[]" value="due_date" id="13"/>Due Date</td>
+							
 							<td><input type="checkbox" name="report_field[]" value="completion_date" id="14"/>Completion Date</td>
 							<td><input type="checkbox" name="report_field[]" value="completed_by" id="15"/>Completed By</td>
+							<td><input type="checkbox" name="report_field[]" value="notes" id="16"/>Notes</td>
 							</tr>
 							<tr>
-							<td><input type="checkbox" name="report_field[]" value="notes" id="16"/>Notes</td>
+							
 								</table>
 								
 								</td>
