@@ -65,7 +65,7 @@
 			<table cellpadding="0" cellspacing="0" border="0">
                <tr class="row1">
                   <td valign="middle" align="left" class="input_txt" style="padding-left: 55px">Certified To :</td>
-                  <td> <input type="text" class="input_txtbx" name="certified_to" value="${certified_to.certified_to}" id="certified_to" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');"/>
+                  <td> <input type="text" class="input_txtbx" name="certified_to" onblur="ChangeCase(this);" onkeyup="checksuppliercertificate()" value="${certified_to.certified_to}" id="certified_to" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');"/>
                    <br> <span id="certified_toerror" style="color:red">       </span>         
                     <input type="hidden" name="id" id="id" value="${certified_to.id}"/>           
                </td>
@@ -106,14 +106,40 @@
 	});	
 
 </script>
- 
+<script>
+function ChangeCase(elem)
+{
+    elem.value = elem.value.toUpperCase();
+}
+</script>
+<script type="text/javascript">
+function checksuppliercertificate() {
+
+	var certified_to = $('#certified_to').val();
+	//alert(certified_to);	
+	$.ajax({
+		type : "POST",
+		url : "/QMS_App/ajax_suppliercertificate",
+		data : "certified_to="+certified_to+"&&category_id="+id+"&&Type="+"edit",
+		
+		success : function(response) {
+			
+			$('#certified_toerror').html(response);
+		
+		},
+		error : function(e) {
+			alert('Error: ' + e);
+		}
+	});
+}
+</script> 
 <script>
     function validation()
     {
       // alert("calling");
         var error="";
      
-      document.getElementById("certified_toerror").innerHTML="";
+      //document.getElementById("certified_toerror").innerHTML="";
      
 
        if(document.getElementById("certified_to").value=="")
@@ -136,7 +162,13 @@
          return false;
        }
 
-      
+       if(document.getElementById("certified_toerror").innerText!='')
+       {
+
+			//alert("calling");
+           return false;
+       }
+       document.getElementById("certified_toerror").innerHTML="";
 
     }
 

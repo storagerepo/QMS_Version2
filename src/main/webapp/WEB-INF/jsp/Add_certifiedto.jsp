@@ -75,8 +75,9 @@
 			<table cellpadding="0" cellspacing="0" border="0">
                <tr class="row1">
                   <td valign="middle" align="left" class="input_txt" style="padding-left: 55px">Certified To :</td>
-                  <td valign="top" align="left" class="input_txt"><input type="text" name="certified_to" class="input_txtbx" maxlength="32" onkeypress="return AlphabetsNumber1(event,this);" id="certified_to" value="${certified_to.certified_to}" onblur="ChangeCase(this);" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"/>
-                   <br> <span id="certified_toerror" style="color:red">                           
+                  <td valign="top" align="left" class="input_txt"><input type="text" name="certified_to" id="certified_to" onblur="ChangeCase(this);"  onkeyup="checksuppliercertificate()" class="input_txtbx" maxlength="200" onkeypress="return AlphabetsNumber1(event,this);"  value="${certified_to.certified_to}" />
+                   <br> <span id="certified_toerror" style="color:red">   </span>
+                   <span id="certified_toexisterror" style="color:red">   </span>                        
                </td>
                 </tr>
                 <tr height="10"></tr>
@@ -106,7 +107,26 @@
 	});	
 
 </script>
- 
+ <script type="text/javascript">
+function checksuppliercertificate() {
+
+	var certified_to = $('#certified_to').val();
+	//alert(certified_to);	
+	$.ajax({
+		type : "POST",
+		url : "/QMS_App/ajax_suppliercertificate",
+		data : "certified_to=" + certified_to+"&&category_id=" +""+"&&Type="+"add",
+		success : function(response) {
+			
+			$('#certified_toerror').html(response);
+		
+		},
+		error : function(e) {
+			alert('Error: ' + e);
+		}
+	});
+}
+</script>
 <script>
 function ChangeCase(elem)
 {
@@ -119,8 +139,8 @@ function ChangeCase(elem)
       // alert("calling");
         var error="";
      
-      document.getElementById("certified_toerror").innerHTML="";
-     
+      
+      //document.getElementById("certified_toexisterror").innerHTML="";
 
        if(document.getElementById("certified_to").value=="")
       {
@@ -136,13 +156,19 @@ function ChangeCase(elem)
                 }
        }   
       
+       
        if(error==true)
        {
 
          return false;
        }
+       if(document.getElementById("certified_toerror").innerText!='')
+       {
 
-      
+			//alert("calling");
+           return false;
+       }
+       document.getElementById("certified_toerror").innerHTML="";     
 
     }
 
