@@ -24,15 +24,15 @@
   <ul class="horizmenu">
 						
 						<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
-								<a href="Addsuppliercategory" class="<c:choose>
+								<a href="Add_certifiedto" class="<c:choose>
 								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>" >
-									<span>Add Set-up</span>
+									<span>Add Certified To</span>
 								</a>
 							</li>
 							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
-								<a href="suppliercategorylist" class="<c:choose>
+								<a href="suppliercertificatelist" class="<c:choose>
 									<c:when test="${menu=='supplier'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>">
-									<span>List/Delete Set-up</span>
+									<span>List/Delete Certified To</span>
 							</a>
 							</li>
 						<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
@@ -143,5 +143,7 @@
     </script>
     
 </body>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
 <jsp:include page="footer.jsp"></jsp:include>
 </html>

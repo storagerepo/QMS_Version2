@@ -46,13 +46,13 @@ function checksuppliercategory() {
   <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="Addsuppliercategory" class="<c:choose>
 								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>" >
-									<span>Add Set-up</span>
+									<span>Add Supplier Category</span>
 								</a>
 							</li>
 							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="suppliercategorylist" class="<c:choose>
 									<c:when test="${menu=='supplier'}">menubuttonsub blueactive</c:when><c:otherwise>menubuttonsub blueactive</c:otherwise></c:choose>">
-									<span>List/Delete Set-up</span>
+									<span>List/Delete Supplier Category</span>
 							</a>
 							</li>
 						<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
@@ -156,5 +156,8 @@ function checksuppliercategory() {
     </script>
 
 </body>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br>	
 <jsp:include page="footer.jsp"></jsp:include>
 </html>
