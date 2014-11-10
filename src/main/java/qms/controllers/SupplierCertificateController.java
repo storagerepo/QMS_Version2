@@ -58,7 +58,18 @@ public class SupplierCertificateController {
 		model.addAttribute("menu","supplier");
 		return "Add_certifiedto";
 	}
-
+@RequestMapping(value = { "/ajax_suppliercertificate" }, method = RequestMethod.POST)
+public @ResponseBody String categoryexist(@RequestParam("certified_to")String certified_to,@RequestParam("category_id")String categoryid,@RequestParam("Type")String Type,  HttpSession session,HttpServletRequest request, ModelMap model) {
+	String resultHTML="";
+	String exists=SupplierCertificatetoDAO.checkcertificate(certified_to,categoryid,Type);
+	resultHTML=exists;
+	if(exists.equals("true"))
+	{
+		resultHTML="Supplier Certificate already exists";
+	}
+	
+	return resultHTML;
+}
 //Insert a record
 @RequestMapping(value = "/add_certifiedto", method = RequestMethod.POST)
 public String postcertifiedto(HttpSession session,@ModelAttribute("certified_to") @Valid Certified_To certified_to,BindingResult result, ModelMap model) {
