@@ -107,7 +107,7 @@
                 
                  <tr class="row2">
                   <td valign="middle" align="left" class="input_txt" width="30%">Date Acquired  :</td>
-                  <td valign="top" align="left" class="input_txt"style="padding-left: 22px;" width="50%"><input type="text" name="date_acquired" readonly="readonly" class="input_txtbx" id="datepicker1" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${Maintenance.date_acquired}" />
+                  <td valign="top" align="left" class="input_txt"style="padding-left: 22px;" width="50%"><input type="text" name="date_acquired" disabled="disabled" class="input_txtbx" id="datepicker1" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${Maintenance.date_acquired}" />
                     <span id="datepicker11" style="color:red"></span>
                   <span class="err"><form:errors path="Maintenance.date_acquired"></form:errors></span></td>
                 </tr>
@@ -289,7 +289,7 @@
 	    $('#equipment_status').attr('disabled', false);
 	    $('#calibration_yes').attr('disabled', false);
 	    $('#calibration_no').attr('disabled', false);
-	    
+	    $('#datepicker1').attr('disabled',false);
 	    
 	});
    function toggleAjax() {

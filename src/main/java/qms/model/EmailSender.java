@@ -16,7 +16,7 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
-import com.sun.tools.apt.Main;
+
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -26,7 +26,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import qms.model.*;
+import qms.model.Maintenance;;
 
 @Component("emailSender")
 public class EmailSender {
