@@ -179,7 +179,7 @@ $(function() {
                   <td valign="top" align="left" class="input_txt" width="20%"><input type="text" name="name" class="input_txtbx" maxlength="32" id="inp_name" onkeypress="return Alphabets(event,this);"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${Employee.name}"  />
                   
                   <br/><span style="color: red;" id="nameerror"><form:errors path="Employee.name"></form:errors>
-                  <c:if test="${success=='exist'}">Name already exist</c:if>
+               
                   </span>
                    
                   </td>
@@ -238,7 +238,9 @@ $(function() {
                 <tr class="row2">
                   <td valign="top" align="left" class="input_txt" width="20%">Attachments :</td>
 				  <td valign="top" align="left" class="input_txt" width="20%"><input name="attachments" id="image" type="file" />
-				  <br/><span id="imageerror" style="color:red"></span><span class="err"></span></td>
+				  <br/>
+				     <c:if test="${success=='size'}">please select small file</c:if>
+				  <span id="imageerror" style="color:red"></span><span class="err"></span></td>
                    <td valign="top" align="left" class="input_txt" width="20%">Completion Date :</td>
                   <td valign="top" align="left" class="input_txt" width="20%"><input type="text" name="training_completion_date" class="input_txtbx" id="datepicker2" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${Employee.training_completion_date}" /><br> 
                   <span id="datepicker2error" style="color: red;"><form:errors path="Employee.training_completion_date"></form:errors></span></td>

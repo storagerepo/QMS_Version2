@@ -83,19 +83,22 @@ public class EmployeeController
 			OutputStream outputStream = null;
 			/*if(file != null)
 			{*/
-			if(employeeDAO.getNameExit(employee.getName(),employee.getEmployee_id()))
+			/*if(employeeDAO.getNameExit(employee.getName(),employee.getEmployee_id()))
 			{
 				model.addAttribute("success","exist");
 				model.addAttribute("menu","employee");
 		        return "add_employee";
 				
-			}
+			}*/
 			    if (file.getSize() > 0) {
 				inputStream = file.getInputStream();
-				if (file.getSize() > 100000) 
+				if (file.getSize() > 10000000) 
 				{
 					System.out.println("File Size:::" + file.getSize());
-					return "/add_employee";
+					model.addAttribute("success","size");
+					model.addAttribute("menu","employee");
+			        return "add_employee";
+					
 				}				
 			    orginal_fileName ="C:/qms_upload/"+file.getOriginalFilename();
 			    duplicate_fileName=orginal_fileName;
@@ -131,6 +134,7 @@ public class EmployeeController
 		
 			if (employeeDAO.insert_employee(employee)) {
 				//employeeDAO.insert(documentMain.getDocument_id().substring(0,documentMain.getDocument_id().lastIndexOf('-')));
+				System.out.println("inserted");
 				model.addAttribute("id",employeeDAO.getMax_employeeID());
 				model.addAttribute("success", "true");
 				model.addAttribute("success_message", "Inserted Successfully");
@@ -148,7 +152,7 @@ public class EmployeeController
 			employeeForm.setEmployees(employeeDAO.getEmployees());
 			model.addAttribute("id",employeeDAO.getMax_employeeID());
 			//model.addAttribute("employeeForm",employeeForm);	
-			model.addAttribute("Success","true");
+			
 			model.addAttribute("menu","employee");
 	        return "add_employee";
 		}
@@ -347,7 +351,7 @@ public class EmployeeController
 
 						}
 					
-						if(employeeDAO.getNameExit(employee.getName(),employee.getEmployee_id()))
+						/*if(employeeDAO.getNameExit(employee.getName(),employee.getEmployee_id()))
 						{
 							EmployeeForm employeeForm=new EmployeeForm();
 							
@@ -356,7 +360,7 @@ public class EmployeeController
 							model.addAttribute("employeeForm",employeeForm);
 							model.addAttribute("menu","employee");
 							return "edit_employee";
-						}
+						}*/
 						
 					if (employeeDAO.update_employee(employee)) {
 						model.addAttribute("success", "update");

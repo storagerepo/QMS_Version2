@@ -582,7 +582,7 @@ public class EmployeeDAO extends AbstractITextPdfView{
 			  String cmd_insert2="insert into tbl_employee_desc(employee_id,list_of_functions_needes,documented_in,qualified_by,type_of_training,trainer,training_due_date,training_completion_date,training_effectiveness_review_due_date,training_effectiveness_notes) values('"+employee.getEmployee_id()+"','"+employee.getList_of_functions_needes()+"','"+employee.getDocumented_in()+"','"+employee.getQualified_by()+"','"+employee.getType_of_training()+"','"+employee.getTrainer()+"','"+employee.getTraining_due_date()+"','"+employee.getTraining_completion_date()+"','"+employee.getTraining_effectiveness_review_due_date()+"','"+employee.getTraining_effectiveness_notes()+"')";
 			  statement.execute(cmd_insert1);
 			  statement.execute(cmd_insert2);
-			  
+			  status=true;
 			/*  if(employee.getProcess().equals("yes"))
 			  {
 				  String cmd_insert_process="insert into tbl_process(process_id,process_name,process_owner) values('"+employee.getProcess()+"','"+employee.getProcess_name()+"','"+employee.getName()+"')";

@@ -33,6 +33,7 @@ import qms.dao.DocumentPrefixDAO;
 import qms.dao.DocumentRevisionLevelDAO;
 import qms.dao.DocumentTypeDAO;
 import qms.dao.FileHandlingDAO;
+import qms.dao.FormDAO;
 import qms.dao.FormLocationDAO;
 import qms.dao.RevisionDocumentDAO;
 import qms.model.DocumentMain;
@@ -88,6 +89,8 @@ public class DocumentController {
 	@Autowired
 	DocumentRevisionLevelDAO documentRevisionLevelDAO;
 	
+	@Autowired
+	FormDAO formDAO;
 	@RequestMapping(value="/ajaxreportpdferror",method=RequestMethod.POST)
 	public @ResponseBody String addUser(HttpSession session,HttpServletRequest request,@ModelAttribute(value="document_type")Reportpdferror reportpdferror, BindingResult result,ModelMap model ){
 		String resultHTML="";
@@ -773,6 +776,7 @@ public class DocumentController {
 		String resultHTML="";
 		System.out.println(letter);
 		String albapate = letter.trim();
+
 		EmployeeForm employeeForm=new EmployeeForm();
 		employeeForm.setEmployees(employeeDAO.filterEmployees(albapate));
 		resultHTML="<Select name='issuer' id='issuer1' class='input_txtbx'>";
@@ -782,6 +786,66 @@ public class DocumentController {
 		resultHTML+="</select>";
 		return resultHTML;
 	}
+	
+	//edit 
+	@RequestMapping(value = { "/ajax_geteditissuer" }, method = RequestMethod.POST)
+	public @ResponseBody
+	String insert_Issuer_document(HttpSession session,
+			HttpServletRequest request, @RequestParam("filter_val")String letter,@RequestParam("auto_number")String auto_number,ModelMap model, Principal principal) {
+		String resultHTML="";
+		System.out.println(letter);
+		String albapate = letter.trim();
+		DocumentMainForm documentMainForm=new DocumentMainForm();
+		documentMainForm.setDocumentMains(documentControlDAO.getDocument_byid(auto_number));
+		String issuername = documentMainForm.getDocumentMains().get(0).getIssuer();
+		EmployeeForm employeeForm=new EmployeeForm();
+		employeeForm.setEmployees(employeeDAO.filterEmployees(albapate));
+		
+		resultHTML="<Select name='issuer' id='issuer1' class='input_txtbx'>";
+		for (Employee employee : employeeDAO.filterEmployees(albapate) ) {
+			System.out.println(employee.getName()+issuername);
+			String selected="";
+			if(employee.getName().equals(issuername))
+			{
+				selected="Selected";
+			}
+			resultHTML+="<option value='"+employee.getName()+"'"+selected+">"+employee.getName()+"</option>";
+		}
+		resultHTML+="</select>";
+		System.out.println(resultHTML);
+		return resultHTML;
+	}
+	
+	//edit form issuer
+	@RequestMapping(value = { "/ajax_getformeditissuer" }, method = RequestMethod.POST)
+	public @ResponseBody
+	String Form_Issuer(HttpSession session,
+			HttpServletRequest request, @RequestParam("filter_val")String letter,@RequestParam("auto_number")String auto_number,ModelMap model, Principal principal) {
+		String resultHTML="";
+		System.out.println(letter);
+		String albapate = letter.trim();
+		FormForm formForm=new FormForm();
+		formForm.setForm(formDAO.getform(auto_number));
+		String issuername = formForm.getForm().get(0).getIssuer();
+		EmployeeForm employeeForm=new EmployeeForm();
+		employeeForm.setEmployees(employeeDAO.filterEmployees(albapate));
+		
+		resultHTML="<Select name='issuer' id='issuer1' class='input_txtbx'>";
+		for (Employee employee : employeeDAO.filterEmployees(albapate) ) {
+			System.out.println(employee.getName()+issuername);
+			String selected="";
+			if(employee.getName().equals(issuername))
+			{
+				selected="Selected";
+			}
+			resultHTML+="<option value='"+employee.getName()+"'"+selected+">"+employee.getName()+"</option>";
+		}
+		resultHTML+="</select>";
+		System.out.println(resultHTML);
+		return resultHTML;
+	}
+	
+	
 	@RequestMapping(value = { "/ajax_getprocessowner" }, method = RequestMethod.POST)
 	public @ResponseBody
 	String processowner(HttpSession session,HttpServletRequest request, @RequestParam("filter_val")String letter,ModelMap model, Principal principal) {
@@ -797,6 +861,59 @@ public class DocumentController {
 		resultHTML+="</select>";
 		return resultHTML;
 	}
+	
+	//edit method call
+	@RequestMapping(value = { "/ajax_geteditprocessowner" }, method = RequestMethod.POST)
+	public @ResponseBody
+	String Editprocessowner(HttpSession session,HttpServletRequest request, @RequestParam("filter_val")String letter,@RequestParam("auto_number")String auto_number,ModelMap model, Principal principal) {
+		String resultHTML="";
+		System.out.println(letter);
+		String albapate = letter.trim();
+		DocumentMainForm documentMainForm=new DocumentMainForm();
+		documentMainForm.setDocumentMains(documentControlDAO.getDocument_byid(auto_number));
+		String approver = documentMainForm.getDocumentMains().get(0).getApprover1();
+		
+		EmployeeForm employeeForm=new EmployeeForm();
+		employeeForm.setEmployees(employeeDAO.filterProcessOwner(albapate));
+		resultHTML="<Select name='approver1' id='approver1' class='input_txtbx'>";
+		for (Employee employee : employeeDAO.filterProcessOwner(albapate) ) {
+			String selected="";
+			if(employee.getName().equals(approver))
+			{
+				selected="Selected";
+			}
+			resultHTML+="<option value='"+employee.getName()+"'"+selected+">"+employee.getName()+"</option>";
+		}
+		resultHTML+="</select>";
+		return resultHTML;
+	}
+	//edit form method approver
+	@RequestMapping(value = { "/ajax_getformeditprocessowner" }, method = RequestMethod.POST)
+	public @ResponseBody
+	String EditFromprocessowner(HttpSession session,HttpServletRequest request, @RequestParam("filter_val")String letter,@RequestParam("auto_number")String auto_number,ModelMap model, Principal principal) {
+		String resultHTML="";
+		System.out.println(letter);
+		String albapate = letter.trim();
+		FormForm formForm=new FormForm();
+		formForm.setForm(formDAO.getform(auto_number));
+		String approver = formForm.getForm().get(0).getApprover1();
+	
+		System.out.println(approver);
+		EmployeeForm employeeForm=new EmployeeForm();
+		employeeForm.setEmployees(employeeDAO.filterProcessOwner(albapate));
+		resultHTML="<Select name='approver1' id='approver1' class='input_txtbx'>";
+		for (Employee employee : employeeDAO.filterProcessOwner(albapate) ) {
+			String selected="";
+			if(employee.getName().equals(approver))
+			{
+				selected="Selected";
+			}
+			resultHTML+="<option value='"+employee.getName()+"'"+selected+">"+employee.getName()+"</option>";
+		}
+		resultHTML+="</select>";
+		return resultHTML;
+	}
+	
 	//Post method for ajax get process 
 	@RequestMapping(value = { "/ajax_getprocess" }, method = RequestMethod.POST)
 	public @ResponseBody 	String ajax_process_owner(HttpSession session,	HttpServletRequest request, ModelMap model, Principal principal) {

@@ -14,7 +14,7 @@
 $(window).load(function(){
 	//alert("yes");
 	   $(document).on("click", "label.mytxt", function () {
-		   alert("ok");
+		  // alert("ok");
 	        var txt = $(".mytxt").text();
 	        $(".mytxt").replaceWith("<input class='mytxt'/>");
 	        $(".mytxt").val(txt);
@@ -83,7 +83,7 @@ $(window).load(function(){
              <tr class="row1">
                             <td valign="middle" align="left" class="input_txt">Document ID :</td>
 			<td valign="top" align="left" class="input_txt" >
-			<input type="hidden" name="auto_number" value="${documentMain.auto_number }"/>
+			<input type="hidden" name="auto_number" id="autodocumentid" value="${documentMain.auto_number }"/>
 			<a id="documentid1">
 			
 					<input type="hidden" id="documentid1"class="input_txtbx"  onmouseover="showTooltip('tooltip_id','inp_id3');" 
@@ -285,7 +285,7 @@ $(window).load(function(){
 		 
 		  
 		       <tr class="row1" style="border:none;">
-            <td valign="middle" align="left" class="input_txt" width="18%">Issuer:</td>
+          <%--   <td valign="middle" align="left" class="input_txt" width="18%">Issuer:</td>
                <td valign="top" align="left" class="input_txt" width="30%">
                
                <select name="issuer" id="issuer" class="input_txtbx" style="width:200px;">
@@ -297,7 +297,34 @@ $(window).load(function(){
                
                
                <br/><span id="filtererror" style="color:red"></span><span class="err"style="color:red"><form:errors path="DocumentMain.issuer"></form:errors></span></td>
+             --%>
+               <td valign="middle" align="left" class="input_txt" width="20%">Issuer :</td>
+               <td valign="top" align="left" id="edit_td_issuer" class="input_txt" width="30%">
+                <input type="hidden" value="${documentMain.issuer}" id="issu"/>
+               <select name="filter" id="filter_value" class="input_txtbx" onchange="doAjaxPost(this.value);" onblur="change_to_label_issuer();" >
+               <option value="-">--Select--</option>
+               <option value="ABCD">A-D</option>
+              <option value="EFGH">E-H</option>
+              <option value="IJKL">I-L</option>
+              <option value="MNO">M-O</option>
+              <option value="PQR">P-R</option>
+              <option value="STUV">S-V</option>
+              <option value="WXYZ">W-Z</option>
+               </select>
+                <span id="issuer_generate">
+              
+                </span>
+                  <br>
+                 
+                <span id="filtererror" style="color:red"></span>
+               <span class="err"style="color:red"><form:errors path="DocumentMain.issuer"></form:errors></span> 
+              
+                <label id="issuer_full_lbl"></label><a href="#" style="text-decoration: none;" onclick="show_edit_issuer()">&nbsp;&nbsp;Change</a>            
+               <br/>
             
+             
+               </td> 
+          <%-- 
                 <td valign="middle" align="left" class="input_txt" width="15%">Approved by Process owner:</td>
                <td valign="top" align="left" class="input_txt" width="40%" >
               
@@ -310,8 +337,34 @@ $(window).load(function(){
                <option value="<c:out value="${employeeowner.name}"/>" <c:if test="${documentMain.approver1==employeeowner.name}"><c:out value="Selected"/></c:if>><c:out value="${employeeowner.name}"/></option>
                </c:forEach>    
                
-               </select>   <br/>   <br><span id="filter1error" style="color:red"></span><span class="err"style="color:red"><form:errors path="DocumentMain.approver1"></form:errors></span></td>
+               </select>   <br/>   <br><span id="filter1error" style="color:red"></span><span class="err"style="color:red"><form:errors path="DocumentMain.approver1"></form:errors></span></td> --%>
+                <td valign="middle" align="left" class="input_txt" width="25%">Approved by Process owner :</td>
+               <td valign="top" align="left" id="edit_td_issuer1" class="input_txt" width="20%">
+               <input type="hidden" value="${documentMain.approver1}" id="appro">
+               
+               
+               </input>
+               <select name="filter" id="filter_value1" class="input_txtbx" onchange="AjaxProcessOwner(this.value);" onblur="change_to_label_issuer1();" >
             
+               <option value="-">--Select--</option>
+               <option value="ABCD">A-D</option>
+              <option value="EFGH">E-H</option>
+              <option value="IJKL">I-L</option>
+              <option value="MNO">M-O</option>
+              <option value="PQR">P-R</option>
+              <option value="STUV">S-V</option>
+              <option value="WXYZ">W-Z</option>
+              
+               </select>
+                <span id="issuer_generate1">
+                  </span>
+                    <br><span id="filter1error" style="color:red"></span>
+                <span class="err"style="color:red"><form:errors path="DocumentMain.approver1"></form:errors></span> 
+            
+                <label id="issuer_full_lbl1"></label><a href="#" style="text-decoration: none;" onclick="show_edit_issuer1()">&nbsp;&nbsp;Change</a>            
+               <br/>
+               
+              </td>
               <td valign="top" align="left" class="input_txt" width="20%"></td>
                  </tr>  
               <tr class="row2" style="border:none;">
@@ -408,7 +461,131 @@ $(window).load(function(){
         </table>
         </div>
         </form>
+        
+<script type="text/javascript">
+var ajax_issuer = "false";
+var issuerchange = "false";
+var ajax_issuer1 = "false";
+var issuerchange1 = "false";
+var letter  = "-";
+function doAjaxPost(value) {
+
+	document.getElementById('filter_value').style.display="none";
+	 document.getElementById("issuer_generate").style.display="inline";
+	 var auto_id = document.getElementById('autodocumentid').value;
+	
+	var filer_value = value;
+	
+	$.ajax({
+		type : "POST",
+		url : "/QMS_App/ajax_geteditissuer",
+		data : "filter_val=" + filer_value+"&&auto_number=" +auto_id,
+		success : function(response) {
+			
+			$('#issuer_generate').html(response);
+			//$('#filter_value').hide();
+		},
+		error : function(e) {
+			//alert('Error: ' + e);
+		}
+	});
+}
+function show_edit_issuer()
+{
+	var let = letter;
+	issuerchange = "true";
+	ajax_issuer  = "false";
+	  document.getElementById("issuer_generate").style.display="none";
+	  document.getElementById("issuer_full_lbl").style.display="none";
+document.getElementById("filter_value").style.display="block";
+
+	
+	}
+	
+
+function change_to_label_issuer()
+{
+	
+	ajax_issuer  = "true";
+	var type=document.getElementById("filter_value");	
+	letter = type.value;
+	
+	document.getElementById("lable_td_issuer").style.display="block";
+	document.getElementById("edit_td_issuer").style.display="none";
+	
+	document.getElementById("issuer_full_lbl").innerHTML=type.value;
+	
+	}
+function AjaxProcessOwner(value) {
+	
+	document.getElementById('filter_value1').style.display="none";
+	 document.getElementById("issuer_generate1").style.display="inline";
+	var filer_value1 = value;
+	 var auto_id = document.getElementById('autodocumentid').value;
+	
+	$.ajax({
+		type : "POST",
+		url : "/QMS_App/ajax_geteditprocessowner",
+		data : "filter_val=" + filer_value1+"&&auto_number=" +auto_id,
+		success : function(response) {
+			
+			$('#issuer_generate1').html(response);
+			//$('#filter_value').hide();
+		},
+		error : function(e) {
+			alert('Error: ' + e);
+		}
+	});
+}
+function show_edit_issuer1()
+{
+	issuerchange1 = "true";
+	ajax_issuer1  = "false";
+	  document.getElementById("issuer_generate1").style.display="none";
+	  document.getElementById("issuer_full_lbl1").style.display="none";
+document.getElementById("filter_value1").style.display="block";
+
+	
+	}
+function change_to_label_issuer1()
+{
+	
+	ajax_issuer1  = "true";
+	var type=document.getElementById("filter_value1");	
+	
+	document.getElementById("lable_td_issuer").style.display="block";
+	document.getElementById("edit_td_issuer1").style.display="none";
+	
+	document.getElementById("issuer_full_lbl1").innerHTML=type.value;
+	
+	}
+
+window.onload = function(){
+	
+	var name = document.getElementById('appro').value;
+	var issu = document.getElementById('issu').value;
+	if(name=="")
+		{
+		
+		}
+	else{
+		ajax_issuer  = "true";
+	AjaxProcessOwner(name.charAt(0));
+	}
+	if(issu == "")
+		{
+		
+		}
+	else{
+		ajax_issuer1  = "true";
+		doAjaxPost(issu.charAt(0));
+		
+	}
+}
+</script>
         <script>
+        
+      
         
         $('#newformid').on('submit', function() {
        	 
@@ -551,8 +728,8 @@ function onlyAlphabetsnumeric(e, t) {
         	 var documenttitle = document.getElementById('documenttitle').value;
         	var documenttype = document.getElementById('id_document_type').value;
         	var id_inpprocess = document.getElementById('id_inpprocess').value;
-        	var issuer = document.getElementById('issuer').value;
-        	var approver = document.getElementById('approver').value;
+        	var filter_value = document.getElementById('filter_value').value;
+        	 var filter_value1 = document.getElementById('filter_value1').value;
         	var approver2 = document.getElementById('approver2').value;
         	var approver3 = document.getElementById('approver3').value;
         	var revisionlevel = document.getElementById('revisionlevel').value;
@@ -643,7 +820,7 @@ function onlyAlphabetsnumeric(e, t) {
      		 
      		
      		//five
-     		  if(issuer == "")
+     		 /*  if(issuer == "")
      				{
      				
      					 document.getElementById("filtererror").innerHTML="Required field should not be empty";
@@ -652,12 +829,95 @@ function onlyAlphabetsnumeric(e, t) {
      		  else
      			  {
      			 document.getElementById("filtererror").innerHTML="";
-     			  }
+     			  } */
+     			 if(ajax_issuer == "false")
+     			{
+     				
+     				
+     				if(filter_value == "-")
+     				{
+     					
+     					 document.getElementById("filtererror").innerHTML="Required field should not be empty";
+     						error ="true";
+     				}
+     				else
+     					{
+     					 document.getElementById("filtererror").innerHTML="Required field should not be empty";
+     						error ="true";
+     					}
+     				
+     		
+     			}	
+     		  
+     		  if(ajax_issuer == "true")
+     			{
+     			 
+     			var issuer1 = document.getElementById("issuer1").value;
+     			if(issuer1.length > 2)
+     			{
+     				document.getElementById("filtererror").innerHTML="";
+     			}	
+     			
+     			else if(issuer1.length < 2){
+     				 document.getElementById("filtererror").innerHTML="Issuer doesn't exit";
+     					error ="true";
+     			 }
+     			 else if(filter_value.length == 1){
+     				 document.getElementById("filtererror").innerHTML="Please select one";
+     					error ="true";
+     			 }
+     			 else{
+     			  document.getElementById("filtererror").innerHTML="";
+     			 }
+     			 
+     		}	
+     		
      				
      					
      		 //six
-     		 
-     				 if(approver == "")
+     		 if(ajax_issuer1 == "false")
+			{
+				
+				
+				if(filter_value1 == "-")
+				{
+					
+					 document.getElementById("filter1error").innerHTML="Required field should not be empty";
+						error ="true";
+				}
+				else
+					{
+					 document.getElementById("filter1error").innerHTML="Required field should not be empty";
+						error ="true";
+					}
+				
+		
+			}	
+		  
+		  if(ajax_issuer1 == "true")
+			{
+			 
+			var issuer1 = document.getElementById("approver1").value;
+			if(issuer1.length > 2)
+			{
+				document.getElementById("filter1error").innerHTML="";
+			}	
+			
+			else if(issuer1.length < 2){
+				 document.getElementById("filter1error").innerHTML="Process owner doesn't exit";
+					error ="true";
+			 }
+			 else if(filter_value1.length == 1){
+				 document.getElementById("filter1error").innerHTML="Please Select one";
+					error ="true";
+			 }
+			 else{
+			  document.getElementById("filter1error").innerHTML="";
+			 }
+			 
+		}	
+		
+     				/*  if(approver == "")
      					{
      					 
      						 document.getElementById("filter1error").innerHTML="Required field should not be empty";
@@ -667,7 +927,7 @@ function onlyAlphabetsnumeric(e, t) {
      					 {
      					 document.getElementById("filter1error").innerHTML="";
      					 }
-     			//seven	 
+     			 *///seven	 
      			
         	 if(document.getElementById('id_hardcopy').checked)
         	 {
@@ -1124,7 +1384,6 @@ function Approver1(){
          $( "#datepicker123" ).datepicker();
        });
 </script>	
-
 
 
    <jsp:include page="footer.jsp"></jsp:include>   

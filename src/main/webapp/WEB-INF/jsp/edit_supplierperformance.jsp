@@ -76,7 +76,7 @@
                 </tr>                                                                                
                   <tr class="row1">
                   <td valign="top" align="left" class="input_txt" >Supplier name :</td>
-                  <td valign="top" align="left" class="input_txt" ><input type="text" name="supplier_name" class="input_txtbx" id="inp_supplier_name" maxlength="32" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" onkeypress="return onlyAlphabets(event,this);" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  value="${supplierperformance.supplier_name}" /><br/><span style="color: red;" id="nameerror"><form:errors path="SupplierPerformance.supplier_name"></form:errors></span></td>
+                  <td valign="top" align="left" class="input_txt" ><input type="text" name="supplier_name" class="input_txtbx" id="inp_supplier_name" maxlength="32" readonly="readonly" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" onkeypress="return onlyAlphabets(event,this);" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  value="${supplierperformance.supplier_name}" /><br/><span style="color: red;" id="nameerror"><form:errors path="SupplierPerformance.supplier_name"></form:errors></span></td>
                   <td valign="top" align="left" class="input_txt" >Certified to :</td>
 				<td valign="top" align="left" class="input_txt">
 													<select	name="certified_to" class="input_txtbx" id="certified" disabled="disabled">
@@ -101,7 +101,7 @@
 															</select>
 															<br/><span style="color: red;" id="categoryerror"></span><form:errors path="SupplierPerformance.category"></form:errors></td>
                   <td valign="top" align="left" class="input_txt">Contact name :</td>
-                  <td valign="top" align="left" class="input_txt" ><input type="text" name="contact_name" class="input_txtbx" id="inp_contact_name" maxlength="32" onkeypress="return onlyAlphabets(event,this);" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.contact_name}" /><br/><span style="color: red;" id="contacterror"><form:errors path="SupplierPerformance.contact_name"></form:errors></span></td>
+                  <td valign="top" align="left" class="input_txt" ><input type="text" name="contact_name" class="input_txtbx" id="inp_contact_name" readonly="readonly" maxlength="32" onkeypress="return onlyAlphabets(event,this);" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${supplierperformance.contact_name}" /><br/><span style="color: red;" id="contacterror"><form:errors path="SupplierPerformance.contact_name"></form:errors></span></td>
                                   
                 </tr>
                 <tr class="row1">
