@@ -455,39 +455,34 @@ function checkCHeckBox()
 		}
  	else if(problemquality && problemdelivery){
  	 	document.getElementById('noproblem').disabled = true;
- 	 	calc.customerservice.value = "";
+ 	 	
  	 	calc.deduction_for_issue.value = ((calc.problem_found_at.value)*(calc.quality.value))+ parseInt(calc.delivery.value);
  	 	}
  	else if(problemquality && problemcustomerservice){
  	 	document.getElementById('noproblem').disabled = true;
- 	 	calc.delivery.value = "";
+ 	 	
  	 	calc.deduction_for_issue.value = ((calc.problem_found_at.value)*(calc.quality.value))+ parseInt(calc.customerservice.value);
  	 	}
  	else if(problemdelivery && problemcustomerservice){
  	 	document.getElementById('noproblem').disabled = true;
- 	 	calc.quality.value = "";
+ 	 
  	 	calc.deduction_for_issue.value = parseInt(calc.delivery.value)+parseInt(calc.customerservice.value);
  	 	}
  	else if(problemquality)
 		{
  		document.getElementById('noproblem').disabled = true;
- 		calc.delivery.value = "";
- 		calc.customerservice.value = "";
+ 		
  		calc.deduction_for_issue.value = (calc.problem_found_at.value)*(calc.quality.value);
 		
 		}
  	else if(problemdelivery)
  		{
  		document.getElementById('noproblem').disabled = true;
- 		calc.quality.value = "";
- 		calc.customerservice.value = "";
  		calc.deduction_for_issue.value =parseInt(calc.delivery.value);
  		}
  	else if(problemcustomerservice)
  	 	{
  		document.getElementById('noproblem').disabled = true;
- 		calc.quality.value = "";
- 		calc.delivery.value = "";
  		calc.deduction_for_issue.value = parseInt(calc.customerservice.value);
  	 	}
  	
@@ -740,7 +735,35 @@ $('#formid').on('submit', function() {
 		 var yes = document.getElementById('correctiveaction_yes').checked;
 		 var datepicker1 = document.getElementById('datepicker1').value;
 		 var recorded_by = document.getElementById('recordedby').value;
+		 var noproblem = document.getElementById('noproblem').checked;
+		 var problemquality = 	document.getElementById('problemquality').checked;
+		 var problemdelivery = 	document.getElementById('problemdelivery').checked;
+		 var problemcustomerservice = 	document.getElementById('problemcustomerservice').checked;
+		 if(!problemquality && !problemdelivery && !problemcustomerservice)
+			 {
+			 calc.delivery.value = "";
+			 calc.quality.value = "";
+			 calc.customerservice.value = "";
+			 }
+		 else if(problemquality && problemdelivery && problemcustomerservice)
+			 {
+				
+			 }
+		 else if(problemquality && problemdelivery){calc.customerservice.value = "";}
+		 else if(problemquality && problemcustomerservice){calc.delivery.value = "";}
+		 else if(problemdelivery && problemcustomerservice){calc.quality.value = "";}
 		 
+			 
+		 
+		 
+			if(!noproblem && !problemquality && !problemdelivery && !problemcustomerservice)
+				{
+				document.getElementById('typeofproblemError').innerHTML = "Please select atleast one";
+				}
+			else
+				{
+				document.getElementById('typeofproblemError').innerHTML = "";
+				}
 		if(certified=="")
 		{
 		
