@@ -169,16 +169,13 @@
                   <span class="err"><form:errors path="Maintenance.due_date"></form:errors></span></td>
                 </tr>
           	 <tr class="row1">
-                 <td valign="middle" align="left" class="input_txt" width="10%"> Type of Problem  :</td>
+                 <td valign="top" align="left" class="input_txt" width="10%"> Type of Problem  :</td>
                   <td valign="top" align="left" class="input_txt" width="40%">
-                  <select name= "type_of_problem" id="type_of_problem" class="dropdown" onchange="gettypeofproblem();">
-                 
-                  <option  value="noproblem">No Problem</option>
-                  <option  value="quality">Quality</option>
-                   <option  value="delivery">Delivery</option>
-                   <option value="customerservice">Customer Service</option>
-               </select>
-                <br/><span class="err"></span></td>
+                  <input type="checkbox" name="noproblem" value="noproblem" id="noproblem" onclick="gettypeofproblemNoProblem();"/>&nbsp;No Problem<br/>
+                   <input type="checkbox" name="problemquality" value="quality" id="problemquality" onclick="gettypeofproblemQuality();"/>&nbsp;Quality                 
+             	  <input type="checkbox" name="problemdelivery" value="delivery" id="problemdelivery" onclick="gettypeofproblemDelivery();"/>&nbsp;Delivery
+             	  <input type="checkbox" name="problemcustomerservice" value="customerservice" id="problemcustomerservice" onclick="gettypeofproblemCustomerService();"/>&nbsp;Customer Service<br/><br/>
+                <br/><span style="color: red;" id="typeofproblemError"></span></td>
                   </tr>
                 <tr class="row2" id="quality_lable" style="display:none;">
                   <td valign="middle" align="left" class="input_txt" >Quality  :</td>
@@ -223,6 +220,7 @@
                <span id="notes1" style="color:red"></span>
                <span class="err"><form:errors path="Maintenance.notes"></form:errors></span></td>
             </tr>
+            
              <tr class="row1">
                  <td valign="middle" align="left" class="input_txt" width="15%">Problem Found at  :</td>
                   <td valign="top" align="left" class="input_txt" width="40%">
@@ -337,30 +335,21 @@
  }
   </script>
 <script type="text/javascript">
-function Find_deduction()
+function Find_deductionNoProblem()
 {
-	
-	var problem_found_at1 = document.getElementById('problem_found_at').value;
 	var deduction_for_issue = document.getElementById('deduction_for_issue');
-	if(document.getElementById('type_of_problem').value == "noproblem")
-		{
-		deduction_for_issue.value = "N/A";
-		}
-	else if(document.getElementById('type_of_problem').value == "quality")
-		{
-		calc.deduction_for_issue.value = (calc.problem_found_at.value)*(calc.quality.value);
-		}
-	else if(document.getElementById('type_of_problem').value == "delivery")
-	{
-		
-		calc.deduction_for_issue.value = (calc.problem_found_at.value)*(calc.delivery.value);
-	}
-	else if(document.getElementById('type_of_problem').value == "customerservice")
-	{
-		
-		calc.deduction_for_issue.value = (calc.problem_found_at.value)*(calc.customerservice.value);
-	}
-	}
+	var noproblem = document.getElementById('noproblem').checked;
+	
+ 	if(noproblem)
+ 		{
+	deduction_for_issue.value = "N/A";
+ 		}
+ 	else{
+ 		deduction_for_issue.value = "";
+ 	 	}
+}
+
+
 </script>
 <script>	
 function Correctiveaction()
@@ -378,46 +367,98 @@ function Correctiveaction()
 	
 }
 
-function gettypeofproblem(){
-	var value = document.getElementById('type_of_problem').value;
-
-if(value=="quality")
-{	
-	$("#delivery_lable").hide('slow');
-	$("#customerservice_lable").hide('slow');
+function gettypeofproblemNoProblem(){
+	var value = document.getElementById('noproblem').value;
+	var noproblem = 	document.getElementById('noproblem').checked;
+	Find_deductionNoProblem();
+ 	if(noproblem)
+ 		{
+ 		document.getElementById('problemquality').disabled = true;
+ 		document.getElementById('problemdelivery').disabled = true;
+ 		document.getElementById('problemcustomerservice').disabled = true;
+ 		
+ 		
+		}
+ 	else
+ 		{
+ 		document.getElementById('problemquality').disabled = false;
+ 		document.getElementById('problemdelivery').disabled = false;
+ 		document.getElementById('problemcustomerservice').disabled = false;
+ 		
+ 		}
+	
+}
+function gettypeofproblemQuality(){
+	var value = document.getElementById('problemquality').value;
 	$("#quality_lable").toggle('slow');
-	Find_deduction();
+	checkCHeckBox();
+	
 }
-else if(value=="delivery")
-{	
-	$("#customerservice_lable").hide('slow');
-	$("#quality_lable").hide('slow');
+function gettypeofproblemDelivery(){
+	var value = document.getElementById('problemdelivery').value;
 	$("#delivery_lable").toggle('slow');
-	Find_deduction();
-
+	checkCHeckBox();
 }
-else if(value=="customerservice")
-{	
-	$("#quality_lable").hide('slow');
-	$("#delivery_lable").hide('slow');
+function gettypeofproblemCustomerService(){
+	var value = document.getElementById('problemcustomerservice').value;
 	$("#customerservice_lable").toggle('slow');
-	Find_deduction();
+	checkCHeckBox();
+	
 }
-else if(value=="noproblem")
-{	
-	$("#quality_lable").hide('slow');
-	$("#delivery_lable").hide('slow');
-	$("#customerservice_lable").hide('slow');
-	Find_deduction();
-}
-}
+function checkCHeckBox()
+{
+	var problemquality = 	document.getElementById('problemquality').checked;
+ 	var problemdelivery = 	document.getElementById('problemdelivery').checked;
+ 	var problemcustomerservice = 	document.getElementById('problemcustomerservice').checked;
+	var deduction_for_issue = document.getElementById('deduction_for_issue');
+ 	if(problemquality && problemdelivery && problemcustomerservice)
+ 		{
+ 		var deliveryValue = calc.delivery.value;
+ 		var customerValue = calc.customerservice.value;
+ 		calc.deduction_for_issue.value = ((calc.problem_found_at.value)*(calc.quality.value)) + parseInt(deliveryValue) + parseInt(customerValue);
+ 		document.getElementById('noproblem').disabled = true;
+ 		
+		}
+ 	else if(problemquality && problemdelivery){
+ 	 	document.getElementById('noproblem').disabled = true;
+ 	 	calc.deduction_for_issue.value = ((calc.problem_found_at.value)*(calc.quality.value))+ parseInt(calc.delivery.value);
+ 	 	}
+ 	else if(problemquality && problemcustomerservice){
+ 	 	document.getElementById('noproblem').disabled = true;
+ 	 	calc.deduction_for_issue.value = ((calc.problem_found_at.value)*(calc.quality.value))+ parseInt(calc.customerservice.value);
+ 	 	}
+ 	else if(problemdelivery && problemcustomerservice){
+ 	 	document.getElementById('noproblem').disabled = true;
+ 	 	calc.deduction_for_issue.value = parseInt(calc.delivery.value)+parseInt(calc.customerservice.value);
+ 	 	}
+ 	else if(problemquality)
+		{
+ 		document.getElementById('noproblem').disabled = true;
+ 		calc.deduction_for_issue.value = (calc.problem_found_at.value)*(calc.quality.value);
+		}
+ 	else if(problemdelivery)
+ 		{
+ 		document.getElementById('noproblem').disabled = true;
+ 		calc.deduction_for_issue.value =parseInt(calc.delivery.value);
+ 		}
+ 	else if(problemcustomerservice)
+ 	 	{
+ 		document.getElementById('noproblem').disabled = true;
+ 		calc.deduction_for_issue.value = parseInt(calc.customerservice.value);
+ 	 	}
+	else{
+ 		
+ 		document.getElementById('noproblem').disabled = false;
+ 		calc.deduction_for_issue.value ="";
+ 	}
 
+}
 </script>
 <script>
 function toggleAjax()
 {
 
-Find_deduction();
+	checkCHeckBox();
 
 }
 </script>
@@ -1030,6 +1071,35 @@ function Alphabets(e, t) {
 		 var yes = document.getElementById('correctiveaction_yes').checked;
 		 var datepicker1 = document.getElementById('datepicker1').value;
 		 var recorded_by = document.getElementById('recordedby').value;
+		 var noproblem = document.getElementById('noproblem').checked;
+		 var problemquality = 	document.getElementById('problemquality').checked;
+		 var problemdelivery = 	document.getElementById('problemdelivery').checked;
+		 var problemcustomerservice = 	document.getElementById('problemcustomerservice').checked;
+		 if(!problemquality && !problemdelivery && !problemcustomerservice)
+			 {
+			 calc.delivery.value = "";
+			 calc.quality.value = "";
+			 calc.customerservice.value = "";
+			 }
+		 else if(problemquality && problemdelivery && problemcustomerservice)
+			 {
+				
+			 }
+		 else if(problemquality && problemdelivery){calc.customerservice.value = "";}
+		 else if(problemquality && problemcustomerservice){calc.delivery.value = "";}
+		 else if(problemdelivery && problemcustomerservice){calc.quality.value = "";}
+		 
+			 
+		 
+		 
+			if(!noproblem && !problemquality && !problemdelivery && !problemcustomerservice)
+				{
+				document.getElementById('typeofproblemError').innerHTML = "Please select atleast one";
+				}
+			else
+				{
+				document.getElementById('typeofproblemError').innerHTML = "";
+				}
 		if(certified=="")
 		{
 		
@@ -1505,7 +1575,7 @@ function Alphabets(e, t) {
  <script>
 	
 	window.onload = function(){
-		gettypeofproblem();Correctiveaction();
+		Correctiveaction();
 	}
 		</script>
 </body>

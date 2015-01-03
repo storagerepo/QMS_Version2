@@ -11,32 +11,31 @@
 .tg .tg-zapm{background-color:#f9f9f9;text-align:right}
 .tg .tg-4eph{background-color:#f9f9f9}
 </style>
-Dear QMS Team,<p/>
+Dear ${details.supplier_name},<p/>
 
 
-<u>Below is the weekly report</u><br/><br/>
+Below are the details for Requesting CAPA <br/><br/>
 <table class="tg">
-  <tr>
-    <th class="tg-s6z2" colspan="6">Maintaince and Calibration Report</th>
-  </tr>
   <tr style="font-weight:bold;">
-    <td class="tg-4eph">Equipment ID</td>
-    <td class="tg-4eph">Type of Maintenance</td>
-    <td class="tg-4eph">Frequency of Maintenance</td>
-    <td class="tg-4eph">Due Date</td>
-    <td class="tg-4eph">Calibration</td>
+    <td class="tg-4eph">Receipt Date :</td>
+    <td >${details.receipt_date}</td>
+  </tr> 
+   <tr style="font-weight:bold;">
+    <td class="tg-4eph">Problem Details :</td>
+    <td >${details.problemdetails}</td>
   </tr>
-#foreach ($details in $main)
-
-  <tr>
-    <td class="tg-031e">${details.equipment_id}</td>
-    <td class="tg-031e">${details.type_of_maintenance}</td>
-    <td class="tg-0ord">${details.frequency_maintenance_list}</td>
-    <td class="tg-0ord">${details.due_date}</td>
-    <td class="tg-0ord">${details.calibration}</td>
+   <tr style="font-weight:bold;">
+    <td class="tg-4eph">Corrective action :</td>
+    <td >${details.correctiveaction}</td>
   </tr>
-   
-#end
+   <tr style="font-weight:bold;">
+    <td class="tg-4eph">Due Date for Corrective Action :</td>
+    <td >${details.dueaction_date}</td>
+  </tr>
+   <tr style="font-weight:bold;">
+    <td class="tg-4eph">Deduction for Issue:</td>
+    <td >${details.deduction}</td>
+  </tr>
 </table>
  <br/>
 

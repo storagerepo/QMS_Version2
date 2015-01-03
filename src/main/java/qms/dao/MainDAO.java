@@ -292,7 +292,46 @@ public class MainDAO {
     		return 0;
 	    
 	}
-
+	public String getemail(String authority)
+	{
+		
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet=null;
+		int flag=0;
+		String role="";
+		
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		//List<ParticipantsDetails> participants = new ArrayList<ParticipantsDetails>();
+	    try{
+	    	String cmd_role="select EMAIL as email from users where USER_ID =(select USER_ID from user_roles where AUTHORITY ='ROLE_MANAGER');";
+	    	resultSet=statement.executeQuery(cmd_role);
+	    	resultSet.next();
+	    	role=resultSet.getString("email");
+	    	
+	    	
+	    	System.out.println("email = "+role);
+	    	 
+	 }
+	    catch(Exception e){
+	    	System.out.println(e.toString());
+	    	releaseStatement(statement);
+	    	releaseConnection(con);
+	    	flag=0;
+	    	//return 0;
+	    }finally{
+	     	releaseStatement(statement);
+	    	releaseConnection(con);	    
+	    	
+	    }
+	   return role;
+	
+	}
 	
 	public void releaseConnection(Connection con){
 		try{if(con != null)

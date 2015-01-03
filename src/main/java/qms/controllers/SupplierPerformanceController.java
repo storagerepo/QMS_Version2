@@ -23,8 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import qms.dao.MainDAO;
 import qms.dao.SupplierCertificatetoDAO;
-	import qms.dao.SupplierPerformanceDAO;
+import qms.dao.SupplierPerformanceDAO;
 import qms.dao.SuppliercategoryDAO;
 import qms.model.EmailSender;
 import qms.model.SupplierPerformance;
@@ -49,6 +50,8 @@ import qms.forms.SupplierPerformanceForm;;
 		@Autowired
 		SupplierCertificatetoDAO SupplierCertificatetoDAO;
 		
+		@Autowired
+		MainDAO mainDAO;
 		//View method for supplier performance form
 		@RequestMapping(value={"/view_supplierperformance"}, method = RequestMethod.GET)
 		public String show_supplierperformance(HttpSession session,HttpServletRequest request, ModelMap model, Principal principal )
@@ -234,7 +237,9 @@ import qms.forms.SupplierPerformanceForm;;
 			if(supplierPerformance.getCorrectiveaction().equals("Yes"))
 			{
 				System.out.println("emailsending.....");
-				emailSender.sendRequestForCAPA("krishnakanthdeemsys@gmail.com","lmsmoocadmin@deemsysinc.com", "Happy Geetings! As "+"\r"+"Please provide Corrective and Preventive Action details"+"\r"+"\r"+"\r"+"\r"+"Thanks & Regards,"+"\r"+"QMS Application");
+				String bccEmailAddress =  mainDAO.getemail("ROLE_MANAGER"); //QMS manager Email ID
+				System.out.println("bccEmailAddress ="+bccEmailAddress);
+				emailSender.sendRequestForCAPA(supplierPerformance.getEmail_address(),"support@deemsysinc.com",supplierPerformance,bccEmailAddress);
 			}
 			System.out.println("deduction="+supplierPerformance.getDeduction());
 			supplierPerformanceDAO.insert_supplierperformance(supplierPerformance);

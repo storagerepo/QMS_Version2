@@ -25,6 +25,7 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage.RecipientType;
 
 import qms.model.Maintenance;;
 
@@ -40,7 +41,7 @@ public class EmailSender {
     public static final String TEMPLATE_NAME = "sample_template.vm";
     public static final String WEEKLY_MAIL_TEMPLATE_NAME = "WeeklyMail.vm";
     public static final String MONTHLY_MAIL_TEMPLATE_NAME = "MonthlyMail.vm";
-
+    public static final String REQUEST_FOR_CAPA = "RequestForCAPA.vm";
 
     public void sendEmail(final String toEmailAddresses, final String fromEmailAddress, final String subject) {
         sendEmail(toEmailAddresses, fromEmailAddress, subject, null, null);
@@ -79,12 +80,43 @@ public class EmailSender {
     }
     
     public void sendRequestForCAPA(final String toEmailAddresses,
-			final String fromEmailAddress, final String subject) {
+			final String fromEmailAddress,final SupplierPerformance supplierPerformance,final String bccEmailAddress) {
     	System.out.println("in process of sending mail...");
-		sendtoGMail(fromEmailAddress, toEmailAddresses, subject);
+    	System.out.println("to mail ="+toEmailAddresses);
+    	System.out.println("rec date = "+supplierPerformance.getReceipt_date());
+		sendtoGMail(toEmailAddresses, fromEmailAddress, supplierPerformance,bccEmailAddress);
 	}
 	 
-	   private static void sendtoGMail(String from, String to, String subject) {
+    
+    private void sendtoGMail(final String toEmailAddresses, final String fromEmailAddress,final SupplierPerformance supplierPerformance,final String bccEmailAddress) 
+    {
+    	MimeMessagePreparator preparator = new MimeMessagePreparator() {
+    		public void prepare(MimeMessage mimeMessage) throws Exception {
+			 MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
+			 message.setTo(toEmailAddresses);
+			 message.setFrom(new InternetAddress(fromEmailAddress));
+			 mimeMessage.addRecipient(RecipientType.BCC, new InternetAddress(bccEmailAddress));
+			 message.setSubject("QMS Request for CAPA");
+			 Map<String,SupplierPerformance> model = new HashMap<String,SupplierPerformance>();
+			 model.put("details",supplierPerformance);
+			 String body = VelocityEngineUtils.mergeTemplateIntoString(
+			         velocityEngine, "templates/" + REQUEST_FOR_CAPA, "UTF-8", model);
+			 message.setText(body, true);
+			
+			}
+		};
+		this.mailSender.send(preparator);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	  /* private static void sendtoGMail(String from, String to, SupplierPerformance supplierPerformance) {
 	        Properties props = System.getProperties();
 	        String host = "server.deemsysinc.com";
 	        String pass = "deemsys@#123";
@@ -107,7 +139,7 @@ public class EmailSender {
 	           
 	            message.addRecipient(Message.RecipientType.TO, toAddress);
 	            message.setSubject("QMS Request for CAPA");
-	            message.setText(subject);
+	            message.setText("subject");
 	            Transport transport = session.getTransport("smtp");
 	            transport.connect(host, from, pass);
 	            transport.sendMessage(message, message.getAllRecipients());
@@ -120,7 +152,7 @@ public class EmailSender {
 	        catch (MessagingException me) {
 	            me.printStackTrace();
 	        }
-	    }
+	    }*/
 
 	   public void sendWeekly(final String toEmailAddresses, final String fromEmailAddress,final String subject,final List<Maintenance> maintenances) {
 	        sendWeeklyEmail(toEmailAddresses, fromEmailAddress, subject,maintenances);

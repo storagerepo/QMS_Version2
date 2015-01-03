@@ -50,7 +50,10 @@ public class SupplierPerformance {
 	private String performance_id;
 	
 	private String receipt_date;
-	private String type_of_problem;
+	private String noproblem;
+	private String problemquality;
+	private String problemdelivery;
+	private String problemcustomerservice;
 	private String quality;
 	private String delivery;
 	private String customerservice;
@@ -70,7 +73,8 @@ public class SupplierPerformance {
 			String postalcode, String country, String website,
 			String certified_to, String contact_name, String contact_title,
 			String phone, String fax, String email_address,
-			String performance_id, String receipt_date, String type_of_problem,
+			String performance_id, String receipt_date, String noproblem,String problemquality,
+			String problemdelivery,String problemcustomerservice,
 			String quality, String delivery, String customerservice,
 			String problemdetails, String problem_found_at,
 			String correctiveaction, String dueaction_date, String deduction,
@@ -93,7 +97,10 @@ public class SupplierPerformance {
 		this.email_address = email_address;
 		this.performance_id = performance_id;
 		this.receipt_date = receipt_date;
-		this.type_of_problem = type_of_problem;
+		this.noproblem = noproblem;
+		this.problemquality =problemquality;
+		this.problemdelivery = problemdelivery;
+		this.problemcustomerservice = problemcustomerservice;
 		this.quality = quality;
 		this.delivery = delivery;
 		this.customerservice = customerservice;
@@ -212,11 +219,30 @@ public class SupplierPerformance {
 	public void setReceipt_date(String receipt_date) {
 		this.receipt_date = receipt_date;
 	}
-	public String getType_of_problem() {
-		return type_of_problem;
+	
+	public String getNoproblem() {
+		return noproblem;
 	}
-	public void setType_of_problem(String type_of_problem) {
-		this.type_of_problem = type_of_problem;
+	public void setNoproblem(String noproblem) {
+		this.noproblem = noproblem;
+	}
+	public String getProblemquality() {
+		return problemquality;
+	}
+	public void setProblemquality(String problemquality) {
+		this.problemquality = problemquality;
+	}
+	public String getProblemdelivery() {
+		return problemdelivery;
+	}
+	public void setProblemdelivery(String problemdelivery) {
+		this.problemdelivery = problemdelivery;
+	}
+	public String getProblemcustomerservice() {
+		return problemcustomerservice;
+	}
+	public void setProblemcustomerservice(String problemcustomerservice) {
+		this.problemcustomerservice = problemcustomerservice;
 	}
 	public String getQuality() {
 		return quality;

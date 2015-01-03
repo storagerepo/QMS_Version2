@@ -170,14 +170,20 @@
           	 <tr class="row1">
                  <td valign="middle" align="left" class="input_txt" width="10%"> Type of Problem  :</td>
                   <td valign="top" align="left" class="input_txt" width="40%">
-                  <select name= "type_of_problem" id="type_of_problem" class="dropdown" onchange="gettypeofproblem();">
+                  <input type="checkbox" name="noproblem" value="noproblem" id="noproblem" onclick="gettypeofproblemNoProblem();"<c:if test="${supplierperformance.noproblem=='noproblem'}"><c:out value="checked=checked"/></c:if>/>&nbsp;No Problem<br/>
+                   <input type="checkbox" name="problemquality" value="quality" id="problemquality" onclick="gettypeofproblemQuality();"<c:if test="${supplierperformance.problemquality=='quality'}"><c:out value="checked=checked"/></c:if>/>&nbsp;Quality                 
+             	  <input type="checkbox" name="problemdelivery" value="delivery" id="problemdelivery" onclick="gettypeofproblemDelivery();"<c:if test="${supplierperformance.problemdelivery=='delivery'}"><c:out value="checked=checked"/></c:if>/>&nbsp;Delivery
+             	  <input type="checkbox" name="problemcustomerservice" value="customerservice" id="problemcustomerservice" onclick="gettypeofproblemCustomerService();"<c:if test="${supplierperformance.problemcustomerservice=='customerservice'}"><c:out value="checked=checked"/></c:if>/>&nbsp;Customer Service<br/><br/>
+                <br/><span style="color: red;" id="typeofproblemError"></span></td>
+               
+                 <%--  <select name= "type_of_problem" id="type_of_problem" class="dropdown" onchange="gettypeofproblem();">
                  
                   <option <c:if test="${supplierperformance.type_of_problem eq 'noproblem'}"><c:out value="Selected"/></c:if> value="noproblem">No Problem</option>
                   <option <c:if test="${supplierperformance.type_of_problem eq 'quality'}"><c:out value="Selected"/></c:if> value="quality">Quality</option>
                    <option <c:if test="${supplierperformance.type_of_problem eq 'delivery'}"><c:out value="Selected"/></c:if> value="delivery">Delivery</option>
                    <option <c:if test="${supplierperformance.type_of_problem eq 'customerservice'}"><c:out value="Selected"/></c:if> value="customerservice">Customer Service</option>
                </select>
-                <br/><span class="err"></span></td>
+                <br/><span class="err"></span></td> --%>
                   </tr>
                 <tr class="row2" id="quality_lable" style="display:none;">
                   <td valign="middle" align="left" class="input_txt" >Quality  :</td>
@@ -333,6 +339,23 @@ function Find_deduction()
 	}
 	}
 </script>
+<script type="text/javascript">
+function Find_deductionNoProblem()
+{
+	var deduction_for_issue = document.getElementById('deduction_for_issue');
+	var noproblem = document.getElementById('noproblem').checked;
+	
+ 	if(noproblem)
+ 		{
+	deduction_for_issue.value = "N/A";
+ 		}
+ 	else{
+ 		deduction_for_issue.value = "";
+ 	 	}
+}
+
+
+</script>
 <script>	
 function Correctiveaction()
 {
@@ -371,51 +394,120 @@ function Correctiveaction1()
 	
 }
 
-            function gettypeofproblem(){
-            	var value = document.getElementById('type_of_problem').value;
-            
-            if(value=="quality")
-            {	
-            	$("#delivery_lable").hide('slow');
-            	$("#customerservice_lable").hide('slow');
-            	$("#quality_lable").toggle('slow');
-            	Find_deduction();
-            }
-            else if(value=="delivery")
-            {	
-            	$("#customerservice_lable").hide('slow');
-            	$("#quality_lable").hide('slow');
-            	$("#delivery_lable").toggle('slow');
-            	Find_deduction();
-            
-            }
-			else if(value=="customerservice")
-            {	
-				$("#quality_lable").hide('slow');
-            	$("#delivery_lable").hide('slow');
-            	$("#customerservice_lable").toggle('slow');
-            	Find_deduction();
-            }
-			else if(value=="noproblem")
-            {	
-				$("#quality_lable").hide('slow');
-            	$("#delivery_lable").hide('slow');
-            	$("#customerservice_lable").hide('slow');
-            	Find_deduction();
-            }
-           }
-            
-            </script>
+function gettypeofproblemNoProblem(){
+	var value = document.getElementById('noproblem').value;
+	var noproblem = 	document.getElementById('noproblem').checked;
+	Find_deductionNoProblem();
+ 	if(noproblem)
+ 		{
+ 		document.getElementById('problemquality').disabled = true;
+ 		document.getElementById('problemdelivery').disabled = true;
+ 		document.getElementById('problemcustomerservice').disabled = true;
+ 		
+ 		
+		}
+ 	else
+ 		{
+ 		document.getElementById('problemquality').disabled = false;
+ 		document.getElementById('problemdelivery').disabled = false;
+ 		document.getElementById('problemcustomerservice').disabled = false;
+ 		
+ 		}
+	
+}
+function gettypeofproblemQuality(){
+	var value = document.getElementById('problemquality').checked;
+	if(value)
+		{
+	$("#quality_lable").toggle('slow');
+	checkCHeckBox();
+		}
+}
+function gettypeofproblemDelivery(){
+	var value = document.getElementById('problemdelivery').checked;
+	if(value){
+	$("#delivery_lable").toggle('slow');
+	checkCHeckBox();
+	}
+}
+function gettypeofproblemCustomerService(){
+	var value = document.getElementById('problemcustomerservice').checked;
+	if(value){
+	$("#customerservice_lable").toggle('slow');
+	checkCHeckBox();
+	}
+	
+}
+function checkCHeckBox()
+{
+	var problemquality = 	document.getElementById('problemquality').checked;
+ 	var problemdelivery = 	document.getElementById('problemdelivery').checked;
+ 	var problemcustomerservice = 	document.getElementById('problemcustomerservice').checked;
+	var deduction_for_issue = document.getElementById('deduction_for_issue');
+ 	if(problemquality && problemdelivery && problemcustomerservice)
+ 		{
+ 		var deliveryValue = calc.delivery.value;
+ 		var customerValue = calc.customerservice.value;
+ 		
+ 		calc.deduction_for_issue.value = ((calc.problem_found_at.value)*(calc.quality.value)) + parseInt(deliveryValue) + parseInt(customerValue);
+ 		document.getElementById('noproblem').disabled = true;
+ 		
+		}
+ 	else if(problemquality && problemdelivery){
+ 	 	document.getElementById('noproblem').disabled = true;
+ 	 	calc.customerservice.value = "";
+ 	 	calc.deduction_for_issue.value = ((calc.problem_found_at.value)*(calc.quality.value))+ parseInt(calc.delivery.value);
+ 	 	}
+ 	else if(problemquality && problemcustomerservice){
+ 	 	document.getElementById('noproblem').disabled = true;
+ 	 	calc.delivery.value = "";
+ 	 	calc.deduction_for_issue.value = ((calc.problem_found_at.value)*(calc.quality.value))+ parseInt(calc.customerservice.value);
+ 	 	}
+ 	else if(problemdelivery && problemcustomerservice){
+ 	 	document.getElementById('noproblem').disabled = true;
+ 	 	calc.quality.value = "";
+ 	 	calc.deduction_for_issue.value = parseInt(calc.delivery.value)+parseInt(calc.customerservice.value);
+ 	 	}
+ 	else if(problemquality)
+		{
+ 		document.getElementById('noproblem').disabled = true;
+ 		calc.delivery.value = "";
+ 		calc.customerservice.value = "";
+ 		calc.deduction_for_issue.value = (calc.problem_found_at.value)*(calc.quality.value);
+		
+		}
+ 	else if(problemdelivery)
+ 		{
+ 		document.getElementById('noproblem').disabled = true;
+ 		calc.quality.value = "";
+ 		calc.customerservice.value = "";
+ 		calc.deduction_for_issue.value =parseInt(calc.delivery.value);
+ 		}
+ 	else if(problemcustomerservice)
+ 	 	{
+ 		document.getElementById('noproblem').disabled = true;
+ 		calc.quality.value = "";
+ 		calc.delivery.value = "";
+ 		calc.deduction_for_issue.value = parseInt(calc.customerservice.value);
+ 	 	}
+ 	
+	else{
+ 		
+ 		document.getElementById('noproblem').disabled = false;
+ 		calc.deduction_for_issue.value ="";
+ 	}
+
+}
+</script>
 <script>
 function toggleAjax()
 {
-	
-		Find_deduction();
-		
+
+	checkCHeckBox();
+
 }
+</script>
 
-
-</script>            
       
   <script>
   $(function() {
@@ -1457,7 +1549,7 @@ $('#formid').on('submit', function() {
   <script>
 	
 	window.onload = function(){
-		gettypeofproblem();Correctiveaction1();
+		Correctiveaction1();gettypeofproblemNoProblem();gettypeofproblemQuality();gettypeofproblemDelivery();gettypeofproblemCustomerService();
 	}
 		</script>  
 
