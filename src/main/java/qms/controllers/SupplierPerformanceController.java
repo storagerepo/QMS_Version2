@@ -236,6 +236,7 @@ import qms.forms.SupplierPerformanceForm;;
 				System.out.println("emailsending.....");
 				emailSender.sendRequestForCAPA("krishnakanthdeemsys@gmail.com","lmsmoocadmin@deemsysinc.com", "Happy Geetings! As "+"\r"+"Please provide Corrective and Preventive Action details"+"\r"+"\r"+"\r"+"\r"+"Thanks & Regards,"+"\r"+"QMS Application");
 			}
+			System.out.println("deduction="+supplierPerformance.getDeduction());
 			supplierPerformanceDAO.insert_supplierperformance(supplierPerformance);
 		
 			SupplierPerformanceForm supplierPerformanceForm= new SupplierPerformanceForm();

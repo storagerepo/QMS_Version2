@@ -682,6 +682,25 @@ public class DocumentController {
 					inputStream = file.getInputStream();
 					if (file.getSize() > 100000) {
 						System.out.println("File Size:::" + file.getSize());
+						session.removeAttribute("documentMain");
+						
+						load_document_page_dropdowns(model);
+						
+						DocumentRevisionLevelForm documentRevisionLevelForm = new DocumentRevisionLevelForm();
+						documentRevisionLevelForm.setDocumentRevisionLevels(documentRevisionLevelDAO.getLevelFormat());
+						model.addAttribute("documentRevisionLevelForm",documentRevisionLevelForm);
+						
+						DocumentMainForm documentMainForm=new DocumentMainForm();
+						model.addAttribute("documentMainForm",documentMainForm);
+						model.addAttribute("id", documentControlDAO.get_documentid());
+						
+						FormLocationForm formLocationForm = new FormLocationForm();
+						formLocationForm.setFormLocations(formLocationDAO.getlocation());
+						model.addAttribute("formLocationForm",formLocationForm);
+						
+						System.out.println("id"+documentControlDAO.get_documentid());
+						  model.addAttribute("menu","document");
+						model.addAttribute("filelarge", true);
 						return "/add_documents";
 					}
 					orginal_fileName = "/qms_upload/"+ file.getOriginalFilename();

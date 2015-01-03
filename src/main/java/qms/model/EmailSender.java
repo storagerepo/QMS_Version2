@@ -93,7 +93,7 @@ public class EmailSender {
 	        props.put("mail.smtp.host", host);
 	        props.put("mail.smtp.user", from);
 	        props.put("mail.smtp.password", pass);
-	        props.put("mail.smtp.port", "25");
+	        props.put("mail.smtp.port", "587");
 	        props.put("mail.smtp.auth", "true");
 	       
 	        Session session = Session.getDefaultInstance(props);

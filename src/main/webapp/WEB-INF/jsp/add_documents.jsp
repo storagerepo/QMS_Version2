@@ -149,7 +149,9 @@
               
                <td valign="middle" id="id_location_lbl" align="left" class="input_txt" width="25%"><label id="location_label" >Location:</label><br><label id="file_upload_label" style="display:none;"> Upload File:</label></td>
                <td valign="middle" align="left" id="id_location_txt" class="input_txt" >
-               
+               <c:if test="${filelarge==true}">
+               <span id="filelarge" style="color:red">Large file..! please choose small size file</span>
+               </c:if>
                <select id="location_text" name="location" class="input_txtbx">
               <option value = "">--Select Location--</option>
 			                <c:forEach items="${formLocationForm.formLocations}" var="formlocation" varStatus="status">
@@ -634,7 +636,7 @@ function validation()
 	
 	var date = /^(0?[1-9]|1[012])[\/](0?[1-9]|[12][0-9]|3[01])[\/]\d{4}$/;
 	var dotnumber = /^[a-zA-Z0-9]*$|[a-zA-Z0-9][\w\.]+[a-zA-Z0-9]$/;
-	
+	document.getElementById('filelarge').style.display = "none";
 	 var error ="";
 	 var document_id = document.getElementById('document_id').value;
 	 var id_hardcopy = document.getElementById('id_hardcopy').checked;
@@ -1050,7 +1052,7 @@ function validationMain()
 	
 	var date = /^(0?[1-9]|1[012])[\/](0?[1-9]|[12][0-9]|3[01])[\/]\d{4}$/;
 	var dotnumber = /^[a-zA-Z0-9]*$|[a-zA-Z0-9][\w\.]+[a-zA-Z0-9]$/;
-	
+	document.getElementById('filelarge').style.display = "none";
 	 var error ="";
 	 var document_id = document.getElementById('document_id').value;
 	 var id_hardcopy = document.getElementById('id_hardcopy').checked;

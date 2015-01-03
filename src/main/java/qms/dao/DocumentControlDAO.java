@@ -996,7 +996,7 @@ public class DocumentControlDAO extends AbstractITextPdfView
 	    try{
 	    	String s = "select * from tbl_doccontrol_main where document_id='"+id+"'";
 	    	System.out.println(s);
-			resultSet = statement.executeQuery("select * from tbl_doccontrol_main where auto_number='"+id+"'");
+			resultSet = statement.executeQuery("select * from tbl_doccontrol_main where document_id='"+id+"'");
 			System.out.println("came");
 			while(resultSet.next()){
 				System.out.println("count");
