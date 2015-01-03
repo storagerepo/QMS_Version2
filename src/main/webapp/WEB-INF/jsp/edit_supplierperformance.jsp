@@ -422,6 +422,10 @@ function gettypeofproblemQuality(){
 	$("#quality_lable").toggle('slow');
 	checkCHeckBox();
 		}
+	else{
+		$("#quality_lable").toggle('hide');
+		checkCHeckBox();
+		}
 }
 function gettypeofproblemDelivery(){
 	var value = document.getElementById('problemdelivery').checked;
@@ -429,6 +433,10 @@ function gettypeofproblemDelivery(){
 	$("#delivery_lable").toggle('slow');
 	checkCHeckBox();
 	}
+	else{
+		$("#delivery_lable").toggle('hide');
+		checkCHeckBox();
+		}
 }
 function gettypeofproblemCustomerService(){
 	var value = document.getElementById('problemcustomerservice').checked;
@@ -436,6 +444,10 @@ function gettypeofproblemCustomerService(){
 	$("#customerservice_lable").toggle('slow');
 	checkCHeckBox();
 	}
+	else{
+		$("#customerservice_lable").toggle('hide');
+		checkCHeckBox();
+		}
 	
 }
 function checkCHeckBox()
@@ -739,28 +751,35 @@ $('#formid').on('submit', function() {
 		 var problemquality = 	document.getElementById('problemquality').checked;
 		 var problemdelivery = 	document.getElementById('problemdelivery').checked;
 		 var problemcustomerservice = 	document.getElementById('problemcustomerservice').checked;
-		 if(!problemquality && !problemdelivery && !problemcustomerservice)
+		 if(!noproblem && !problemquality && !problemdelivery && !problemcustomerservice)
+			{
+			document.getElementById('typeofproblemError').innerHTML = "Please select atleast one";
+			error="true";
+			}
+			else if(!problemquality && !problemdelivery && !problemcustomerservice)
 			 {
 			 calc.delivery.value = "";
 			 calc.quality.value = "";
 			 calc.customerservice.value = "";
+			 document.getElementById('typeofproblemError').innerHTML = "";
 			 }
 		 else if(problemquality && problemdelivery && problemcustomerservice)
 			 {
-				
+			 document.getElementById('typeofproblemError').innerHTML = "";
 			 }
-		 else if(problemquality && problemdelivery){calc.customerservice.value = "";}
-		 else if(problemquality && problemcustomerservice){calc.delivery.value = "";}
-		 else if(problemdelivery && problemcustomerservice){calc.quality.value = "";}
-		 
-			 
-		 
-		 
-			if(!noproblem && !problemquality && !problemdelivery && !problemcustomerservice)
-				{
-				document.getElementById('typeofproblemError').innerHTML = "Please select atleast one";
-				}
-			else
+		 else if(problemquality && problemdelivery){
+			 calc.customerservice.value = "";
+			 document.getElementById('typeofproblemError').innerHTML = "";
+			 }
+		 else if(problemquality && problemcustomerservice){
+			 calc.delivery.value = "";
+			 document.getElementById('typeofproblemError').innerHTML = "";
+			 }
+		 else if(problemdelivery && problemcustomerservice){
+			 calc.quality.value = "";
+			 document.getElementById('typeofproblemError').innerHTML = "";
+			 }
+		 else
 				{
 				document.getElementById('typeofproblemError').innerHTML = "";
 				}
