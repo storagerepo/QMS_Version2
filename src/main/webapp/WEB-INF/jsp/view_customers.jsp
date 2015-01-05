@@ -29,7 +29,7 @@
 								</a>
 							</li>
 						
-				          <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+				        <%--   <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="addfeedback" class="<c:choose>
 								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
 									<span>Add Feedback</span>
@@ -42,7 +42,7 @@
 									<span>View feedback</span>
 									
 								</a>
-							</li>
+							</li> --%>
 				           <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="feedback_report" class="<c:choose>
 								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">

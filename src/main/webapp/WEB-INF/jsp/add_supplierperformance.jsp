@@ -147,16 +147,11 @@
                <tr class="row1">
                <td></td><td></td>
                </tr>
-               <!--   <tr class="row1">
-                  <td><br>
-                  <td valign="top" align="center" colspan="2"><input type="submit" value="Submit" onclick="return checkSubmit();" class="submit_btn1"></td>
-                </tr> -->
-                
               </table>
 
 </div>
 	<div style="display:none;" id="childsection">
-  <div style="border:#993300  2px solid; padding:15px; margin-bottom:15px; margin-left:10px;">
+   <div style="border:#993300  2px solid; padding:15px; margin-bottom:15px;">
           <table cellpadding="0" cellspacing="0" border="0" width="100%">
               <tr>
 			<td align="left" valign="top" style="padding-right: 25px;">

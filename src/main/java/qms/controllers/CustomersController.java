@@ -1,6 +1,10 @@
 package qms.controllers;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.Principal;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,12 +20,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import qms.dao.CustomersDAO;
+import qms.dao.FileHandlingDAO;
+import qms.dao.HRandTrainingDAO;
+import qms.dao.NonConformanceDAO;
+import qms.dao.ProductId_NCDAO;
+import qms.dao.ReferenceMaintenanceDAO;
+import qms.dao.ReportedByNCDAO;
+import qms.dao.Source_NCDAO;
+import qms.dao.Type_of_NC_DAO;
 import qms.model.Customers;
 import qms.forms.CustomersForm;
 import qms.forms.DocumentMainForm;
+import qms.forms.HRandTrainingForm;
 import qms.forms.MaintenanceForm;
+import qms.forms.Non_Conformance_SourceForm;
+import qms.forms.ProductId_NC_Form;
+import qms.forms.Type_of_NC_Form;
 
 
 @Controller
@@ -30,6 +47,23 @@ public class CustomersController
 {
 	@Autowired
 	CustomersDAO customersDAO;
+	
+	@Autowired
+	NonConformanceDAO nonConformanceDAO;
+	
+	@Autowired
+	Source_NCDAO sourceNCDAO;
+	
+	@Autowired
+	Type_of_NC_DAO typeNCDAO;
+	
+	@Autowired
+	ProductId_NCDAO productId_NCDAO;
+	
+	
+	@Autowired
+	HRandTrainingDAO hRandTrainingDAO;
+	
 	
 	
 	//view records
@@ -131,6 +165,60 @@ public class CustomersController
 		        return "add_customers";
 			}
     // model.addAttribute("id",customersDAO.getMax_customerID());
+			//customer feedback insertion
+			byte[] buffer=null;// = new byte[10000];
+			try {
+				MultipartFile file = customers.getAttachments();
+				String orginal_fileName = null;
+				String duplicate_fileName=null;
+				InputStream inputStream = null;
+				OutputStream outputStream = null;
+				    if (file.getSize() > 0) {
+					inputStream = file.getInputStream();
+					if (file.getSize() > 2097152) 
+					{
+						System.out.println("File Size:::" + file.getSize());
+						model.addAttribute("filelarge", true);
+						return "add_customers";
+					}				
+
+				    orginal_fileName ="C:/qms_upload/"+file.getOriginalFilename();
+				    duplicate_fileName=orginal_fileName;
+				    File create_file=new File(orginal_fileName);
+				    int i=1;			    
+				    while(create_file.exists())
+				    {
+
+				    	duplicate_fileName="C:/qms_upload/"+file.getOriginalFilename().substring(0,file.getOriginalFilename().lastIndexOf('.'))+i+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+				    	create_file=new File(duplicate_fileName);
+				    	i++;
+				    }
+				    outputStream = new FileOutputStream(duplicate_fileName);
+				    System.out.println("fileName:" + file.getOriginalFilename());
+	         
+				    
+				    //------Lines to changes------//
+				    
+				    customers.setAttachments_type(file.getContentType());
+				    customers.setAttachment_name(file.getOriginalFilename());
+				    customers.setAttachment_referrence(duplicate_fileName);
+	                
+	                //----End Lines to changed----//
+	              
+	                int readBytes = 0;
+					buffer=new byte[(int)file.getSize()];
+					while ((readBytes = inputStream.read(buffer, 0,(int) file.getSize())) != -1) {
+					outputStream.write(buffer, 0, readBytes);			
+					}
+					outputStream.close();
+					inputStream.close();
+				    }
+					
+			} catch (Exception e) {
+				System.out.println(e.toString());
+				e.printStackTrace();
+			}
+			
     customersDAO.insert_customer(customers);
     CustomersForm customersForm = new CustomersForm();
 	customersForm.setCustomers(customersDAO.getCustomers());
@@ -139,9 +227,34 @@ public class CustomersController
 	model.addAttribute("menu","customer");
 	model.addAttribute("success","true");
 	 model.addAttribute("justcame",false);
-
-
-	return "view_customers";
+	 if(customers.getType_of_feedback().equals("Complaint"))
+	 {
+		 model.addAttribute("customerEmail",customers.getEmail_address());
+		 model.addAttribute("id", nonConformanceDAO.get_maxid());
+			session.removeAttribute("nonconformance");
+			model.addAttribute("menu","nonconformance");
+			
+			Non_Conformance_SourceForm conformance_SourceForm = new Non_Conformance_SourceForm();
+			conformance_SourceForm.setConformance_Sources(sourceNCDAO.getSource());    
+			model.addAttribute("conformance_SourceForm",conformance_SourceForm);
+			
+			Type_of_NC_Form type_of_NC_Form= new Type_of_NC_Form();
+			type_of_NC_Form.setType_of_NCs(typeNCDAO.getType());
+			model.addAttribute("type_of_NC_Form",type_of_NC_Form);
+			
+			ProductId_NC_Form productId_NC_Form = new ProductId_NC_Form();
+			productId_NC_Form.setProductIDNCs(productId_NCDAO.getProductId());
+			model.addAttribute("productId_NC_Form",productId_NC_Form);
+			
+			HRandTrainingForm hRandTrainingForm=new HRandTrainingForm();
+			hRandTrainingForm.sethRandTrainings(hRandTrainingDAO.getnameList());
+			model.addAttribute("hRandTrainingForm",hRandTrainingForm);		
+			
+			return "add_nonconformance";
+		 
+	 }
+	 else{
+	return "view_customers";}
  	}
 	
 	//Update a record
@@ -152,6 +265,57 @@ public class CustomersController
 		session.removeAttribute("cust_id");
 		session.removeAttribute("name");
 		session.removeAttribute("address");
+		byte[] buffer=null;// = new byte[10000];
+		int flag = 0;
+		try {
+			
+			MultipartFile file = customers.getAttachments();
+			System.out.println("feedback details = "+customers.getFeedback_details()+ " att = " +customers.getAttachments());
+			String orginal_fileName = null;
+			String duplicate_fileName=null;
+			InputStream inputStream = null;
+			OutputStream outputStream = null;
+			    if (file.getSize() > 0)
+			    {
+				inputStream = file.getInputStream();
+				if (file.getSize() > 100000) 
+				{
+					System.out.println("File Size:::" + file.getSize());
+					model.addAttribute("filelarge", true);
+					return "edit_customers";
+				}				
+			    orginal_fileName ="C:/qms_upload/"+file.getOriginalFilename();
+			    duplicate_fileName=orginal_fileName;
+			    File create_file=new File(orginal_fileName);
+			    int i=1;			    
+			    while(create_file.exists())
+			    {
+			    	duplicate_fileName="C:/qms_upload/"+file.getOriginalFilename().substring(0,file.getOriginalFilename().lastIndexOf('.'))+i+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+			    	create_file=new File(duplicate_fileName);
+			    	i++;
+			    }
+			    outputStream = new FileOutputStream(duplicate_fileName);
+			    System.out.println("fileName:" + file.getOriginalFilename());
+         
+			    
+			    //------Lines to changes------//
+			    
+			    customers.setAttachments_type(file.getContentType());
+			    customers.setAttachment_name(file.getOriginalFilename());
+			    customers.setAttachment_referrence(duplicate_fileName);
+                
+                //----End Lines to changed----//
+              
+                int readBytes = 0;
+				buffer=new byte[(int)file.getSize()];
+				while ((readBytes = inputStream.read(buffer, 0,(int) file.getSize())) != -1) {
+				outputStream.write(buffer, 0, readBytes);			
+				}
+				outputStream.close();
+				inputStream.close();
+				/*customerFeedbackDAO.insert_customerfeedback(customerFeedback);*/
+				
+			}
 		if (result.hasErrors())
 		{
 			
@@ -162,7 +326,10 @@ public class CustomersController
 			model.addAttribute("customersForm",customersForm);	
 	        return "edit_customers";
 		}
-
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			e.printStackTrace();
+		}
     // model.addAttribute("id",customersDAO.getMax_customerID());
     customersDAO.update_customer(customers);
 

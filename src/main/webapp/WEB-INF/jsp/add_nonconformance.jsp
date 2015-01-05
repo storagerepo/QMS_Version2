@@ -62,6 +62,7 @@
 						
 				<table cellpadding="0" cellspacing="0" border="0" width="100%">
 					<tr class="row1">
+					<input type="hidden" name="customerEmail" value="${customerEmail}"/>
 							<td valign="top" align="left" class="input_txt" width="30%" width="25%" style="height: 50px">Non-Conformance (NC)ID&nbsp;:</td>
 							<td valign="top" align="left" class="input_txt" width="30%" width="25%">
 							<input type="text" name="id" readonly="readonly" class="input_txtbx" value="<c:out value="${id }"/>" /> <br/><font color="Red" size="+1"></font></td>
@@ -361,7 +362,7 @@
 		$('#reporteddiv_by').html(response);
 			},
 		error : function(e) {
-			alert('Error: ' + e);
+		//	alert('Error: ' + e);
 		}
 	});
 }
@@ -406,7 +407,7 @@ function onlyAlphabets(e, t) {
             return false;
     }
     catch (err) {
-        alert(err.Description);
+       // alert(err.Description);
     }
 }
 function onlyAlphabetsnew(e, t) {
@@ -424,7 +425,7 @@ function onlyAlphabetsnew(e, t) {
             return false;
     }
     catch (err) {
-        alert(err.Description);
+        //alert(err.Description);
     }
 }
 function onlyAlphabets1(e, t) {
@@ -442,7 +443,7 @@ function onlyAlphabets1(e, t) {
             return false;
     }
     catch (err) {
-        alert(err.Description);
+      //  alert(err.Description);
     }
 }
 function validation()
@@ -941,7 +942,6 @@ $(function() {
  
  
  function toggle2(value){
-  // alert("yes");
     var e = document.getElementById('corrective_div');
    
 if(value==0)

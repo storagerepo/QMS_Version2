@@ -25,6 +25,7 @@ import org.springframework.ui.ModelMap;
 import qms.dao.CorrectiveAndPreventiveActionsDAO;
 import qms.dao.FileHandlingDAO;
 import qms.dao.HRandTrainingDAO;
+import qms.dao.MainDAO;
 import qms.dao.NonConformanceDAO;
 import qms.dao.ProductId_NCDAO;
 import qms.dao.ReferenceMaintenanceDAO;
@@ -71,6 +72,10 @@ public class NonConformanceController {
 	@Autowired
 	ReportedByNCDAO reportedByNCDAO;
 	
+	@Autowired
+	MainDAO mainDAO;
+	@Autowired  
+	EmailSender emailSender;
 	// Request Method for view page
 	@RequestMapping(value = { "/view_nonconformance" }, method = RequestMethod.GET)
 	public String showNonconformance(HttpSession session, ModelMap model, Principal principal) {
@@ -185,12 +190,12 @@ public class NonConformanceController {
 	
 	// Insert the records into the Database
 	@RequestMapping(value = "/add_nonconformance", method = RequestMethod.POST)
-	public String addNonconformance_post(HttpSession session,@ModelAttribute("Nonconformance") @Valid NonConformance nonConformance,BindingResult result,@ModelAttribute("CorrectiveAndPreventiveActions") @Valid CorrectiveAndPreventiveActions correctiveAndPreventiveActions,BindingResult result2,ModelMap model) {
+	public String addNonconformance_post(HttpSession session,HttpServletRequest request,@ModelAttribute("Nonconformance") @Valid NonConformance nonConformance,BindingResult result,@ModelAttribute("CorrectiveAndPreventiveActions") @Valid CorrectiveAndPreventiveActions correctiveAndPreventiveActions,BindingResult result2,ModelMap model) {
 		
 		session.removeAttribute("nc");
 		session.removeAttribute("typenc");
 		model.addAttribute("justcame",false);
-		
+		String customerEmail = request.getParameter("customerEmail");
 		Type_of_NC_Form type_of_NC_Form= new Type_of_NC_Form();
 		type_of_NC_Form.setType_of_NCs(typeNCDAO.getType());
 		model.addAttribute("type_of_NC_Form",type_of_NC_Form);
@@ -221,6 +226,12 @@ public class NonConformanceController {
        {
     	   model.addAttribute("id",nonConformanceDAO.get_maxid());
 			return "add_nonconformance"; 
+       }
+       if(!(customerEmail.equals("")))
+       {
+    	   String bccEmailAddress =  mainDAO.getemail("ROLE_MANAGER"); //QMS manager Email ID
+			System.out.println("bccEmailAddress ="+bccEmailAddress);
+			emailSender.sendCustomerComplaint(customerEmail,"support@deemsysinc.com",nonConformance,bccEmailAddress);
        }
 		nonConformanceDAO.insert_nonconformance(nonConformance,correctiveAndPreventiveActions);
 		NonConformanceForm nonConformanceForm=new NonConformanceForm();

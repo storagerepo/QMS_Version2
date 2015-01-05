@@ -349,7 +349,7 @@ public class NonConformanceDAO extends AbstractITextPdfView {
 					+ "','"
 					+ nonConformance.getDisposition_complete_date()
 					+ "','"
-					+ nonConformance.getNature_of_nonconformance()
+					+ nonConformance.getName_of_disposition_responsibility()
 					+ "','"
 					+ nonConformance.getCost_of_nonconformance() + "')";
 			status = statement.execute(cmd_insert_nonconformance);

@@ -1,10 +1,13 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <jsp:include page="header.jsp"></jsp:include>
 <script src="resources/js/jquery-1.7.2.min.js"></script>
 <script src="resources/js/jquery-ui.js"></script>
 <script src="resources/js/modal.js"></script>
-<form method="post" action="updatecustomer">
+<link rel="stylesheet" href="resources/css/jquery-ui.css" type="text/css" />
+<form method="post"  enctype="multipart/form-data"  action="updatecustomer">
   <div id="right_content">
     <table cellpadding="0" cellspacing="0" border="0" width="98%" class="margin_table">
       <tr>
@@ -27,7 +30,7 @@
 								</a>
 							</li>
 						
-				          <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+				         <%--  <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="addfeedback" class="<c:choose>
 								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
 									<span>Add Feedback</span>
@@ -40,7 +43,7 @@
 									<span>View feedback</span>
 									
 								</a>
-							</li>
+							</li> --%>
 				           <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="feedback_report" class="<c:choose>
 								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
@@ -58,73 +61,74 @@
               <h2>Update Customer Details</h2>
             </div>
             <div class="contentbox">
+            <div style="border:#993300  2px solid; padding:15px; margin-bottom:15px;">
             <c:set value="${customersForm.customers[0]}" var="customers"/>
-             <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border:#993300  2px solid; padding:15px; margin-bottom:15px;">
+             <table cellpadding="0" cellspacing="0" border="0" width="100%" >
 				 <tr class="row2">
                   <td valign="middle" align="left" class="input_txt" width="30%">ID :</td>
                   <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" class="input_txtbx" name="customer_id" readonly="readonly" value="<c:out value="${customers.customer_id}"/>"/><br/><span class="err"></span></td>
                 <td valign="middle" align="left" class="input_txt" width="30%">Website :</td>
-                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="website" placeholder="www.example.com" class="input_txtbx" id="inp_website" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.website}" /><br>
+                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="website" readonly="readonly" placeholder="www.example.com" class="input_txtbx" id="inp_website" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.website}" /><br>
                    <span id="websiteerror" style="color:red"></span>
                   <span class="err"><form:errors path="Customers.website"></form:errors></span></td>
                 
                 </tr>
                 <tr class="row1">
                   <td valign="middle" align="left" class="input_txt" width="30%">Customer Name :</td>
-                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="customer_name"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" class="input_txtbx" id="customername"   onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.customer_name}" onkeypress="return Alphabets(event,this);"/><br>
+                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="customer_name" readonly="readonly" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" class="input_txtbx" id="customername"   onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.customer_name}" onkeypress="return Alphabets(event,this);"/><br>
                    <span id="customernameerror"style="color:red"></span>
                   <span class="err"><form:errors path="Customers.customer_name"></form:errors></span></td>
                   <td valign="middle" align="left" class="input_txt" width="30%">Contact Name :</td>
-                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="contact_name" class="input_txtbx"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" id="inp_contact_name"   onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.contact_name}" onkeypress="return Alphabets(event,this);" /><br>
+                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="contact_name" readonly="readonly" class="input_txtbx"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}" id="inp_contact_name"   onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.contact_name}" onkeypress="return Alphabets(event,this);" /><br>
                    <span id="contactnameerror" style="color:red"></span>
                   <span class="err"><form:errors path="Customers.contact_name"></form:errors></span></td>
                 </tr>
 				<tr class="row2">
                   <td valign="middle" align="left" class="input_txt" width="30%">Address :</td>
-               		<td><textarea class="input_txtbx" id="inp_address" name="address"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');"  style="height: 75px;"><c:out value="${customers.address}"/>	</textarea><br/>
+               		<td><textarea class="input_txtbx" id="inp_address" name="address" readonly="readonly" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');"  style="height: 75px;"><c:out value="${customers.address}"/>	</textarea><br/>
                		<span id="addresserror" style="color:red"></span>
                		<span class="err"><form:errors path="Customers.address"></form:errors></span></td>
                		 <td valign="middle" align="left" class="input_txt" width="30%">Contact Title :</td>
-                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="title_of_contact" class="input_txtbx" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  id="inp_title_of_contact" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.title_of_contact}" onkeypress="return Alphabets(event,this);"/><br>
+                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="title_of_contact" readonly="readonly" class="input_txtbx" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  id="inp_title_of_contact" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.title_of_contact}" onkeypress="return Alphabets(event,this);"/><br>
                   <span id="contacterror" style="color:red"></span><span class="err"><form:errors path="Customers.title_of_contact"></form:errors></span></td>
                 
                	</tr>
                 <tr class="row1">
                   <td valign="middle" align="left" class="input_txt" width="30%">City :</td>
-                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="city" class="input_txtbx" id="inp_city" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.city}"  onkeypress="return Alphabets(event,this);"/><br>
+                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="city" readonly="readonly" class="input_txtbx" id="inp_city" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.city}"  onkeypress="return Alphabets(event,this);"/><br>
                    	<span id="cityerror" style="color:red"></span>
                   <span class="err"><form:errors path="Customers.city"></form:errors></span></td>
                  <td valign="middle" align="left" class="input_txt" width="30%"> Telephone :</td>
-                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="telephone" class="input_txtbx" placeholder="9876543210"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  id="inp_telephone" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.telephone}" maxlength="10"  onkeypress="return Number(event,this);"/><br>
+                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="telephone" readonly="readonly" class="input_txtbx" placeholder="9876543210"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  id="inp_telephone" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.telephone}" maxlength="10"  onkeypress="return Number(event,this);"/><br>
                     <span id="telephoneerror" style="color:red">
                   <span class="err"><form:errors path="Customers.telephone"></form:errors></span></td>
                  
                 </tr>
                 <tr class="row2">
                   <td valign="middle" align="left" class="input_txt" width="30%">State :</td>
-                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="state" class="input_txtbx" id="inp_state"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.state}"  onkeypress="return Alphabets(event,this);"/><br>
+                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="state" readonly="readonly" class="input_txtbx" id="inp_state"  onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.state}"  onkeypress="return Alphabets(event,this);"/><br>
                     <span id="stateerror" style="color:red"></span>
                   <span class="err"><form:errors path="Customers.state"></form:errors></span></td>
                    <td valign="middle" align="left" class="input_txt" width="30%"> Fax :</td>
-                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="fax" class="input_txtbx" placeholder="6143229928" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  id="inp_fax" onkeypress="return Number(event,this);" maxlength="10" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.fax}"  /><br>
+                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="fax" readonly="readonly" class="input_txtbx" placeholder="6143229928" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  id="inp_fax" onkeypress="return Number(event,this);" maxlength="10" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.fax}"  /><br>
                    <span id="faxerror" style="color:red"></span>
                   <span class="err"><form:errors path="Customers.fax"></form:errors></span></td>
                   
                 </tr>
                 <tr class="row1">
                   <td valign="middle" align="left" class="input_txt" width="30%">Country :</td>
-                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="country" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  class="input_txtbx" id="inp_country" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.country}"  onkeypress="return Alphabets(event,this);"/><br>
+                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="country" readonly="readonly" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  class="input_txtbx" id="inp_country" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.country}"  onkeypress="return Alphabets(event,this);"/><br>
                   <span id="countryerror" style="color:red"></span>
                   <span class="err"><form:errors path="Customers.country"></form:errors></span></td>
                    <td valign="middle" align="left" class="input_txt" width="30%">Email :</td>
-                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="email_address" class="input_txtbx" id="inp_email_address"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.email_address}" /><br>
+                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="email_address" readonly="readonly" class="input_txtbx" id="inp_email_address"  onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${customers.email_address}" /><br>
                    <span id="emailerror" style="color:red"></span>
                   <span class="err"><form:errors path="Customers.email_address"></form:errors></span></td>
                  
                 </tr>
                 <tr class="row2">
                   <td valign="middle" align="left" class="input_txt" width="30%">ZipCode :</td>
-                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="zipcode" class="input_txtbx" id="inp_zipcode" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  placeholder="OH 43230" maxlength="8" onblur="ChangeCase(this);" onkeypress="return AlphabetsNumber1(event,this);" onmouseover="showTooltip('tooltip_id','inp_id3');" onkeyup="ChangeCase(this);" onmouseout="hideTooltip('tooltip_id');" value="${customers.zipcode}"  onkeypress="return AlphabetsNumber(event,this);"/><br>
+                  <td valign="middle" align="left" class="input_txt" width="30%"><input type="text" name="zipcode" readonly="readonly" class="input_txtbx" id="inp_zipcode" onkeydown="if(event.ctrlKey && event.keyCode==86){return false;}"  placeholder="OH 43230" maxlength="8" onblur="ChangeCase(this);" onkeypress="return AlphabetsNumber1(event,this);" onmouseover="showTooltip('tooltip_id','inp_id3');" onkeyup="ChangeCase(this);" onmouseout="hideTooltip('tooltip_id');" value="${customers.zipcode}"  onkeypress="return AlphabetsNumber(event,this);"/><br>
                    	<span id="zipcodeerror" style="color:red"></span>
                   <span class="err"><form:errors path="Customers.zipcode"></form:errors></span></td>
                 
@@ -134,15 +138,70 @@
                <td></td>
                   <td ><input type="submit" value="Update" style="width:140px;"onclick="return validate();"class="submit_btn1"></td>
                 </tr> -->
-                  <tr class="row1">
-                  <td valign="bottom" colspan="4"align="right">&nbsp;<input type="submit" value="Update" onclick="return validate();"class="submit_btn1"></td>
-                
-                </tr>
+                 
               </table>
               
             </div>
+            	<div style="border:#993300  2px solid; padding:15px; margin-bottom:15px;">
+          <table cellpadding="0" cellspacing="0" border="0" width="100%">
+          		<tr class="row1">
+             
+                 <td valign="middle" align="left" class="input_txt" width="30%">    <input type="hidden" name="feedback_id" value="${customers.feedback_id }"/>
+               Date of Feedback :</td>
+                  <td valign="top" align="left" class="input_txt" width="70%"><input type="text" name="date_of_feedback" class="input_txtbx" id="datepicker" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value='<c:out value="${customers.date_of_feedback}"></c:out>' /></br>
+                  <span id="datepicker1" style="color:red"></span>
+                  <span class="err"><form:errors path="CustomerFeedback.date_of_feedback"></form:errors></span></td>
+                  </tr>
+                   <tr class="row2">
+                 <td valign="middle" align="left" class="input_txt" width="30%"> Type of Feedback :</td>
+                  <td valign="top" align="left" class="input_txt" width="70%">
+                  <select name="type_of_feedback" class="input_txtbx">
+                  <option <c:if test="${customers.type_of_feedback eq 'Complaint'}"><c:out value="Selected"/></c:if> value="Complaint">Complaint</option>
+                  <option <c:if test="${customers.type_of_feedback eq 'Suggestion'}"><c:out value="Selected"/></c:if> value="Suggestion">Suggestion</option>
+                  <option <c:if test="${customers.type_of_feedback eq 'Product Return'}"><c:out value="Selected"/></c:if> value="Product Return">Product return</option>                  
+                  </select>
+                  
+                  <br/><span class="err"></span></td>
+                  </tr>
+                  <tr class="row1">
+                  <td valign="middle" align="left" class="input_txt" width="30%"> Feedback Recorded by :</td>
+                  <td valign="top" align="left" class="input_txt" width="70%">
+                  <select name="feedback_recorded_by" class="input_txtbx">
+                  <option <c:if test="${customers.feedback_recorded_by eq'name1'}"><c:out value="Selected"/></c:if> value="name1">Associate name1</option>
+                  <option <c:if test="${customers.feedback_recorded_by eq'name2'}"><c:out value="Selected"/></c:if> value="name2">Associate name2</option>
+                  <option <c:if test="${customers.feedback_recorded_by eq'name3'}"><c:out value="Selected"/></c:if> value="name3">Associate name3</option>                  
+                  </select>                  
+                  <br/><span class="err"></span></td>
+                  </tr>
+                   <tr class="row2">
+                 <td valign="middle" align="left" class="input_txt" width="30%"> Feedback Details :</td>
+                  <td valign="top" align="left" class="input_txt" width="70%">
+                  <textarea class="input_txtbx" name="feedback_details" id="id_feedback_details" style="height: 89px;"><c:out value="${customers.feedback_details}"></c:out></textarea>                  
+                 <br/> <span id="feedbackdetailserror" style="color:red"></span>
+                  <span class="err"><form:errors path="CustomerFeedback.feedback_details"></form:errors></span></td>
+                  </tr>
+                  <tr class="row1">
+                 <td valign="middle" align="left" class="input_txt" width="30%"> Attachments :</td>
+                	<td valign="middle" align="left" id="image" value="${customers.attachment_name}">${customers.attachment_name}
+                 <input type="file" name="attachments" class="input_txtbx1" id="attachment" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value='<c:out value="${customers.attachments}"></c:out>'></br>
+                 
+                 <span id="imageerror" style="color:red"class="err"></span></td>
+                 </tr> 
+                  
+                   <!--  <tr class="row1">
+               <td></td>
+                  <td valign="middle" align="left" class="input_txt" ><input type="submit" class="submit_btn1" value="Update" id="id_submit"style="width:170px;" onclick="return validate();"onmouseover="showTooltip('tooltip_id','inp_id3');" /><br/></td>
+                  </tr> -->
+                   
+          </table>
+          </div>
+            </div>
           </div></td>
       </tr>
+       <tr class="row1">
+                  <td valign="bottom" colspan="4"align="right">&nbsp;<input type="submit" value="Update" onclick="return validate();"class="submit_btn1"></td>
+                
+                </tr>
       </table>
       </div>
       
@@ -312,6 +371,15 @@ function validatename55(id){
     document.getElementById(id).value = textInput;
 }  
 </script>
+<script>
+$(function() {
+	$("#id_feedback_details").on("keypress", function(e) {
+	
+	if (e.which === 32 && !this.value.length)
+        e.preventDefault();
+});
+});
+</script>
 
 <script>
 function ChangeCase(elem)
@@ -451,6 +519,56 @@ $("#inp_telephone").focus(function(){
     	  var fax = document.getElementById('inp_fax').value;
     	  var inpzipcode = document.getElementById('inp_zipcode').value;
     	  var  emailaddress= document.getElementById('inp_email_address').value;
+    	  var date = /^(0?[1-9]|1[012])[\/](0?[1-9]|[12][0-9]|3[01])[\/]\d{4}$/;	
+    		var datepicker123 = document.getElementById('datepicker').value;
+    		var feedbackdetails = document.getElementById('id_feedback_details').value;
+    		var image = document.getElementById('image').value;
+    		 if(datepicker123 == "")
+    		 {
+    		 document.getElementById("datepicker1").innerHTML="Required field should not be empty";
+    		error="true";
+    		 
+    		 }
+    		 else if(datepicker123.match(date))
+    		 {
+    		 document.getElementById("datepicker1").innerHTML="";
+    		 }
+    		 else
+    		 {
+    		 document.getElementById("datepicker1").innerHTML="Invalid date format";
+    		 error="true";
+    		 }
+    		 
+    		 
+    		 if(feedbackdetails == "")
+    			 {
+    			 document.getElementById("feedbackdetailserror").innerHTML="Required field should not be empty";
+    				error="true";
+    			 }
+    		 else if(feedbackdetails.charAt(0) == " ")
+    			 {
+    			 document.getElementById("feedbackdetailserror").innerHTML="Should not accept initial space";
+    				error="true";
+    			 }
+    		 else  if((feedbackdetails.length < 4) ||(feedbackdetails.length > 400))
+    		   {
+    			   document.getElementById("feedbackdetailserror").innerHTML="Required field should be length of 4 to 400";
+    		    	error="true";
+    				}
+    		 else
+    		 {
+    			 document.getElementById("feedbackdetailserror").innerHTML="";
+    		 }
+    		 
+    		 if(image == "")
+    			 {
+    			 document.getElementById("imageerror").innerHTML="Please upload a file";
+    				error="true";
+    			 }
+    		 else
+    			 {
+    			 document.getElementById("imageerror").innerHTML="";
+    			 }
     	  if(customername =="")
     		  {
     		  document.getElementById("customernameerror").innerHTML="Required field should not be empty";
@@ -736,6 +854,12 @@ $("#inp_telephone").focus(function(){
       }
       
       </script>
+      <script>
+ $(function() {
+           $( "#datepicker" ).datepicker();
+         });
+ 
+</script>
       <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
       <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
       <jsp:include page="footer.jsp"></jsp:include>

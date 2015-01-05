@@ -42,7 +42,7 @@ public class EmailSender {
     public static final String WEEKLY_MAIL_TEMPLATE_NAME = "WeeklyMail.vm";
     public static final String MONTHLY_MAIL_TEMPLATE_NAME = "MonthlyMail.vm";
     public static final String REQUEST_FOR_CAPA = "RequestForCAPA.vm";
-
+    public static final String CUSTOMER_COMPLAINT ="CustomerComplaint.vm";
     public void sendEmail(final String toEmailAddresses, final String fromEmailAddress, final String subject) {
         sendEmail(toEmailAddresses, fromEmailAddress, subject, null, null);
     }
@@ -108,52 +108,37 @@ public class EmailSender {
 		this.mailSender.send(preparator);
     }
     
+    public void sendCustomerComplaint(final String toEmailAddresses,
+			final String fromEmailAddress,final NonConformance nonConformance,final String bccEmailAddress) {
+    	
+		sendComplaint(toEmailAddresses, fromEmailAddress, nonConformance,bccEmailAddress);
+	}
+    
+    private void sendComplaint(final String toEmailAddresses, final String fromEmailAddress,final  NonConformance nonConformance,final String bccEmailAddress) 
+    {
+    	MimeMessagePreparator preparator = new MimeMessagePreparator() {
+    		public void prepare(MimeMessage mimeMessage) throws Exception {
+			 MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
+			 message.setTo(toEmailAddresses);
+			 message.setFrom(new InternetAddress(fromEmailAddress));
+			 mimeMessage.addRecipient(RecipientType.BCC, new InternetAddress(bccEmailAddress));
+			 message.setSubject("QMS Customer Complaint");
+			 Map<String,NonConformance> model = new HashMap<String,NonConformance>();
+			 model.put("details",nonConformance);
+			 String body = VelocityEngineUtils.mergeTemplateIntoString(
+			         velocityEngine, "templates/" + CUSTOMER_COMPLAINT, "UTF-8", model);
+			 message.setText(body, true);
+			
+			}
+		};
+		this.mailSender.send(preparator);
+    }
     
     
     
     
     
     
-    
-    
-	  /* private static void sendtoGMail(String from, String to, SupplierPerformance supplierPerformance) {
-	        Properties props = System.getProperties();
-	        String host = "server.deemsysinc.com";
-	        String pass = "deemsys@#123";
-	        props.put("mail.smtp.starttls.enable", "false");
-	        props.put("mail.smtp.ssl.trust", host);
-	        props.put("mail.smtp.host", host);
-	        props.put("mail.smtp.user", from);
-	        props.put("mail.smtp.password", pass);
-	        props.put("mail.smtp.port", "587");
-	        props.put("mail.smtp.auth", "true");
-	       
-	        Session session = Session.getDefaultInstance(props);
-	        MimeMessage message = new MimeMessage(session);
-
-	        try {
-	            message.setFrom(new InternetAddress(from));
-	            InternetAddress toAddress = new InternetAddress(to);
-
-	            // To get the array of addresses
-	           
-	            message.addRecipient(Message.RecipientType.TO, toAddress);
-	            message.setSubject("QMS Request for CAPA");
-	            message.setText("subject");
-	            Transport transport = session.getTransport("smtp");
-	            transport.connect(host, from, pass);
-	            transport.sendMessage(message, message.getAllRecipients());
-	            transport.close();
-	            System.out.println("mail send");
-	        }
-	        catch (AddressException ae) {
-	            ae.printStackTrace();
-	        }
-	        catch (MessagingException me) {
-	            me.printStackTrace();
-	        }
-	    }*/
-
 	   public void sendWeekly(final String toEmailAddresses, final String fromEmailAddress,final String subject,final List<Maintenance> maintenances) {
 	        sendWeeklyEmail(toEmailAddresses, fromEmailAddress, subject,maintenances);
 	    }

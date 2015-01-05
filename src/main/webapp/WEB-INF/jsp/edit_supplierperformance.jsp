@@ -423,6 +423,7 @@ function gettypeofproblemQuality(){
 	checkCHeckBox();
 		}
 	else{
+	
 		$("#quality_lable").toggle('hide');
 		checkCHeckBox();
 		}
@@ -441,8 +442,8 @@ function gettypeofproblemDelivery(){
 function gettypeofproblemCustomerService(){
 	var value = document.getElementById('problemcustomerservice').checked;
 	if(value){
-	$("#customerservice_lable").toggle('slow');
-	checkCHeckBox();
+		$("#customerservice_lable").toggle('slow');
+		checkCHeckBox();
 	}
 	else{
 		$("#customerservice_lable").toggle('hide');
@@ -455,6 +456,7 @@ function checkCHeckBox()
 	var problemquality = 	document.getElementById('problemquality').checked;
  	var problemdelivery = 	document.getElementById('problemdelivery').checked;
  	var problemcustomerservice = 	document.getElementById('problemcustomerservice').checked;
+ 	var noproblem = 	document.getElementById('noproblem').checked;
 	var deduction_for_issue = document.getElementById('deduction_for_issue');
  	if(problemquality && problemdelivery && problemcustomerservice)
  		{
@@ -467,39 +469,59 @@ function checkCHeckBox()
 		}
  	else if(problemquality && problemdelivery){
  	 	document.getElementById('noproblem').disabled = true;
- 	 	
+ 	 	document.getElementById('customerservice_lable').style.display ="none";
  	 	calc.deduction_for_issue.value = ((calc.problem_found_at.value)*(calc.quality.value))+ parseInt(calc.delivery.value);
  	 	}
  	else if(problemquality && problemcustomerservice){
  	 	document.getElementById('noproblem').disabled = true;
- 	 	
+ 	 	document.getElementById('delivery_lable').style.display ="none";
  	 	calc.deduction_for_issue.value = ((calc.problem_found_at.value)*(calc.quality.value))+ parseInt(calc.customerservice.value);
  	 	}
  	else if(problemdelivery && problemcustomerservice){
  	 	document.getElementById('noproblem').disabled = true;
- 	 
+ 	 	document.getElementById('quality_lable').style.display ="none";
  	 	calc.deduction_for_issue.value = parseInt(calc.delivery.value)+parseInt(calc.customerservice.value);
  	 	}
  	else if(problemquality)
 		{
  		document.getElementById('noproblem').disabled = true;
- 		
+ 		document.getElementById('delivery_lable').style.display ="none";
+ 		document.getElementById('customerservice_lable').style.display ="none";
  		calc.deduction_for_issue.value = (calc.problem_found_at.value)*(calc.quality.value);
 		
 		}
  	else if(problemdelivery)
  		{
  		document.getElementById('noproblem').disabled = true;
+ 		document.getElementById('quality_lable').style.display ="none";
+ 		document.getElementById('customerservice_lable').style.display ="none";
  		calc.deduction_for_issue.value =parseInt(calc.delivery.value);
  		}
  	else if(problemcustomerservice)
  	 	{
  		document.getElementById('noproblem').disabled = true;
+ 		document.getElementById('quality_lable').style.display ="none";
+ 		document.getElementById('delivery_lable').style.display ="none";
  		calc.deduction_for_issue.value = parseInt(calc.customerservice.value);
  	 	}
- 	
-	else{
+ 	else if(noproblem)
+ 	 	{
+ 	 
+ 	 	document.getElementById('customerservice_lable').style.display ="none";
+ 		calc.deduction_for_issue.value ="N/A";
+ 		document.getElementById('problemquality').disabled = true;
+ 		document.getElementById('problemdelivery').disabled = true;
+ 		document.getElementById('problemcustomerservice').disabled = true;
+ 		document.getElementById('quality_lable').style.display ="none";
+		document.getElementById('delivery_lable').style.display ="none";
  		
+ 	 	}
+	 	
+	else{
+
+		document.getElementById('quality_lable').style.display ="none";
+		document.getElementById('delivery_lable').style.display ="none";
+		document.getElementById('customerservice_lable').style.display ="none";
  		document.getElementById('noproblem').disabled = false;
  		calc.deduction_for_issue.value ="";
  	}
@@ -1591,7 +1613,8 @@ $('#formid').on('submit', function() {
   <script>
 	
 	window.onload = function(){
-		Correctiveaction1();gettypeofproblemNoProblem();gettypeofproblemQuality();gettypeofproblemDelivery();gettypeofproblemCustomerService();
+		Correctiveaction1();gettypeofproblemNoProblem();
+		gettypeofproblemQuality();gettypeofproblemDelivery();gettypeofproblemCustomerService();
 	}
 		</script>  
 
