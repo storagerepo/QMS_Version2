@@ -36,6 +36,7 @@ public class Type_of_NC_Controller {
 	
 	public String addTypeNC(HttpSession session,ModelMap model, Principal principal) {
 		//session.removeAttribute("formlocation");
+	session.removeAttribute("type_of_NC");
 		model.addAttribute("menu","nonconformance");
 		return "add_typenc";
 	}

@@ -297,6 +297,9 @@ public class CorrectiveAndPreventiveActionsController
 		nonConformanceForm.setNonconformance(nonConformanceDAO.get_nonconformance());
 		model.addAttribute("nonConformanceForm", nonConformanceForm);
 		
+		List<String> date = nonConformanceDAO.getDates();
+		model.addAttribute("datefound", date);
+		
 		model.addAttribute("capa_id",correctiveAndPreventiveActionsDAO.get_maxid());
 		
 		model.addAttribute("menu","corrective");
@@ -476,6 +479,8 @@ public class CorrectiveAndPreventiveActionsController
 		hRandTrainingForm.sethRandTrainings(hRandTrainingDAO.getHRResposible());
 		model.addAttribute("hRandTrainingForm",hRandTrainingForm);	
 		
+		List<String> date = nonConformanceDAO.getDates();
+		model.addAttribute("datefound", date);
 		
 		CorrectiveAndPreventiveActionsForm correctiveAndPreventiveActionsForm = new CorrectiveAndPreventiveActionsForm();
 		System.out.println(capa_id);

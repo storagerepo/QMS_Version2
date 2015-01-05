@@ -100,12 +100,12 @@ function ChangeCase(elem)
 									Delete Customers
 								</a>
 							</li>
-							<li  style=" float:left;margin-right:8px;text-transform:uppercase;">
+							<%-- <li  style=" float:left;margin-right:8px;text-transform:uppercase;">
 								<a href="customersfeedbackdelete" class="<c:choose>
 								<c:when test="${menu==''}">menubuttonsub blue</c:when><c:otherwise>menubuttonsub blue</c:otherwise></c:choose>">
 									Delete Customers Feedback
 								</a>
-							</li>
+							</li> --%>
 							
 							</ul>
 													

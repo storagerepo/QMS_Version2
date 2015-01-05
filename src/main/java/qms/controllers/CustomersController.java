@@ -182,14 +182,14 @@ public class CustomersController
 						return "add_customers";
 					}				
 
-				    orginal_fileName ="C:/qms_upload/"+file.getOriginalFilename();
+				    orginal_fileName ="/qms_upload/"+file.getOriginalFilename();
 				    duplicate_fileName=orginal_fileName;
 				    File create_file=new File(orginal_fileName);
 				    int i=1;			    
 				    while(create_file.exists())
 				    {
 
-				    	duplicate_fileName="C:/qms_upload/"+file.getOriginalFilename().substring(0,file.getOriginalFilename().lastIndexOf('.'))+i+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+				    	duplicate_fileName="/qms_upload/"+file.getOriginalFilename().substring(0,file.getOriginalFilename().lastIndexOf('.'))+i+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
 				    	create_file=new File(duplicate_fileName);
 				    	i++;
 				    }
@@ -284,13 +284,13 @@ public class CustomersController
 					model.addAttribute("filelarge", true);
 					return "edit_customers";
 				}				
-			    orginal_fileName ="C:/qms_upload/"+file.getOriginalFilename();
+			    orginal_fileName ="/qms_upload/"+file.getOriginalFilename();
 			    duplicate_fileName=orginal_fileName;
 			    File create_file=new File(orginal_fileName);
 			    int i=1;			    
 			    while(create_file.exists())
 			    {
-			    	duplicate_fileName="C:/qms_upload/"+file.getOriginalFilename().substring(0,file.getOriginalFilename().lastIndexOf('.'))+i+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+			    	duplicate_fileName="/qms_upload/"+file.getOriginalFilename().substring(0,file.getOriginalFilename().lastIndexOf('.'))+i+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
 			    	create_file=new File(duplicate_fileName);
 			    	i++;
 			    }

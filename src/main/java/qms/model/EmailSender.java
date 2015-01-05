@@ -156,7 +156,7 @@ public class EmailSender {
 				    message.setFrom(new InternetAddress(fromEmailAddress));
 				    message.setSubject(subject);
 				   
-				    
+				    if(maintenances.size() > 0){
 				    Map<String,List<Maintenance>> model = new HashMap<String,List<Maintenance>>();
 				    
 				   
@@ -170,6 +170,12 @@ public class EmailSender {
 				    String body = VelocityEngineUtils.mergeTemplateIntoString(
 				            velocityEngine, "templates/" + WEEKLY_MAIL_TEMPLATE_NAME, "UTF-8", model);
 				    message.setText(body, true);
+				    }
+				    else{
+				    	 String content = "Hi QMS Team,"+"\r"+"\r"+"There are no Maintaince and Calibration Report for this week."+"\r"+"\r"+subject+"\r"+"\r"+"\r"+"\r"+"\r"+"Thanks & Regards,"+"\r"+"QMS Support";
+				    	 message.setText(content, true);
+				    }
+				  
 				   
 				}
 				};
@@ -185,7 +191,7 @@ public class EmailSender {
 				    message.setFrom(new InternetAddress(fromEmailAddress));
 				    message.setSubject(subject);
 				   
-				    
+				  if(maintenances.size() > 0){  
 				    Map<String,List<Maintenance>> model = new HashMap<String,List<Maintenance>>();
 				    
 				   
@@ -199,7 +205,11 @@ public class EmailSender {
 				    String body = VelocityEngineUtils.mergeTemplateIntoString(
 				            velocityEngine, "templates/" + MONTHLY_MAIL_TEMPLATE_NAME, "UTF-8", model);
 				    message.setText(body, true);
-				   
+				}
+				    else{
+				    	 String content = "Hi QMS Team,"+"\r"+"\r"+"There are no Maintaince and Calibration Report for this Month."+"\r"+"\r"+subject+"\r"+"\r"+"\r"+"\r"+"\r"+"Thanks & Regards,"+"\r"+"QMS Support";
+				    	 message.setText(content, true);
+				    }
 				}
 				};
 				this.mailSender.send(preparator);

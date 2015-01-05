@@ -97,8 +97,8 @@
                   <%-- <input type="text" name="date_found" class="input_txtbx" id="datepicker" onmouseover="showTooltip('tooltip_id','inp_id3');" onmouseout="hideTooltip('tooltip_id');" value="${correctiveAndPreventiveActions.date_found}" /><br/><span style="color: red;"><form:errors path="CorrectiveAndPreventiveActions.date_found"></form:errors></span></td> --%>
                   <select name="date_found" id="datepicker" class="dropdown" >
                   <option value="">--Select--</option>
-                  <c:forEach items="${nonConformanceForm.nonconformance}" var="nonconformance" varStatus="true">
-                  <option value="<c:out value="${nonconformance.date_found}"/>"><c:out value="${nonconformance.date_found}"/></option>
+                  <c:forEach items="${datefound}" var="dateFound" varStatus="true">
+                  <option value="<c:out value="${dateFound}"/>"><c:out value="${dateFound}"/></option>
                   </c:forEach>
                   </select><br/><span style="color: red;" id="datepickererr"><form:errors path="CorrectiveAndPreventiveActions.date_found"></form:errors></span>
                   </td>

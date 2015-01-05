@@ -72,7 +72,8 @@ public class CustomersDAO {
 		  try{
 			  String cmd_delete="delete from tbl_customer where customer_id='"+customer_id+"'";
 			  status=statement.execute(cmd_delete);
-			
+			  String cmd_delete1 = "delete from tbl_customerfeedback where feedback_id='"+customer_id+"'";
+			  status = statement.execute(cmd_delete1);
 	    }catch(Exception e){
 	    	System.out.println(e.toString());
 	    	releaseResultSet(resultSet);

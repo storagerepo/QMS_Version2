@@ -87,7 +87,7 @@ public String postcertifiedto(HttpSession session,@ModelAttribute("certified_to"
 
 		return "Add_certifiedto";
 	}
-
+	
 	SupplierCertificatetoDAO.insert_certifiedto(certified_to);
 	/*Certified_toform Certified_toform = new Certified_toform();
 	

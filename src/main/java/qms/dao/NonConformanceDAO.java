@@ -857,7 +857,48 @@ public class NonConformanceDAO extends AbstractITextPdfView {
 		}
 		return nonConformances;
 	}
+	//get Dates for corrective and preventive action module
+	public List<String> getDates()
+	{
+		
+		Connection con = null;
+		Statement statement = null;
+		ResultSet resultSet=null;
+		int flag=0;
+		String date="";
+		
+		try {
+			con = dataSource.getConnection();
+			statement = con.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		List<String> list = new ArrayList<String>();
+	    try{
+	    	String cmd_role="select distinct(date_found) as date from tbl_nonconformance order by date_found;";
+	    	resultSet=statement.executeQuery(cmd_role);
+	    	while(resultSet.next()){
+	    	date=resultSet.getString("date");
+	    	list.add(date);
+	    	}
+	    	
+	    	System.out.println("date = "+date);
+	    	 
+	 }
+	    catch(Exception e){
+	    	System.out.println(e.toString());
+	    	releaseStatement(statement);
+	    	releaseConnection(con);
+	    	flag=0;
+	    	//return 0;
+	    }finally{
+	     	releaseStatement(statement);
+	    	releaseConnection(con);	    
+	    	
+	    }
+	   return list;
 	
+	}
 	
 	//Get Method for corrective and preventive actions form
 	public List<CorrectiveAndPreventiveActions> get_corrective() {

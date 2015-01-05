@@ -76,7 +76,7 @@
                <tr class="row1">
                   <td valign="middle" align="left" class="input_txt" style="padding-left: 55px">Certified To :</td>
                   <td valign="top" align="left" class="input_txt"><input type="text" name="certified_to" id="certified_to" onblur="ChangeCase(this);"  onkeyup="checksuppliercertificate()" class="input_txtbx" maxlength="200" onkeypress="return AlphabetsNumber1(event,this);"  value="${certified_to.certified_to}" />
-                   <br> <span id="certified_toerror" style="color:red">   </span>
+                   <br> <span id="certified_toerror" style="color:red">  <c:if test="${success=='exist'}">certified to already exist</c:if></span>  </span>
                    <span id="certified_toexisterror" style="color:red">   </span>                        
                </td>
                 </tr>
